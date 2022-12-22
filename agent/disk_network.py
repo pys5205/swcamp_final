@@ -14,6 +14,8 @@ main_info["os"] = "os"
 main_info["ts_db_insert"] = "ts_db_insert"
 main_info["ts_db_create"] = "ts_db_create"
 
+disk_list = ["/", "/www", "/data"]
+
 while(1):
     # DISK 정보
     disk_info = main_info
@@ -23,18 +25,19 @@ while(1):
     partitions = psutil.disk_partitions()
     for p in partitions:
         try:
-            du = psutil.disk_usage(p.mountpoint)
-            if (p.mountpoint == '/'):
+            if p.mountpoint in disk_list:
+                du = psutil.disk_usage(p.mountpoint)
                 disk_part_info = {"device":p.device, "mountpoint":p.mountpoint, "fstype":p.fstype,"opts":p.opts,"total":(du.total),"used":(du.used),"free":(du.free), "percent":du.percent}
-                # print(disk_part_info)
+            # print(disk_part_info)
         except:
             pass
     # disk io counters 정보
-    # disk_io_info = psutil.disk_io_counters(perdisk=True)
+    disk_io_info = psutil.disk_io_counters(perdisk=True)
 
     # disk info append
     disk_info["info"].append(disk_part_info)
-    # disk_info["info"].append(disk_io_info)
+    disk_info["info"].append(disk_io_info)
+
     print(disk_info)
 
     # network 정보
@@ -67,5 +70,5 @@ while(1):
     net_info["info"].append(net_if_info)
     net_info["info"].append(net_con_info)
 
-    print(net_info)
+    # print(net_info)
     time.sleep(5)
