@@ -15,18 +15,18 @@ from kafka.errors import KafkaError
 producer = KafkaProducer(bootstrap_servers="localhost:9092", value_serializer=lambda x: dumps(x).encode("utf-8"))
 hostname = str.encode(socket.gethostname())
 
-main_info = {}
+# yaml whitelist
+with open('disk_network.yaml') as f:
+    data = yaml.load(f)
+# disk_list = ["/", "/www", "/data"]
 
+main_info = {}
 main_info["system"] = "system"
 main_info["service"] = "service"
 main_info["company"] = "company"
 main_info["os"] = "os"
 main_info["ts_db_insert"] = "ts_db_insert"
 main_info["ts_db_create"] = "ts_db_create"
-
-with open('disk_network.yaml') as f:
-    data = yaml.load(f)
-# disk_list = ["/", "/www", "/data"]
 
 while(1):
     # DISK 정보
@@ -50,6 +50,7 @@ while(1):
     disk_info["info"].append(disk_part_info)
     disk_info["info"].append(disk_io_info)
 
+    # kafka 사용
     producer.send(
         "test",
         key = hostname,
@@ -88,5 +89,12 @@ while(1):
     net_info["info"].append(net_if_info)
     net_info["info"].append(net_con_info)
 
-    print(net_info)
+    producer.send(
+        "test",
+        key = hostname,
+        value = net_info
+    )
+    producer.flush()
+
+    # print(net_info)
     time.sleep(5)
