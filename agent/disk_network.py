@@ -1,9 +1,19 @@
 import os
 import sys
 
+import yaml
+from json import dumps
+
 import psutil
 from time import sleep
 import time
+
+import socket
+from kafka import KafkaProducer
+from kafka.errors import KafkaError
+
+producer = KafkaProducer(bootstrap_servers="localhost:9092", value_serializer=lambda x: dumps(x).encode("utf-8"))
+hostname = str.encode(socket.gethostname())
 
 main_info = {}
 
@@ -14,7 +24,9 @@ main_info["os"] = "os"
 main_info["ts_db_insert"] = "ts_db_insert"
 main_info["ts_db_create"] = "ts_db_create"
 
-disk_list = ["/", "/www", "/data"]
+with open('disk_network.yaml') as f:
+    data = yaml.load(f)
+# disk_list = ["/", "/www", "/data"]
 
 while(1):
     # DISK 정보
@@ -25,7 +37,7 @@ while(1):
     partitions = psutil.disk_partitions()
     for p in partitions:
         try:
-            if p.mountpoint in disk_list:
+            if p.mountpoint in data.get("disk_list"):
                 du = psutil.disk_usage(p.mountpoint)
                 disk_part_info = {"device":p.device, "mountpoint":p.mountpoint, "fstype":p.fstype,"opts":p.opts,"total":(du.total),"used":(du.used),"free":(du.free), "percent":du.percent}
             # print(disk_part_info)
@@ -38,7 +50,13 @@ while(1):
     disk_info["info"].append(disk_part_info)
     disk_info["info"].append(disk_io_info)
 
-    print(disk_info)
+    producer.send(
+        "test",
+        key = hostname,
+        value = disk_info
+    )
+    producer.flush()
+    # print(disk_info)
 
     # network 정보
     net_info = main_info
@@ -70,5 +88,5 @@ while(1):
     net_info["info"].append(net_if_info)
     net_info["info"].append(net_con_info)
 
-    # print(net_info)
+    print(net_info)
     time.sleep(5)

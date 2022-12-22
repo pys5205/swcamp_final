@@ -1,0 +1,7 @@
+disk_list:
+  - /
+  - /www
+  - /data
+
+network_list:
+  
