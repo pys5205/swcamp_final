@@ -18,7 +18,7 @@ hostname = str.encode(socket.gethostname())
 # rpk topic consue test
 
 # yaml whitelist
-with open('disk_network.yaml') as f:
+with open('whitelist.yaml') as f:
     data = yaml.load(f)
 # disk_list = ["/", "/www", "/data"]
 
@@ -27,6 +27,36 @@ main_info = {}
 main_info["user"] = data.get("main_list")
 
 while(1):
+    cpu_info = main_info
+
+    cpu_info["type"]= "cpu"
+    cpu_info["info"]=[]
+
+    #cpu 정보
+    cpuTime = psutil.cpu_times()
+    cpu_time_info = {"cpu_sys": cpuTime.system,"cpu_user":cpuTime.user,"cpu_wait":cpuTime.iowait, "cpu_irq":cpuTime.irq, "cpu_softirq":cpuTime.softirq}
+    cpu_info["info"].append(cpu_time_info)
+
+    cpuCount = {"cpu_cnt" : psutil.cpu_count(logical=False)}
+    cpu_info["info"].append(cpuCount)
+
+    cpuFreq = psutil.cpu_freq(percpu=True)
+    for freq in cpuFreq :
+          cpu_frq = {"current":freq.current, "min":freq.min, "max":freq.max}
+          cpu_info["info"].append(cpu_frq)
+
+    # cpu_Load_info = {"cpu_loadavg" : psutil.getloadavg()}
+    #
+    # cpu_info["info"].append(cpu_Load_info)
+
+    # kafka 사용
+    producer.send(
+        "test",
+        key = hostname,
+        value = cpu_info
+    )
+    producer.flush()
+
     # DISK 정보
     disk_info = main_info
     disk_info["type"] = "disk"
