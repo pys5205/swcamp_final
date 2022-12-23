@@ -1,14 +1,13 @@
 import psutil
 import time
 import socket
-# from kafka import KafkaProducer
-# from kafka.errors import KafkaError
-#
+from kafka import KafkaProducer
+from kafka.errors import KafkaError
+
 # producer = KafkaProducer(bootstrap_servers="localhost:9092", value_serializer=lambda x: dumps(x).encode("utf-8"))
 # hostname = str.encode(socket.gethostname())
 
 data = {}
-
 # main_info["system"] = "system"
 # main_info["service"] = "service"
 # main_info["company"] = "company"
@@ -20,11 +19,14 @@ data = {}
 
 
 while(1) :
-    cpu_info = {}
+    cpu_info = data
+
+    data["type"]= "cpu"
     data["cpu_info"]=[]
 
     #cpu 정보
     cpuTime = psutil.cpu_times()
+
     cpu_info["cpu_sys"] = cpuTime.system
     cpu_info["cpu_user"] = cpuTime.user
     cpu_info["cpu_wait"] = cpuTime.iowait
@@ -37,15 +39,19 @@ while(1) :
     cpuFreq = psutil.cpu_freq(percpu=True)
     for freq in cpuFreq :
           cpu_frq = {"current":freq.current, "min":freq.min, "max":freq.max}
+          data["cpu_info"].append(cpu_frq)
+
     cpu_info["cpu_frq"] = cpu_frq
 
     cpuLoadavg = psutil.getloadavg()
+
     cpu_info["cpu_loadavg"] = cpuLoadavg
 
     data["cpu_info"].append(cpu_info)
 
     #memory 정보
-    mem_info = {}
+    mem_info = data
+    data["type"] = "memory"
     data["mem_info"]=[]
     mem = psutil.virtual_memory()
     memSwap = psutil.swap_memory()
@@ -67,13 +73,13 @@ while(1) :
     data["mem_info"].append(mem_info)
 
     #process 정보
-    procs_info = {}
+    procs_info = data
+    data["type"]="process"
     data["procs_info"]=[]
-    data["procs_iter"]=[]
     procs = psutil.Process()
     procsIter = psutil.process_iter(['pid', 'name', 'username'])
     for p in procsIter:
-        data["procs_iter"].append(p.info)
+        data["procs_info"].append(p.info)
     # procs_iter = {p.pid: p.info for p in psutil.process_iter(['name', 'username'])}
     procs_info["procs_name"] = procs.name()
     procs_info["procs_ppid"] = procs.ppid()
@@ -90,6 +96,7 @@ while(1) :
     procs_info["procs_status"] = procs.status()
     procs_info["procs_terminal"] = procs.terminal()
     procs_info["procs_numTreads"] = procs.num_threads()
+
     data["procs_info"].append(procs_info)
 
 
@@ -98,7 +105,7 @@ while(1) :
     #     key = hostname,
     #     value = data
     # )
-    #
+
     # producer.flush()
 
     print(data)
