@@ -1,5 +1,10 @@
 main_list:
-  
+  - system: system
+    service: service
+    company: swcamp
+    os : centos
+    ts_db_insert: timein
+    ts_db_create: timecr
 
 disk_list:
   - /
