@@ -55,12 +55,12 @@ while(1) :
     cpus = {"cpu_sys": cpuTime.system,"cpu_user":cpuTime.user,"cpu_wait":cpuTime.iowait, "cpu_irq":cpuTime.irq, "cpu_softirq":cpuTime.softirq,"cpu_count":cpuCount, "cpu_loadavg": cpuLoadavg}
     cpu_info["info"].append(cpus)
     # print(cpu_info)
-    producer.send(
-        "test",
-        key = hostname,
-        value = cpu_info
-    )
-
+    # producer.send(
+    #     "test",
+    #     key = hostname,
+    #     value = cpu_info
+    # )
+    # producer.flush()
     #memory 정보
     mem_info = main_info
     mem_info["type"] = "memory"
@@ -86,13 +86,13 @@ while(1) :
     mem_info["info"].append(mem_in)
     # print(mem_info)
 
-    producer.send(
-        "test",
-        key = hostname,
-        value = mem_info
-    )
-
-    producer.flush()
+    # producer.send(
+    #     "test",
+    #     key = hostname,
+    #     value = mem_info
+    # )
+    #
+    # producer.flush()
 
     #process 정보
     procs_info = main_info
@@ -118,19 +118,22 @@ while(1) :
     # procss["procs_status"] = procs.status()
     # procss["procs_terminal"] = procs.terminal()
     # procss["procs_numTreads"] = procs.num_threads()
+    procsMem = procs.memory_full_info()
+    procsMemMaps = procs.memory_maps()
+    doc_procs = {"procs_name":procs.name(),"procs_ppid":procs.ppid(),"procs_cpuT_user":procs_cpuTimes.user,"procs_cpuT_sys":procs_cpuTimes.system,"procs_cpuT_children_user":procs_cpuTimes.children_user,"procs_cpuT_children_sys":procs_cpuTimes.children_system,"procs_cpuT_iowait":procs_cpuTimes.iowait,"procs_percent":procs.cpu_percent(),"procs_createTime":procs.create_time(),"procs_status":procs.status(),"procs_terminal":procs.terminal(),"procs_numTreads":procs.num_threads(),"procs_mem_full_uss":procsMem.uss,"procs_mem_full_pss":procsMem.pss,"procs_mem_full_swap":procsMem.swap}
+    for pmm in procsMemMaps :
+        doc_procs_mm = {"path":pmm.path,"rss":pmm.rss,"size":pmm.size,"pss":pmm.pss,"shared_clean":pmm.shared_clean,"private_dirty":pmm.private_dirty,"referenced":pmm.referenced,"anonymous":pmm.anonymous}
+        procs_info["info"].append(doc_procs_mm)
+    #procs_info["info"].append(doc_procs)
+    print(procs_info)
 
-    doc_procs = {"procs_name":procs.name(),"procs_ppid":procs.ppid(),"procs_cpuT_user":procs_cpuTimes.user,"procs_cpuT_sys":procs_cpuTimes.system,"procs_cpuT_children_user":procs_cpuTimes.children_user,"procs_cpuT_children_sys":procs_cpuTimes.children_system,"procs_cpuT_iowait":procs_cpuTimes.iowait,"procs_percent":procs.cpu_percent(),"procs_createTime":procs.create_time(),"procs_status":procs.status(),"procs_terminal":procs.terminal(),"procs_numTreads":procs.num_threads()}
-
-    procs_info["info"].append(doc_procs)
-    # print(procs_info)
-
-    producer.send(
-        "test",
-        key = hostname,
-        value = procs_info
-    )
-
-    producer.flush()
+    # producer.send(
+    #     "test",
+    #     key = hostname,
+    #     value = procs_info
+    # )
+    #
+    # producer.flush()
 
     # print(data)
 

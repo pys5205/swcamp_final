@@ -119,10 +119,15 @@ while(1):
     # procss["procs_status"] = procs.status()
     # procss["procs_terminal"] = procs.terminal()
     # procss["procs_numTreads"] = procs.num_threads()
-
-    doc_procs = {"procs_name":procs.name(),"procs_ppid":procs.ppid(),"procs_cpuT_user":procs_cpuTimes.user,"procs_cpuT_sys":procs_cpuTimes.system,"procs_cpuT_children_user":procs_cpuTimes.children_user,"procs_cpuT_children_sys":procs_cpuTimes.children_system,"procs_cpuT_iowait":procs_cpuTimes.iowait,"procs_percent":procs.cpu_percent(),"procs_createTime":procs.create_time(),"procs_status":procs.status(),"procs_terminal":procs.terminal(),"procs_numTreads":procs.num_threads()}
-
+    procsMem = procs.memory_full_info()
+    procsMemMaps = procs.memory_maps()
+    doc_procs = {"procs_name":procs.name(),"procs_ppid":procs.ppid(),"procs_cpuT_user":procs_cpuTimes.user,"procs_cpuT_sys":procs_cpuTimes.system,"procs_cpuT_children_user":procs_cpuTimes.children_user,"procs_cpuT_children_sys":procs_cpuTimes.children_system,"procs_cpuT_iowait":procs_cpuTimes.iowait,"procs_percent":procs.cpu_percent(),"procs_createTime":procs.create_time(),"procs_status":procs.status(),"procs_terminal":procs.terminal(),"procs_numTreads":procs.num_threads(),"procs_mem_full_uss":procsMem.uss,"procs_mem_full_pss":procsMem.pss,"procs_mem_full_swap":procsMem.swap}
     procs_info["info"].append(doc_procs)
+
+    for pmm in procsMemMaps :
+        doc_procs_mm = {"path":pmm.path,"rss":pmm.rss,"size":pmm.size,"pss":pmm.pss,"shared_clean":pmm.shared_clean,"private_dirty":pmm.private_dirty,"referenced":pmm.referenced,"anonymous":pmm.anonymous}
+        procs_info["info"].append(doc_procs_mm)
+
     # print(procs_info)
 
     producer.send(
