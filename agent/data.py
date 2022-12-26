@@ -175,10 +175,10 @@ while(1):
     net_io_info = psutil.net_io_counters(pernic=True)
     # net_info["info"].append(net_io_info)
 
-    for iface, iface_io in net_io_info.items():
+    for name, name_io in net_io_info.items():
         # print(iface)
-        if iface in data.get("network_list"):
-            net_io_cnt_info = {"name":iface, "bytes_sent":iface_io.bytes_sent, "bytes_recv":iface_io.bytes_recv, "packets_sent":iface_io.packets_sent, "packets_recv":iface_io.packets_recv, "errin":iface_io.errin, "errout":iface_io.errout, "dropin":iface_io.dropin, "dropout":iface_io.dropout}
+        if name in data.get("network_list"):
+            net_io_cnt_info = {"name":name, "bytes_sent":name_io.bytes_sent, "bytes_recv":name_io.bytes_recv, "packets_sent":name_io.packets_sent, "packets_recv":name_io.packets_recv, "errin":name_io.errin, "errout":name_io.errout, "dropin":name_io.dropin, "dropout":name_io.dropout}
             # print(net_io_cnt_info)
             net_info["info"].append(net_io_cnt_info)
 
