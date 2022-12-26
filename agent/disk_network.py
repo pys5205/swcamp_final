@@ -18,7 +18,7 @@ hostname = str.encode(socket.gethostname())
 # rpk topic consue test
 
 # yaml whitelist
-with open('disk_network.yaml') as f:
+with open('whitelist.yaml') as f:
     data = yaml.load(f)
 # disk_list = ["/", "/www", "/data"]
 
@@ -47,12 +47,12 @@ while(1):
     disk_info["info"].append(disk_io_info)
 
     # kafka 사용
-    producer.send(
-        "test",
-        key = hostname,
-        value = disk_info
-    )
-    producer.flush()
+    # producer.send(
+    #     "test",
+    #     key = hostname,
+    #     value = disk_info
+    # )
+    # producer.flush()
     # print(disk_info)
 
     # network 정보
@@ -62,14 +62,23 @@ while(1):
 
     # net io counters 정보
     net_io_info = psutil.net_io_counters(pernic=True)
-    net_info["info"].append(net_io_info)
+    # net_info["info"].append(net_io_info)
+
+    for iface, iface_io in net_io_info.items():
+        # print(iface)
+        if iface in data.get("network_list"):
+            net_io_cnt_info = {"name":iface, "bytes_sent":iface_io.bytes_sent, "bytes_recv":iface_io.bytes_recv, "packets_sent":iface_io.packets_sent, "packets_recv":iface_io.packets_recv, "errin":iface_io.errin, "errout":iface_io.errout, "dropin":iface_io.dropin, "dropout":iface_io.dropout}
+            # print(net_io_cnt_info)
+            net_info["info"].append(net_io_cnt_info)
+
     # net if addrs 정보
     net_if = psutil.net_if_addrs()
     for name, addrs in net_if.items():
         for addr in addrs:
-            net_if_info = {"family":addr.family, "address":addr.address, "netmask":addr.netmask, "broadcast":addr.broadcast, "ptp":addr.ptp}
-            net_info["info"].append(net_if_info)
-            #print(net_if_info)
+            if name in data.get("network_list"):
+                net_if_info = {"name":name, "family":addr.family, "address":addr.address, "netmask":addr.netmask, "broadcast":addr.broadcast, "ptp":addr.ptp}
+                # print(net_if_info)
+                net_info["info"].append(net_if_info)
 
     # net connections 정보
     net_con = psutil.net_connections()
@@ -78,7 +87,7 @@ while(1):
             if x.status == 'ESTABLISHED':
                 net_con_info = {"fd":x.fd, "family":x.family, "type":x.type, "laddr":x.laddr, "raddr":x.raddr, "status":x.status, "pid":x.pid}
                 net_info["info"].append(net_con_info)
-                #print(net_con_info)
+                # print(net_con_info)
         except:
             pass
 

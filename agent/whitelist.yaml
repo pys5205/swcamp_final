@@ -12,3 +12,5 @@ disk_list:
   - /data
 
 network_list:
+  - lo
+  - enp0s3
