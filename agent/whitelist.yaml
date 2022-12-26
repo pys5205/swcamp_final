@@ -14,3 +14,6 @@ disk_list:
 network_list:
   - lo
   - enp0s3
+
+procs_list:
+  - python3
