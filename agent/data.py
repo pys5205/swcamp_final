@@ -19,7 +19,7 @@ hostname = str.encode(socket.gethostname())
 
 # yaml whitelist
 with open('whitelist.yaml') as f:
-    data = yaml.load(f)
+    data = yaml.full_load(f)
 # disk_list = ["/", "/www", "/data"]
 
 #main info
@@ -40,7 +40,6 @@ while(1):
     cpuFreq = psutil.cpu_freq(percpu=True)
     for freq in cpuFreq :
           cpu_frq = {"cpu_frq":{"current":freq.current, "min":freq.min, "max":freq.max}}
-          print(cpu_frq)
           # cpu_info["info"].append(cpu_frq)
 
     # cpus["cpu_frq"] = cpu_frq
@@ -48,7 +47,7 @@ while(1):
     cpus = {"cpu_sys": cpuTime.system,"cpu_user":cpuTime.user,"cpu_wait":cpuTime.iowait, "cpu_irq":cpuTime.irq, "cpu_softirq":cpuTime.softirq, "cpu_count":cpuCount, "cpu_loadavg": cpuLoadavg}
     cpu_info["info"].append(cpus)
 
-    kafka 사용
+    # kafka 사용
     producer.send(
         "test",
         key = hostname,
@@ -83,15 +82,6 @@ while(1):
     procs_info["info"]=[]
 
     procs = psutil.Process()
-    # with procs.oneshot():
-    #     print(procs.name())
-    # with procs.oneshot():
-    #     for p in procs:
-    #         print(p.name())
-    # for t in procs:
-    #     print(t.name())
-    # procsIter = psutil.process_iter(['pid', 'name', 'username','ppid','cpu_times','memory_full_info','memory_maps','cmdline'])
-    # procsIter = psutil.process_iter()
     procs_cpuTimes = procs.cpu_times()
     procsMem = procs.memory_full_info()
     procsMemMaps = procs.memory_maps()
@@ -101,24 +91,10 @@ while(1):
         procs_info["info"].append(doc_procs_mm)
 
     for proc in psutil.process_iter():
-        if proc.name() in data.get('procs_list'):
-            doc_procs = {"procs_name":proc.name(),"procs_pid":proc.pid,"procs_cpuT_user":procs_cpuTimes.user,"procs_cpuT_sys":procs_cpuTimes.system,"procs_cpuT_children_user":procs_cpuTimes.children_user,"procs_cpuT_children_sys":procs_cpuTimes.children_system,"procs_cpuT_iowait":procs_cpuTimes.iowait,"procs_percent":procs.cpu_percent(),"procs_createTime":procs.create_time(),"procs_status":procs.status(),"procs_terminal":procs.terminal(),"procs_numTreads":procs.num_threads(),"procs_mem_full_uss":procsMem.uss,"procs_mem_full_pss":procsMem.pss,"procs_mem_full_swap":procsMem.swap,"procs_cmdline":procs.cmdline()}
+        if proc.username() in data.get('procs_list'):
+            doc_procs = {"procs_username":procs.username(), "procs_name":proc.name(),"procs_pid":proc.pid,"procs_cpuT_user":procs_cpuTimes.user,"procs_cpuT_sys":procs_cpuTimes.system,"procs_cpuT_children_user":procs_cpuTimes.children_user,"procs_cpuT_children_sys":procs_cpuTimes.children_system,"procs_cpuT_iowait":procs_cpuTimes.iowait,"procs_percent":procs.cpu_percent(),"procs_createTime":procs.create_time(),"procs_status":procs.status(),"procs_terminal":procs.terminal(),"procs_numTreads":procs.num_threads(),"procs_mem_full_uss":procsMem.uss,"procs_mem_full_pss":procsMem.pss,"procs_mem_full_swap":procsMem.swap,"procs_cmdline":procs.cmdline()}
             procs_info["info"].append(doc_procs)
-            # print(proc.name(), proc.pid, proc.username(), procs_cpuTimes.user, procs_cpuTimes.system, procs_cpuTimes.children_user, procs_cpuTimes.children_system, procs_cpuTimes.iowait, procs.cpu_percent(),procs.create_time(),procs.status(), procs.terminal(), procs.num_threads(), procsMem.uss, procsMem.pss, procsMem.swap,procs.cmdline())
 
-            # print(p.info)
-    # pptt = procs.as_dict(['pid', 'name', 'username'])
-    # print(pptt)
-    # for a in pptt.items() :
-    #     print(a)
-    # for p in pptt :
-    #     print(p)
-    # doc_procs = {"procs_cpuT_user":procs_cpuTimes.user,"procs_cpuT_sys":procs_cpuTimes.system,"procs_cpuT_children_user":procs_cpuTimes.children_user,"procs_cpuT_children_sys":procs_cpuTimes.children_system,"procs_cpuT_iowait":procs_cpuTimes.iowait,"procs_percent":procs.cpu_percent(),"procs_createTime":procs.create_time(),"procs_status":procs.status(),"procs_terminal":procs.terminal(),"procs_numTreads":procs.num_threads(),"procs_mem_full_uss":procsMem.uss,"procs_mem_full_pss":procsMem.pss,"procs_mem_full_swap":procsMem.swap,"procs_cmdline":procs.cmdline()}
-        # procs_info["info"].append(doc_procs)
-
-
-
-    # print(procs_info)
 
     producer.send(
         "test",
@@ -128,15 +104,21 @@ while(1):
 
     producer.flush()
 
+    # 현재 시간
+    disk_time = time.strftime('%Y.%m.%d %H:%M:%S')
+    # print(today)
+    
     # DISK 정보
     disk_info = main_info
+    disk_info["user"][0]["ts_db_create"] = disk_time
+    print (disk_info["user"])
     disk_info["type"] = "disk"
     disk_info["info"] = []
     # disk partitions 정보
     partitions = psutil.disk_partitions()
     for p in partitions:
         try:
-            if p.mountpoint in data.get("disk_list"):
+            if p.mountpoint in data.get("disk_mnt_list"):
                 du = psutil.disk_usage(p.mountpoint)
                 disk_part_info = {"device":p.device, "mountpoint":p.mountpoint, "fstype":p.fstype,"opts":p.opts,"total":(du.total),"used":(du.used),"free":(du.free), "percent":du.percent}
                 disk_info["info"].append(disk_part_info)
@@ -145,7 +127,11 @@ while(1):
             pass
     # disk io counters 정보
     disk_io_info = psutil.disk_io_counters(perdisk=True)
-    disk_info["info"].append(disk_io_info)
+    for name, name_io in disk_io_info.items():
+        if name in data.get("disk_info_list"):
+            disk_io_cnt = {"name":name, "read_count":name_io.read_count, "write_count":name_io.write_count, "read_bytes":name_io.read_bytes, "write_bytes":name_io.write_bytes, "read_time":name_io.read_time, "write_time":name_io.write_time, "read_merged_count":name_io.read_merged_count, "busy_time":name_io.busy_time}
+            # print(disk_io_cnt)
+            disk_info["info"].append(disk_io_cnt)
 
     # kafka 사용
     producer.send(
@@ -157,7 +143,10 @@ while(1):
     # print(disk_info)
 
     # network 정보
+    net_time = time.strftime('%Y.%m.%d %H:%M:%S')
+    
     net_info = main_info
+    net_info["user"][0]["ts_db_create"] = net_time
     net_info["type"] = "network"
     net_info["info"] = []
 
@@ -167,7 +156,7 @@ while(1):
 
     for name, name_io in net_io_info.items():
         # print(iface)
-        if name in data.get("network_list"):
+        if name in data.get("network_name_list"):
             net_io_cnt_info = {"name":name, "bytes_sent":name_io.bytes_sent, "bytes_recv":name_io.bytes_recv, "packets_sent":name_io.packets_sent, "packets_recv":name_io.packets_recv, "errin":name_io.errin, "errout":name_io.errout, "dropin":name_io.dropin, "dropout":name_io.dropout}
             # print(net_io_cnt_info)
             net_info["info"].append(net_io_cnt_info)
@@ -176,7 +165,7 @@ while(1):
     net_if = psutil.net_if_addrs()
     for name, addrs in net_if.items():
         for addr in addrs:
-            if name in data.get("network_list"):
+            if name in data.get("network_name_list"):
                 net_if_info = {"name":name, "family":addr.family, "address":addr.address, "netmask":addr.netmask, "broadcast":addr.broadcast, "ptp":addr.ptp}
                 # print(net_if_info)
                 net_info["info"].append(net_if_info)
@@ -185,7 +174,7 @@ while(1):
     net_con = psutil.net_connections()
     for x in net_con:
         try:
-            if x.status == 'ESTABLISHED':
+            if x.status in data.get("network_conn_list"):
                 net_con_info = {"fd":x.fd, "family":x.family, "type":x.type, "laddr":x.laddr, "raddr":x.raddr, "status":x.status, "pid":x.pid}
                 net_info["info"].append(net_con_info)
                 # print(net_con_info)

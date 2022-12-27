@@ -19,7 +19,7 @@ hostname = str.encode(socket.gethostname())
 
 # yaml whitelist
 with open('whitelist.yaml') as f:
-    data = yaml.load(f)
+    data = yaml.full_load(f)
 # disk_list = ["/", "/www", "/data"]
 
 #main info
@@ -41,16 +41,16 @@ while(1):
     for freq in cpuFreq :
           cpu_frq = {"cpu_frq":{"current":freq.current, "min":freq.min, "max":freq.max}}
           print(cpu_frq)
-          # cpu_info["info"].append(cpu_frq)
+          cpu_info["info"].append(cpu_frq)
 
     # cpus["cpu_frq"] = cpu_frq
     cpuLoadavg = psutil.getloadavg()
     cpus = {"cpu_sys": cpuTime.system,"cpu_user":cpuTime.user,"cpu_wait":cpuTime.iowait, "cpu_irq":cpuTime.irq, "cpu_softirq":cpuTime.softirq, "cpu_count":cpuCount, "cpu_loadavg": cpuLoadavg}
     cpu_info["info"].append(cpus)
 
-    kafka 사용
+    #kafka 사용
     producer.send(
-        "test",
+        "test1",
         key = hostname,
         value = cpu_info
     )
@@ -70,7 +70,7 @@ while(1):
     # print(mem_info)
 
     producer.send(
-        "test",
+        "test1",
         key = hostname,
         value = mem_info
     )
@@ -96,16 +96,18 @@ while(1):
     procsMem = procs.memory_full_info()
     procsMemMaps = procs.memory_maps()
 
-    for pmm in procsMemMaps :
-        doc_procs_mm = {"path":pmm.path,"rss":pmm.rss,"size":pmm.size,"pss":pmm.pss,"shared_clean":pmm.shared_clean,"private_dirty":pmm.private_dirty,"referenced":pmm.referenced,"anonymous":pmm.anonymous}
-        procs_info["info"].append(doc_procs_mm)
-
     for proc in psutil.process_iter():
-        if proc.name() in data.get('procs_list'):
-            doc_procs = {"procs_name":proc.name(),"procs_pid":proc.pid,"procs_cpuT_user":procs_cpuTimes.user,"procs_cpuT_sys":procs_cpuTimes.system,"procs_cpuT_children_user":procs_cpuTimes.children_user,"procs_cpuT_children_sys":procs_cpuTimes.children_system,"procs_cpuT_iowait":procs_cpuTimes.iowait,"procs_percent":procs.cpu_percent(),"procs_createTime":procs.create_time(),"procs_status":procs.status(),"procs_terminal":procs.terminal(),"procs_numTreads":procs.num_threads(),"procs_mem_full_uss":procsMem.uss,"procs_mem_full_pss":procsMem.pss,"procs_mem_full_swap":procsMem.swap,"procs_cmdline":procs.cmdline()}
+        if proc.username() in data.get('procs_list'):
+            doc_procs = {"procs_username":procs.username(), "procs_name":proc.name(),"procs_pid":proc.pid,"procs_cpuT_user":procs_cpuTimes.user,"procs_cpuT_sys":procs_cpuTimes.system,"procs_cpuT_children_user":procs_cpuTimes.children_user,"procs_cpuT_children_sys":procs_cpuTimes.children_system,"procs_cpuT_iowait":procs_cpuTimes.iowait,"procs_percent":procs.cpu_percent(),"procs_createTime":procs.create_time(),"procs_status":procs.status(),"procs_terminal":procs.terminal(),"procs_numTreads":procs.num_threads(),"procs_mem_full_uss":procsMem.uss,"procs_mem_full_pss":procsMem.pss,"procs_mem_full_swap":procsMem.swap,"procs_cmdline":procs.cmdline()}
             procs_info["info"].append(doc_procs)
             # print(proc.name(), proc.pid, proc.username(), procs_cpuTimes.user, procs_cpuTimes.system, procs_cpuTimes.children_user, procs_cpuTimes.children_system, procs_cpuTimes.iowait, procs.cpu_percent(),procs.create_time(),procs.status(), procs.terminal(), procs.num_threads(), procsMem.uss, procsMem.pss, procsMem.swap,procs.cmdline())
-
+    
+    
+    
+    for pmm in procsMemMaps :
+        if pmm.path in data.get('procs_mem_list'):
+            doc_procs_mm = {"path":pmm.path,"rss":pmm.rss,"size":pmm.size,"pss":pmm.pss,"shared_clean":pmm.shared_clean,"private_dirty":pmm.private_dirty,"referenced":pmm.referenced,"anonymous":pmm.anonymous}
+            procs_info["info"].append(doc_procs_mm)
             # print(p.info)
     # pptt = procs.as_dict(['pid', 'name', 'username'])
     # print(pptt)
@@ -121,7 +123,7 @@ while(1):
     # print(procs_info)
 
     producer.send(
-        "test",
+        "test1",
         key = hostname,
         value = procs_info
     )

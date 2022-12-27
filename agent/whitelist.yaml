@@ -4,16 +4,28 @@ main_list:
     company: swcamp
     os : centos
     ts_db_insert: timein
-    ts_db_create: timecr
+    ts_db_create: timecr 
 
-disk_list:
+disk_mnt_list:
   - /
-  - /www
-  - /data
+  - /dev
 
-network_list:
-  - lo
-  - enp0s3
+disk_info_list:
+  - nvme0n1
+  - nvme0n1p1
+  - nvme0n1p128
+
+network_name_list:
+  - eth0
+ 
+network_conn_list:
+  #- ESTABLISHED
+  - CLOSING
+  #- SYN_SENT
+
 
 procs_list:
-  - python3
+  - ec2-user
+
+procs_mem_list:
+  - /usr/bin/python3.7
