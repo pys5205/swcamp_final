@@ -23,36 +23,41 @@ with open('whitelist.yaml') as f:
 # disk_list = ["/", "/www", "/data"]
 
 #main info
-main_info = {}
 
+main_info = {}
+main_info["my_sys"] = data.get("main_list")[0]
 while(1):
-    main_info["my_sys"] = data.get("main_list")[0]
+    send_info = {}
     main_time = time.strftime('%Y-%m-%d %H:%M:%S')
     main_info["my_sys"]["ts_db_create"] = main_time
     # print(main_info["common"][0]["ts_db_create"])
-    main_info["infos"]=[]
     
     cpu_info = {}
+    cpu_info["my_sys"] = data.get("main_list")[0]
+    send_info["cpu"] = []
     cpu_info["type"]= "cpu"
-    cpu_info["info"]=[]
+    cpu_info["infos"]=[]
     #cpu 정보
+    
     cpuTime = psutil.cpu_times()
 
     cpuCount = psutil.cpu_count(logical=False)
     # cpu_info["cpu_count"] = cpuCount
-
+    
+    cpu_frq = {}
+    cpu_frq["cpu_frq"] = []
     cpuFreq = psutil.cpu_freq(percpu=True)
     for freq in cpuFreq :
-          cpu_frq = {"cpu_frq":{"cpu_frq_current":freq.current, "cpu_frq_min":freq.min, "cpu_frq_max":freq.max}}
-          cpu_info["info"].append(cpu_frq)
+          cpu_frq_i = {"cpu_frq_current":freq.current, "cpu_frq_min":freq.min, "cpu_frq_max":freq.max}
+          cpu_frq["cpu_frq"].append(cpu_frq_i)
+    cpu_info["infos"].append(cpu_frq)
 
     # cpus["cpu_frq"] = cpu_frq
     cpuLoadavg = psutil.getloadavg()
-    cpus = {"cpu_sys": cpuTime.system,"cpu_user":cpuTime.user,"cpu_wait":cpuTime.iowait, "cpu_irq":cpuTime.irq, "cpu_softirq":cpuTime.softirq, "cpu_count":cpuCount, "cpu_loadavg": cpuLoadavg}
-    cpu_info["info"].append(cpus)
+    cpus = {"cpus":{"cpu_sys": cpuTime.system,"cpu_user":cpuTime.user,"cpu_wait":cpuTime.iowait, "cpu_irq":cpuTime.irq, "cpu_softirq":cpuTime.softirq, "cpu_count":cpuCount, "cpu_loadavg": cpuLoadavg}}
+    cpu_info["infos"].append(cpus)
     
-    main_info["infos"].append(cpu_info)
-    
+    send_info["cpu"].append(cpu_info)
     # kafka 사용
     # producer.send(
     #     "test",
@@ -63,17 +68,19 @@ while(1):
 
     #memory 정보
     mem_info = {}
+    mem_info["my_sys"] = data.get("main_list")[0]
+    send_info["memory"] = []
     mem_info["type"] = "memory"
-    mem_info["info"] = []
+    mem_info["infos"] = []
     mem = psutil.virtual_memory()
     memSwap = psutil.swap_memory()
 
-    mem_in={"mem_total": mem.total, "mem_avail": mem.available,"mem_used":mem.used,"mem_free":mem.free,"mem_buffer":mem.buffers,"mem_cached":mem.cached,"mem_shared":mem.shared,"memswap_total":memSwap.total,"memswap_used":memSwap.used,"memswap_free":memSwap.free,"memswap_percent":memSwap.percent,"memswap_sin":memSwap.sin,"memswap_sout":memSwap.sout}
-    mem_info["info"].append(mem_in)
-
-    main_info["infos"].append(mem_info)
+    mem_in={"memory":{"mem_total": mem.total, "mem_avail": mem.available,"mem_used":mem.used,"mem_free":mem.free,"mem_buffer":mem.buffers,"mem_cached":mem.cached,"mem_shared":mem.shared,"memswap_total":memSwap.total,"memswap_used":memSwap.used,"memswap_free":memSwap.free,"memswap_percent":memSwap.percent,"memswap_sin":memSwap.sin,"memswap_sout":memSwap.sout}}
+    mem_info["infos"] =mem_in
     
-    # print(mem_info)
+    send_info["memory"].append(mem_info)
+
+   # print(mem_info)
 
     # producer.send(
     #     "test",
@@ -85,12 +92,13 @@ while(1):
 
     #process 정보
     procs_info = {}
+    procs_info["my_sys"] = data.get("main_list")[0]
+    send_info["process"] = []
     procs_proc = {}
     procs_mem = {}
     
     procs_info["type"]="process"
-    
-    procs_info["info"]=[]
+    procs_info["infos"]=[]
     procs_proc["procs_doc"]=[]
     procs_mem["procs_mem"]=[]
 
@@ -105,7 +113,7 @@ while(1):
             procs_proc["procs_doc"].append(doc_procs)
         elif data.get('procs_list') == [None]:
             procs_proc["procs_doc"].append(doc_procs)
-    procs_info["info"].append(procs_proc)        
+    procs_info["infos"].append(procs_proc)        
     
             
     for pmm in procsMemMaps :
@@ -114,10 +122,10 @@ while(1):
             procs_mem["procs_mem"].append(doc_procs_mm)
         elif data.get('procs_mem_list') == [None]:
             procs_mem["procs_mem"].append(doc_procs_mm)
-    procs_info["info"].append(procs_mem)  
+    procs_info["infos"].append(procs_mem) 
     
-    main_info["infos"].append(procs_info)
-    
+    send_info["process"].append(procs_info)
+    #print(send_info)
     # producer.send(
     #     "test",
     #     key = hostname,
@@ -131,14 +139,17 @@ while(1):
     
     # DISK 정보
     disk_info = {}
+    disk_info["my_sys"] = data.get("main_list")[0]
+    send_info["disk"] = []
     disk_part = {}
     disk_io = {}
     #disk_info["ts_db_create"] = disk_time
     # print (disk_info["user"])
     disk_info["type"] = "disk"
-    disk_info["info"] = []
+    disk_info["infos"] = []
     disk_part["disk_part"] = []
     disk_io["disk_io"] = []
+    
     # disk partitions 정보
     partitions = psutil.disk_partitions()
     for p in partitions:
@@ -146,8 +157,7 @@ while(1):
             du = psutil.disk_usage(p.mountpoint)
             disk_part_info = {"disk_part_device":p.device, "disk_part_mountpoint":p.mountpoint, "disk_part_fstype":p.fstype,"disk_part_opts":p.opts,"disk_part_total":(du.total),"disk_part_used":(du.used),"disk_part_free":(du.free), "disk_part_percent":du.percent}
             disk_part["disk_part"].append(disk_part_info)
-            
-    disk_info["info"].append(disk_part)
+    disk_info["infos"].append(disk_part)
             # print(disk_part_info)
 
     # disk io counters 정보
@@ -156,9 +166,11 @@ while(1):
         if name in data.get("disk_info_list"):
             disk_io_cnt = {"disk_io_name":name, "disk_io_read_count":name_io.read_count, "disk_io_write_count":name_io.write_count, "disk_io_read_bytes":name_io.read_bytes, "disk_io_write_bytes":name_io.write_bytes, "disk_io_read_time":name_io.read_time, "disk_io_write_time":name_io.write_time, "disk_io_read_merged_count":name_io.read_merged_count, "disk_io_busy_time":name_io.busy_time}
             disk_io["disk_io"].append(disk_io_cnt)
-    disk_info["info"] .append(disk_io)
+    disk_info["infos"].append(disk_io)
     
-    main_info["infos"].append(disk_info)
+    
+    send_info["disk"].append(disk_info)
+
     # kafka 사용
     # producer.send(
     #     "test",
@@ -172,12 +184,14 @@ while(1):
     #net_time = time.strftime('%Y.%m.%d %H:%M:%S')
     
     net_info = {}
+    net_info["my_sys"] = data.get("main_list")[0]
+    send_info["network"] = []
     net_io = {}
     net_if = {}
     net_con = {}
     #net_info["ts_db_create"] = net_time
     net_info["type"] = "network"
-    net_info["info"] = []
+    net_info["infos"] = []
     net_io["net_io"] = []
     net_if["net_if"] = []
     net_con["net_con"] = []
@@ -191,7 +205,7 @@ while(1):
             net_io_cnt_info = {"net_name":name, "net_bytes_sent":name_io.bytes_sent, "net_bytes_recv":name_io.bytes_recv, "net_packets_sent":name_io.packets_sent, "net_packets_recv":name_io.packets_recv, "net_errin":name_io.errin, "net_errout":name_io.errout, "net_dropin":name_io.dropin, "net_dropout":name_io.dropout}
             # print(net_io_cnt_info)
             net_io["net_io"].append(net_io_cnt_info)
-    net_info["info"].append(net_io)
+    net_info["infos"].append(net_io)
 
     # net if addrs 정보
     net_if_i = psutil.net_if_addrs()
@@ -201,7 +215,7 @@ while(1):
                 net_if_info = {"net_if_name":name, "net_if_family":addr.family, "net_if_address":addr.address, "net_if_netmask":addr.netmask, "net_if_broadcast":addr.broadcast, "net_if_ptp":addr.ptp}
                 # print(net_if_info)
                 net_if["net_if"].append(net_if_info)
-    net_info["info"].append(net_if)
+    net_info["infos"].append(net_if)
 
     # net connections 정보
     net_con_i = psutil.net_connections()
@@ -209,18 +223,20 @@ while(1):
         if x.status in data.get("network_conn_list"):
             net_con_info = {"net_con_fd":x.fd, "net_con_family":x.family, "net_con_type":x.type, "net_con_laddr":x.laddr, "net_con_raddr":x.raddr, "net_con_status":x.status, "net_con_pid":x.pid}
             net_con["net_con"].append(net_con_info)
-    net_info["info"].append(net_con)
+    net_info["infos"].append(net_con)
             # print(net_con_info)
-
-    main_info["infos"].append(net_info)
+            
+    send_info["network"].append(net_info)
+    
+    print(send_info)
+    print('===================================================================================================================================')
+    #print(net_info)
     #print(main_info)
-    print(main_info["infos"][0]["type"])
-    print(main_info["infos"]["info"])
-    # producer.send(
-    #     "metrics",
-    #     key = hostname,
-    #     value = main_info
-    # )
-    # producer.flush()
+    producer.send(
+        "metrics",
+        key = hostname,
+        value = send_info
+    )
+    producer.flush()
     
     time.sleep(5)

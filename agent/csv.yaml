@@ -1,0 +1,27 @@
+main_list:
+  - system||service||swcamp||centos||random
+  
+disk_mnt_list:
+  - /
+
+disk_info_list:
+  - nvme0n1
+  - nvme0n1p1
+  - nvme0n1p128
+
+network_name_list:
+  - eth0
+ 
+network_conn_list:
+  - ESTABLISHED
+  #- CLOSING
+  #- SYN_SENT
+
+
+procs_list:
+  # -
+  # - systemd
+  - 
+
+procs_mem_list:
+  - /usr/lib64/libresolv-2.26.so

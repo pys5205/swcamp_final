@@ -1,6 +1,7 @@
 import os
 import sys
-
+import re
+# import pandas as pd
 import yaml
 from json import dumps
 
@@ -40,7 +41,7 @@ while(1):
     cpuFreq = psutil.cpu_freq(percpu=True)
     for freq in cpuFreq :
           cpu_frq = {"cpu_frq":{"current":freq.current, "min":freq.min, "max":freq.max}}
-          print(cpu_frq)
+        #print(cpu_frq)
           cpu_info["info"].append(cpu_frq)
 
     # cpus["cpu_frq"] = cpu_frq
@@ -97,17 +98,34 @@ while(1):
     procsMemMaps = procs.memory_maps()
 
     for proc in psutil.process_iter():
-        if proc.username() in data.get('procs_list'):
-            doc_procs = {"procs_username":procs.username(), "procs_name":proc.name(),"procs_pid":proc.pid,"procs_cpuT_user":procs_cpuTimes.user,"procs_cpuT_sys":procs_cpuTimes.system,"procs_cpuT_children_user":procs_cpuTimes.children_user,"procs_cpuT_children_sys":procs_cpuTimes.children_system,"procs_cpuT_iowait":procs_cpuTimes.iowait,"procs_percent":procs.cpu_percent(),"procs_createTime":procs.create_time(),"procs_status":procs.status(),"procs_terminal":procs.terminal(),"procs_numTreads":procs.num_threads(),"procs_mem_full_uss":procsMem.uss,"procs_mem_full_pss":procsMem.pss,"procs_mem_full_swap":procsMem.swap,"procs_cmdline":procs.cmdline()}
+        doc_procs = {"procs_username":proc.username(), "procs_name":proc.name(),"procs_pid":proc.pid,"procs_ppid":proc.ppid(),"procs_cpuT_user":procs_cpuTimes.user,"procs_cpuT_sys":procs_cpuTimes.system,"procs_cpuT_children_user":procs_cpuTimes.children_user,"procs_cpuT_children_sys":procs_cpuTimes.children_system,"procs_cpuT_iowait":procs_cpuTimes.iowait,"procs_percent":procs.cpu_percent(),"procs_createTime":procs.create_time(),"procs_status":procs.status(),"procs_terminal":procs.terminal(),"procs_numTreads":procs.num_threads(),"procs_mem_full_uss":procsMem.uss,"procs_mem_full_pss":procsMem.pss,"procs_mem_full_swap":procsMem.swap,"procs_cmdline":procs.cmdline()}
+        # procName = re.findall(proc.name(),data.get('procs_list'))
+        # print(procName)
+        # print(proc.name(),)
+        # df = pd.DataFrame(doc_procs)
+        # df[df["procs_name"].str.contains(data.get('procs_list'))]
+        # print(type(data.get('procs_list')))
+        str = ''.join(data.get('procs_list'))
+        # print(type(str))
+        procName = re.findall(str,proc.name())
+        
+        print(procName)
+        # if procName in proc.name():
+        if proc.name() in data.get('procs_list'):
             procs_info["info"].append(doc_procs)
-            # print(proc.name(), proc.pid, proc.username(), procs_cpuTimes.user, procs_cpuTimes.system, procs_cpuTimes.children_user, procs_cpuTimes.children_system, procs_cpuTimes.iowait, procs.cpu_percent(),procs.create_time(),procs.status(), procs.terminal(), procs.num_threads(), procsMem.uss, procsMem.pss, procsMem.swap,procs.cmdline())
-    
-    
+            # print(data.get('procs_list'))
+        elif data.get('procs_list') == [None]:
+            procs_info["info"].append(doc_procs)
+           
     
     for pmm in procsMemMaps :
+        doc_procs_mm = {"procs_mem_path":pmm.path,"procs_mem_rss":pmm.rss,"procs_mem_size":pmm.size,"procs_mem_pss":pmm.pss,"procs_mem_shared_clean":pmm.shared_clean,"procs_mem_private_dirty":pmm.private_dirty,"procs_mem_referenced":pmm.referenced,"procs_mem_anonymous":pmm.anonymous}
+        # print(pmm.path)
         if pmm.path in data.get('procs_mem_list'):
-            doc_procs_mm = {"path":pmm.path,"rss":pmm.rss,"size":pmm.size,"pss":pmm.pss,"shared_clean":pmm.shared_clean,"private_dirty":pmm.private_dirty,"referenced":pmm.referenced,"anonymous":pmm.anonymous}
             procs_info["info"].append(doc_procs_mm)
+        elif data.get('procs_mem_list') == [None]:
+            procs_info["info"].append(doc_procs_mm)
+
             # print(p.info)
     # pptt = procs.as_dict(['pid', 'name', 'username'])
     # print(pptt)

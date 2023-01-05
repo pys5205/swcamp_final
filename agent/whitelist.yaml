@@ -3,12 +3,14 @@ main_list:
     service: service
     company: swcamp
     os : centos
-    ts_db_insert: timein
-    ts_db_create: timecr 
+    cpu_cnt : 0
+    mem_total : 0
+    #ts_insert: timein
+    ts_create: timecr 
+    
 
 disk_mnt_list:
   - /
-  - /dev
 
 disk_info_list:
   - nvme0n1
@@ -19,13 +21,15 @@ network_name_list:
   - eth0
  
 network_conn_list:
-  #- ESTABLISHED
-  - CLOSING
+  - ESTABLISHED
+  #- CLOSING
   #- SYN_SENT
 
 
 procs_list:
-  - ec2-user
+  # -
+  -
+  # - 
 
 procs_mem_list:
-  - /usr/bin/python3.7
+  - 

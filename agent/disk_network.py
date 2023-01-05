@@ -32,9 +32,9 @@ while(1):
     # print(today)
     
     # DISK 정보
-    disk_info = main_info
-    disk_info["user"][0]["ts_db_create"] = disk_time
-    print (disk_info["user"])
+    disk_info = {}
+    disk_info["ts_db_create"] = disk_time
+    # print (disk_info["user"])
     disk_info["type"] = "disk"
     disk_info["info"] = []
     # disk partitions 정보
@@ -43,7 +43,7 @@ while(1):
         try:
             if p.mountpoint in data.get("disk_mnt_list"):
                 du = psutil.disk_usage(p.mountpoint)
-                disk_part_info = {"device":p.device, "mountpoint":p.mountpoint, "fstype":p.fstype,"opts":p.opts,"total":(du.total),"used":(du.used),"free":(du.free), "percent":du.percent}
+                disk_part_info = {"disk_part_device":p.device, "disk_part_mountpoint":p.mountpoint, "disk_part_fstype":p.fstype,"disk_part_opts":p.opts,"disk_part_total":(du.total),"disk_part_used":(du.used),"disk_part_free":(du.free), "disk_part_percent":du.percent}
                 disk_info["info"].append(disk_part_info)
             # print(disk_part_info)
         except:
@@ -52,24 +52,25 @@ while(1):
     disk_io_info = psutil.disk_io_counters(perdisk=True)
     for name, name_io in disk_io_info.items():
         if name in data.get("disk_info_list"):
-            disk_io_cnt = {"name":name, "read_count":name_io.read_count, "write_count":name_io.write_count, "read_bytes":name_io.read_bytes, "write_bytes":name_io.write_bytes, "read_time":name_io.read_time, "write_time":name_io.write_time, "read_merged_count":name_io.read_merged_count, "busy_time":name_io.busy_time}
+            disk_io_cnt = {"disk_io_name":name, "disk_io_read_count":name_io.read_count, "disk_io_write_count":name_io.write_count, "disk_io_read_bytes":name_io.read_bytes, "disk_io_write_bytes":name_io.write_bytes, "disk_io_read_time":name_io.read_time, "disk_io_write_time":name_io.write_time, "disk_io_read_merged_count":name_io.read_merged_count, "disk_io_busy_time":name_io.busy_time}
             # print(disk_io_cnt)
             disk_info["info"].append(disk_io_cnt)
-
+    print(disk_info)
+    main_info["data"].append(disk_info)
     # kafka 사용
-    producer.send(
-        "test",
-        key = hostname,
-        value = disk_info
-    )
-    producer.flush()
+    # producer.send(
+    #     "test",
+    #     key = hostname,
+    #     value = disk_info
+    # )
+    # producer.flush()
     # print(disk_info)
 
     # network 정보
     net_time = time.strftime('%Y.%m.%d %H:%M:%S')
     
-    net_info = main_info
-    net_info["user"][0]["ts_db_create"] = net_time
+    net_info = {}
+    net_info["ts_db_create"] = net_time
     net_info["type"] = "network"
     net_info["info"] = []
 
@@ -80,7 +81,7 @@ while(1):
     for name, name_io in net_io_info.items():
         # print(iface)
         if name in data.get("network_name_list"):
-            net_io_cnt_info = {"name":name, "bytes_sent":name_io.bytes_sent, "bytes_recv":name_io.bytes_recv, "packets_sent":name_io.packets_sent, "packets_recv":name_io.packets_recv, "errin":name_io.errin, "errout":name_io.errout, "dropin":name_io.dropin, "dropout":name_io.dropout}
+            net_io_cnt_info = {"net_name":name, "net_bytes_sent":name_io.bytes_sent, "net_bytes_recv":name_io.bytes_recv, "net_packets_sent":name_io.packets_sent, "net_packets_recv":name_io.packets_recv, "net_errin":name_io.errin, "net_errout":name_io.errout, "net_dropin":name_io.dropin, "net_dropout":name_io.dropout}
             # print(net_io_cnt_info)
             net_info["info"].append(net_io_cnt_info)
 
@@ -89,7 +90,7 @@ while(1):
     for name, addrs in net_if.items():
         for addr in addrs:
             if name in data.get("network_name_list"):
-                net_if_info = {"name":name, "family":addr.family, "address":addr.address, "netmask":addr.netmask, "broadcast":addr.broadcast, "ptp":addr.ptp}
+                net_if_info = {"net_if_name":name, "net_if_family":addr.family, "net_if_address":addr.address, "net_if_netmask":addr.netmask, "net_if_broadcast":addr.broadcast, "net_if_ptp":addr.ptp}
                 # print(net_if_info)
                 net_info["info"].append(net_if_info)
 
@@ -98,18 +99,23 @@ while(1):
     for x in net_con:
         try:
             if x.status in data.get("network_conn_list"):
-                net_con_info = {"fd":x.fd, "family":x.family, "type":x.type, "laddr":x.laddr, "raddr":x.raddr, "status":x.status, "pid":x.pid}
+                net_con_info = {"net_con_fd":x.fd, "net_con_family":x.family, "net_con_type":x.type, "net_con_laddr":x.laddr, "net_con_raddr":x.raddr, "net_con_status":x.status, "net_con_pid":x.pid}
                 net_info["info"].append(net_con_info)
                 # print(net_con_info)
         except:
             pass
-
+    
+    # main_info["data"].append(net_info)
+    
+    #print(main_info)
+    
     producer.send(
         "test",
         key = hostname,
-        value = net_info
+        value = main_info
     )
     producer.flush()
 
     # print(net_info)
+
     time.sleep(5)
