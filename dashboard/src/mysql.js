@@ -23,7 +23,7 @@ app.post('/data', (req,res) => {
       if (err) {
       console.log("데이터 가져오기 실패");
     } else {
-      console.log(data);
+      // console.log(data);
       res.send(data);
     }
     })
@@ -54,7 +54,7 @@ app.post('/server', (req,res) => {
       // console.log(df)
       
     }
-    console.log(resData);
+    // console.log(resData);
     return res.json(resData);
     })
 })
@@ -85,7 +85,7 @@ app.post('/memory', (req,res) => {
       // console.log(df)
       
     }
-    console.log(resData);
+    // console.log(resData);
     return res.json(resData);
     })
 })
