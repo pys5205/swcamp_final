@@ -1,0 +1,553 @@
+
+-- drop table tbl_sys_info;
+create table tbl_sys_info (
+  ts_insert	datetime default current_timestamp,
+  system	varchar(40),
+  company	varchar(40),
+  service	varchar(40),
+  os		varchar(40),
+  cpu_cnt	int,
+  mem_total	bigint,
+  ts_create	datetime,
+  sort key(ts_insert),
+  primary key(system, ts_create)
+);
+
+-- cpu
+create table tbl_cpu (
+    ts_insert datetime default current_timestamp,
+    system varchar(40),
+    cpu_sys double,
+    cpu_user double,
+    cpu_wait double, 
+    cpu_irq double, 
+    cpu_softirq double,
+    cpu_loadavg_1 double,
+    cpu_loadavg_5 double,
+    cpu_loadavg_15 double,
+    ts_create datetime,
+    primary key(system, ts_create),
+    sort key(ts_insert),
+    shard key(system)
+);
+
+-- memory
+create table tbl_memory (
+    ts_insert datetime default current_timestamp,
+    system varchar(40),
+    mem_total bigint,
+    mem_avail bigint,
+    mem_used bigint,
+    mem_free bigint,
+    mem_buffer bigint,
+    mem_cached bigint,
+    mem_shared bigint,
+    memswap_total bigint,
+    memswap_used bigint,
+    memswap_free bigint,
+    memswap_percent double,
+    memswap_sin bigint,
+    memswap_sout bigint,
+    ts_create datetime,
+    primary key(system, ts_create),
+    sort key(ts_insert),
+    shard key(system)
+);
+
+-- procs
+create table tbl_procs_doc(
+    ts_insert datetime default current_timestamp,
+    system varchar(40),
+    procs_username varchar(100),
+    procs_name varchar(400),
+    procs_pid int,
+    procs_ppid int, 
+    procs_cput_user double,
+    procs_cput_sys double,
+    procs_cput_children_user double,
+    procs_cput_children_sys double,
+    procs_cput_iowait double,
+    procs_percent double,
+    procs_createtime double,
+    procs_status varchar(100),
+    procs_terminal varchar(100),
+    procs_numtreads int,
+    procs_mem_full_uss bigint,
+    procs_mem_full_pss bigint,
+    procs_mem_full_swap int,
+    procs_cmdline varchar(100),
+    ts_create datetime,
+    primary key(system, procs_pid, ts_create),
+    sort key(ts_insert),
+    shard key(system, procs_pid)
+);
+/*
+ create table tbl_procs_mem(
+    ts_insert datetime default current_timestamp,
+    system varchar(40),
+    procs_mem_path text,
+    procs_mem_rss bigint,
+    procs_mem_size bigint,
+    procs_mem_pss bigint,
+    procs_mem_shared_clean bigint,
+    procs_mem_private_dirty bigint,
+    procs_mem_referenced bigint,
+    procs_mem_anonymous bigint,
+    ts_create datetime,
+    primary key(system, ts_create),
+    sort key(ts_insert),
+    shard key(system)
+);
+*/
+
+-- drop table tbl_disk_part;
+create table tbl_disk_part (
+  ts_insert			datetime default current_timestamp,
+  system			varchar(40),
+  disk_part_device varchar(100),
+  disk_part_mnt		varchar(100),
+  disk_part_fstype	varchar(100),
+  disk_part_total	bigint,
+  disk_part_used	bigint,
+  disk_part_free	bigint,
+  disk_part_percent	double,
+  ts_create			datetime,
+  primary key(system, disk_part_mnt, ts_create),
+  sort key(ts_insert),
+  shard key(system, disk_part_mnt)
+);
+
+
+-- drop table tbl_disk_io;
+create table tbl_disk_io (
+  ts_insert			datetime default current_timestamp,
+  system			varchar(40),
+  disk_io_name		varchar(100),
+  disk_io_read_count	bigint,
+  disk_io_write_count	bigint,
+  disk_io_read_bytes	bigint,
+  disk_io_write_bytes	bigint,
+  disk_io_read_time		bigint,
+  disk_io_write_time	bigint,
+  disk_io_read_merged_cnt	bigint,
+  disk_io_busy_time		bigint,
+  ts_create		datetime,
+  primary key(system, disk_io_name, ts_create),
+  sort key(ts_insert),
+  shard key (system, disk_io_name)  
+);
+
+-- network io
+create table tbl_net_io (
+ts_insert datetime default current_timestamp,
+    system varchar(40),
+    net_name text,
+    net_bytes_sent bigint,
+    net_bytes_recv bigint,
+    net_packets_sent bigint,
+    net_packets_recv bigint, 
+    net_errin bigint,
+    net_errout bigint,
+    net_dropin bigint,
+    net_dropout bigint,
+    ts_create datetime,
+    primary key(system, net_name, ts_create),
+    sort key(ts_insert),
+    shard key(system, net_name)
+);
+
+-- network if
+create table tbl_net_if (
+    ts_insert datetime default current_timestamp,
+    system varchar(40),
+    net_if_name varchar(30),
+    net_if_family int,
+    net_if_address varchar(100),
+    net_if_netmask varchar(100),
+    net_if_broadcast varchar(100),
+    net_if_ptp varchar(100),
+    ts_create datetime,
+    sort key(ts_insert),
+    shard key(system)
+);
+
+-- network con
+create table tbl_net_con (
+    ts_insert datetime default current_timestamp,
+    system varchar(40),
+    net_con_fd int,
+    net_con_family int,
+    net_con_type int,
+    net_con_laddr_port bigint,
+    net_con_laddr_ip varchar(40),
+    net_con_raddr_port bigint,
+    net_con_raddr_ip varchar(40),
+    net_con_status varchar(40),
+    net_con_pid varchar(40),
+    ts_create datetime,
+    sort key(ts_insert),
+    shard key(system)
+);
+
+-- -----------------------------------------------
+-- 프로시저 생성
+-- -----------------------------------------------
+delimiter //
+
+create or replace procedure sp_load_metrics (metrics_pipe query(my_sys json, type text, infos json)) as
+declare
+    qry_procs_doc query(system text, procs_doc_cnt int, procs_doc json, ts_create datetime) = 
+        select my_sys::$system, json_length(infos::procs_doc), infos::procs_doc, my_sys::$ts_create
+        from metrics_pipe
+        where type = "process";
+
+	qry_disk_part query(system text, disk_part_cnt int, disk_part json, ts_create datetime) =
+		select my_sys::$system, json_length(infos::disk_part), infos::disk_part, my_sys::$ts_create
+		from metrics_pipe
+		where type = "disk";
+
+	qry_disk_io query(system text, disk_io_cnt int, disk_io json, ts_create datetime) =
+		select my_sys::$system, json_length(infos::disk_io), infos::disk_io, my_sys::$ts_create
+		from metrics_pipe
+		where type = "disk";
+		
+    qry_net_io query(system text, net_io_cnt int, net_io json, ts_create datetime)=
+        select my_sys::$system, json_length(infos::net_io), infos::net_io, my_sys::$ts_create
+        from metrics_pipe
+        where type="network";
+
+    qry_net_if query(system text, net_if_cnt int, net_if json, ts_create datetime)=
+        select my_sys::$system, json_length(infos::net_if), infos::net_if, my_sys::$ts_create
+        from metrics_pipe
+        where type="network";
+
+    qry_net_con query(system text, net_con_cnt int, net_con json, ts_create datetime)=
+        select my_sys::$system, json_length(infos::net_con), infos::net_con, my_sys::$ts_create
+        from metrics_pipe
+        where type="network";
+
+	j json;
+begin
+   --  BEGIN
+	insert into tbl_sys_info (
+		system,
+		company,
+		service,
+		os,
+        cpu_cnt,
+        mem_total,
+		ts_create)
+	select
+		my_sys::$system,
+		my_sys::$company,
+		my_sys::$service,
+		my_sys::$os,
+        my_sys::$cpu_cnt,
+        my_sys::$mem_total,
+		max(my_sys::$ts_create)
+	from metrics_pipe
+	group by 1, 2, 3, 4;
+    
+    -- cpu
+    insert into tbl_cpu (
+        system,
+        cpu_sys,
+        cpu_user,
+        cpu_wait,
+        cpu_irq,
+        cpu_softirq,
+        cpu_loadavg_1,
+        cpu_loadavg_5,
+        cpu_loadavg_15,
+        ts_create)
+    select
+        my_sys::$system,
+        infos::cpus::$cpu_sys,
+        infos::cpus::cpu_user,
+        infos::cpus::%cpu_wait,
+        infos::cpus::cpu_irq,
+        infos::cpus::cpu_softirq,
+        infos::cpus::cpu_loadavg::`0`,
+        infos::cpus::cpu_loadavg::`1`,
+        infos::cpus::cpu_loadavg::`2`,
+        my_sys::$ts_create
+    from metrics_pipe
+    where type = "cpu";
+
+    -- memory
+    insert into tbl_memory (
+        system,
+        mem_total,
+        mem_avail,
+        mem_used,
+        mem_free,
+        mem_buffer,
+        mem_cached,
+        mem_shared,
+        memswap_total,
+        memswap_used,
+        memswap_free,
+        memswap_percent,
+        memswap_sin,
+        memswap_sout,
+        ts_create)
+    select
+        my_sys::$system,
+        infos::mem_total,
+        infos::mem_avail,
+        infos::mem_used,
+        infos::mem_free,
+        infos::mem_buffer,
+        infos::mem_cached,
+        infos::mem_shared,
+        infos::memswap_total,
+        infos::memswap_used,
+        infos::memswap_free,
+        infos::memswap_percent,
+        infos::memswap_sin,
+        infos::memswap_sout,
+        my_sys::$ts_create
+    from metrics_pipe
+    where type = "memory";
+
+    -- procs docs info
+    for rec in collect(qry_procs_doc) loop
+        for idx IN 0 .. rec.procs_doc_cnt-1 loop
+            j = json_extract_json(rec.procs_doc, idx);
+            insert into tbl_procs_doc (
+                system,
+                procs_username,
+                procs_name,
+                procs_pid,
+                procs_ppid,
+                procs_cput_user,
+                procs_cput_sys,
+                procs_cput_children_user,
+                procs_cput_children_sys,
+                procs_cput_iowait,
+                procs_percent,
+                procs_createtime,
+                procs_status,
+                procs_terminal,
+                procs_numtreads,
+                procs_mem_full_uss,
+                procs_mem_full_pss,
+                procs_mem_full_swap,
+                procs_cmdline,
+                ts_create)
+            values(
+                rec.system,
+                j::procs_username,
+                j::procs_name,
+                j::procs_pid,
+                j::procs_ppid,
+                j::procs_cput_user,
+                j::procs_cput_sys,
+                j::procs_cput_children_user,
+                j::procs_cput_children_sys,
+                j::procs_cput_iowait,
+                j::procs_percent,
+                j::procs_createtime,
+                j::procs_status,
+                j::procs_terminal,
+                j::procs_numtreads,
+                j::procs_mem_full_uss,
+                j::procs_mem_full_pss,
+                j::procs_mem_full_swap,
+                j::procs_cmdline,
+                rec.ts_create
+            );
+        end loop;
+    end loop;
+    
+
+	-- disk partitions info
+	for rec in collect(qry_disk_part) loop
+		for idx IN 0 .. rec.disk_part_cnt-1 loop
+			j = json_extract_json(rec.disk_part, idx);
+			insert into tbl_disk_part (
+				system,
+                disk_part_device,
+				disk_part_mnt,
+				disk_part_fstype,
+				disk_part_total,
+				disk_part_used,
+				disk_part_free,
+				disk_part_percent,
+				ts_create)
+			values (
+				rec.system,
+                j::$disk_part_device,
+				j::$disk_part_mountpoint,
+				j::$disk_part_fstype,
+				j::$disk_part_total,
+				j::$disk_part_used,
+				j::$disk_part_free,
+				j::$disk_part_percent,
+				rec.ts_create
+			);
+		end loop;
+	end loop;
+
+	-- disk io info
+	for rec in collect(qry_disk_io) loop
+		for idx IN 0 .. rec.disk_io_cnt-1 loop
+			j = json_extract_json(rec.disk_io, idx);
+			insert into tbl_disk_io (
+				system,
+				disk_io_name,
+				disk_io_read_count,
+				disk_io_write_count,
+				disk_io_read_bytes,
+				disk_io_write_bytes,
+				disk_io_read_time,
+				disk_io_write_time,
+				disk_io_read_merged_cnt,
+				disk_io_busy_time,
+				ts_create)
+			values (
+				rec.system,
+				j::disk_io_name,
+				j::disk_io_read_count,
+				j::disk_io_write_count,
+				j::disk_io_read_bytes,
+				j::disk_io_write_bytes,
+				j::disk_io_read_time,
+				j::disk_io_write_time,
+				j::disk_io_read_merged_cnt,
+				j::disk_io_busy_time,
+				rec.ts_create
+			);
+		end loop;
+	end loop;
+
+    -- net io
+    for rec in collect(qry_net_io) loop
+        for idx in 0 .. rec.net_io_cnt-1 loop
+            j = json_extract_json(rec.net_io, idx);
+            insert into tbl_net_io (
+                system,
+                net_name,
+                net_bytes_sent,
+                net_bytes_recv,
+                net_packets_sent,
+                net_packets_recv,
+                net_errin,
+                net_errout,
+                net_dropin,
+                net_dropout,
+                ts_create
+            ) values (
+                rec.system,
+                j::net_name,
+                j::net_bytes_sent,
+                j::net_bytes_recv,
+                j::net_packets_sent,
+                j::net_packets_recv,
+                j::net_errin,
+                j::net_errout,
+                j::net_dropin,
+                j::net_dropout,            
+                rec.ts_create
+            );
+        end loop;
+    end loop;
+
+    -- net if
+    for rec in collect(qry_net_if) loop
+        for idx in 0 .. rec.net_if_cnt-1 loop
+            j = json_extract_json(rec.net_if, idx);
+            insert into tbl_net_if (
+                system,
+                net_if_name,
+                net_if_family,
+                net_if_address,
+                net_if_netmask,
+                net_if_broadcast,
+                net_if_ptp,
+                ts_create
+            ) values (
+                rec.system,
+                j::net_if_name,
+                j::net_if_family,
+                j::net_if_address,
+                j::net_if_netmask,
+                j::net_if_broadcast,
+                j::net_if_ptp,           
+                rec.ts_create
+            );
+        end loop;
+    end loop;
+
+    -- net con
+    for rec in collect(qry_net_con) loop
+        for idx in 0 .. rec.net_con_cnt-1 loop
+            j = json_extract_json(rec.net_con, idx);
+            insert into tbl_net_con (
+                system,
+                net_con_fd,
+                net_con_family,
+                net_con_type,
+                net_con_laddr_port,
+                net_con_laddr_ip,
+                net_con_raddr_port,
+                net_con_raddr_ip,
+                net_con_status,
+                net_con_pid,
+                ts_create
+            ) values (
+                rec.system,
+                j::net_con_fd,
+                j::net_con_family,
+                j::net_con_type,
+                j::net_con_laddr_port,
+                j::net_con_laddr_ip,
+                j::net_con_raddr_port,
+                j::net_con_raddr_ip,   
+                j::net_con_status,   
+                j::net_con_pid,              
+                rec.ts_create
+            );
+        end loop;
+    end loop;
+
+  --      EXCEPTION
+  --       WHEN ER_DUP_ENTRY THEN
+  --          return;
+  --  END;
+end //
+delimiter ;
+
+create pipeline mainpipe
+as load data kafka 'ec2-15-165-51-112.ap-northeast-2.compute.amazonaws.com/metrics1_1'
+into procedure `sp_load_metrics`
+(my_sys <- my_sys,
+type <- type,
+infos <- infos)
+format JSON;
+
+start pipeline mainpipe;
+select * from tbl_sys_info;
+select * from tbl_cpu;
+select * from tbl_memory;
+select * from tbl_procs_doc;
+select * from tbl_disk_part;
+select * from tbl_disk_io;
+select * from tbl_net_io;
+select * from tbl_net_if;
+select * from tbl_net_con;
+select * from information_schema.pipelines_errors
+where pipeline_name='mainpipe';
+
+drop procedure `sp_load_metrics`;
+stop pipeline mainpipe;
+drop pipeline mainpipe;
+truncate table tbl_sys_info;
+truncate table tbl_cpu;
+truncate table tbl_memory;
+truncate table tbl_procs_doc;
+truncate table tbl_disk_io;
+truncate table tbl_disk_part;
+truncate table tbl_net_io;
+truncate table tbl_net_if;
+truncate table tbl_net_con;

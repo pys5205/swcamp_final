@@ -50,10 +50,11 @@ while(1):
     for freq in cpuFreq :
         cpu_frq_i = {"cpu_frq_current":freq.current, "cpu_frq_min":freq.min, "cpu_frq_max":freq.max}
         cpu_info["infos"]["cpu_frq"].append(cpu_frq_i)
-
+    
     # cpus["cpu_frq"] = cpu_frq
+    cpu_per = psutil.cpu_percent()
     cpuLoadavg = psutil.getloadavg()
-    cpus = {"cpu_sys": cpuTime.system,"cpu_user":cpuTime.user,"cpu_wait":cpuTime.iowait, "cpu_irq":cpuTime.irq, "cpu_softirq":cpuTime.softirq, "cpu_count":cpuCount, "cpu_loadavg": cpuLoadavg}
+    cpus = {"cpu_per":cpu_per, "cpu_sys": cpuTime.system,"cpu_user":cpuTime.user,"cpu_wait":cpuTime.iowait, "cpu_irq":cpuTime.irq, "cpu_softirq":cpuTime.softirq, "cpu_count":cpuCount, "cpu_loadavg": cpuLoadavg}
     cpu_info["infos"]["cpus"] = cpus
     
     # kafka 사용
@@ -217,4 +218,4 @@ while(1):
     )
     producer.flush()
     
-    time.sleep(5)
+    time.sleep(2)

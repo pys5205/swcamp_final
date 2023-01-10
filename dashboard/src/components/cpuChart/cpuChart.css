@@ -1,0 +1,9 @@
+.mixed-chart {
+    margin-left:50px;
+    height:500px;
+    width:500px;
+}
+.row{
+    margin-left:250px;
+    display: flex;
+}

@@ -1,0 +1,3 @@
+ts_insert	system	disk_part_device	disk_part_mnt	disk_part_fstype	disk_part_total	disk_part_used	disk_part_free	disk_part_percent	ts_create
+2023-01-05 01:27:35	system	/dev/nvme0n1p1	/	xfs	32199651328	14378991616	17820659712	44.7	2023-01-05 10:00:50
+2023-01-05 01:27:35	system	/dev/nvme0n1p1	/	xfs	32199651328	14378967040	17820684288	44.7	2023-01-05 10:00:45

@@ -1,0 +1,32 @@
+.content{
+    padding-left: 50px;
+    padding-top: 50px;
+}
+.divTable {
+    display:table;
+    width:700px;
+    text-align: center;
+    border-collapse: collapse;
+    
+}
+.divTableBody {
+    position:absolute;
+}
+.divTableRow {
+    display:table-row;
+   
+}
+.divTableHead,.divTableCell {
+    width:150px;
+    display: table-cell;
+    border-width: thin;
+    padding-left: 10px;
+    padding-right: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.divTableHead{
+    background: #5B86EF;
+    color: #fff;
+    padding: 5px;
+}
