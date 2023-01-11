@@ -71,8 +71,6 @@ export default class test extends React.Component {
        ));
        return(
           <div className="content">{content}</div>
-
-           
          )
   }
 }

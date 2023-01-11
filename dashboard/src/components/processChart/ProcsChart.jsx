@@ -9,7 +9,9 @@ import Chart from "react-apexcharts";
 //     }
 // var test = [];
 
-export default class procsChart extends React.Component {
+
+export default class procschart extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -18,7 +20,9 @@ export default class procsChart extends React.Component {
   }
   
  componentDidMount(){
-  fetch("/process", { 
+
+  fetch("/list/os", { 
+
       method: "post", //통신방법
       headers: {
         "content-type": "application/json",
@@ -54,20 +58,30 @@ export default class procsChart extends React.Component {
           </div> 
     );
     return(
-         <div className="divTable">
-          <div className="divTableBody">
-            <div className="divTableRow">
-              <div className="divTableHead">유저명</div> 
-              <div className="divTableHead">이름</div> 
-              <div className="divTableHead">pid</div>
-              <div className="divTableHead">ppid</div>
-              <div className="divTableHead">status</div>
-              <div className="divTableHead">mem_full_uss</div>
-              <div className="divTableHead">ts_create</div>
-            </div> 
-            <div className="procs_content">{content}</div>
-            </div> 
-          </div>
-         )
+            <Chart
+             type="bar"
+            series={ [
+                { name: "os",
+                  data: Data.cnt_os,
+                },
+                ]} 
+            options={{    
+                plotOptions: {
+                bar: {
+                borderRadius: 4,
+                horizontal: true,
+                  }
+                },
+                dataLabels: {
+                  enabled: false
+                },
+                xaxis: {
+                  categories: Data.os
+                }
+            }}
+            />
+        
+    )
+
   }
 }
