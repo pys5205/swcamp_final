@@ -5,5 +5,5 @@
 }
 .row{
     margin-left:250px;
-
+    display: flex;
 }

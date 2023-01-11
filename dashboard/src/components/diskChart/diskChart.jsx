@@ -1,5 +1,5 @@
 import React from 'react'
-import './cpuChart.css'
+import './diskChart.css'
 import Chart from "react-apexcharts";
 
 // import * as dfd from "danfojs";
@@ -9,7 +9,7 @@ import Chart from "react-apexcharts";
 //     }
 // var test = [];
 
-export default class cpuchart extends React.Component {
+export default class diskChart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,7 +18,7 @@ export default class cpuchart extends React.Component {
   }
   
  componentDidMount(){
-  fetch("/server", { 
+  fetch("/disk", { 
       method: "post", //통신방법
       headers: {
         "content-type": "application/json",
@@ -42,7 +42,6 @@ export default class cpuchart extends React.Component {
   render() {
     // console.log(this.state.data);
     const Data = this.state.data;
-    // console.log(Data);
     return(
       <div className="app">
         <div className="row">
@@ -50,9 +49,12 @@ export default class cpuchart extends React.Component {
             <Chart
              type="line"
             series={ [
-                { name: "cpu퍼센트",
-                  data: Data.cpu_per,
+                { name: "read_Bytes",
+                  data: Data.read_Bytes,
                 },
+                { name: "write_Bytes",
+                  data: Data.write_Bytes,
+                }
                 ]} 
             options={{    
                 chart : {

@@ -1,9 +1,8 @@
 .mixed-chart {
     margin-left:50px;
-    height:500px;
-    width:500px;
+    height:400;
+    width:400;
 }
 .row{
     margin-left:250px;
-    display: flex;
 }

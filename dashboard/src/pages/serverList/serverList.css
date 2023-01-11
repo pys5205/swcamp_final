@@ -1,3 +1,11 @@
-.serverList{
-    flex:4;
+.navigation{
+     margin-left:250px;
+}
+.cpu_mem{
+    display:flex;
+}
+
+.disk_net {
+    margin-top : 50px;
+    display:flex;
 }

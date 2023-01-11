@@ -31,7 +31,7 @@ export default class memchart extends React.Component {
                     alert("오류");
                   } else {
                   //////////////////////////////////여기부터보자
-                  console.log(json);
+                  // console.log(json);
                     this.setState({
                       isLoaded: true,
                      data : json
@@ -40,76 +40,23 @@ export default class memchart extends React.Component {
       });
   }
   render() {
-    console.log(this.state.data);
+    // console.log(this.state.data);
     const Data = this.state.data;
+    const test = Data.server_memory;
+    // console.log(test);
     return(
       <div className="app">
         <div className="row">
-          <div className="mixed-chart">
+          <div className="donut">
             <Chart
-             type="line"
-            series={ [
-                { name: "memory_total",
-                  data: Data.mem_total,
-                },
-                ]} 
-            options={{    
-                chart : {
-                    height: 200,
-                    width: 200,                    
-                },
-                 stroke: { //선의 커브를 부드럽게 하고, 두께를 3으로 지정
-                    curve: "smooth",
-                    width: 3,
-                },
-                tooltip: {
-                  x: {
-                    format: "dd/MM/yy HH:mm",
-                  },
-                },
-                grid: { //격자 없앰
-                    show:false,
-                },
-                xaxis: {
-                  type: "datetime",
-                  categories: Data.ts_create
-                }
+             type="pie"
+              series={test } 
+            options={{
+                labels: ['mem_used', 'mem_free', 'mem_buffer', 'mem_cached']
             }}
+            width ="380"
             />
           </div>
-          <div className="mixed-chart">
-            <Chart
-             type="line"
-            series={ [
-                { name: "mem_used",
-                  data: Data.mem_used,
-                },
-                ]} 
-            options={{    
-                chart : {
-                    height: 200,
-                    width: 200,                    
-                },
-                 stroke: { //선의 커브를 부드럽게 하고, 두께를 3으로 지정
-                    curve: "smooth",
-                    width: 3,
-                },
-                tooltip: {
-                  x: {
-                    format: "dd/MM/yy HH:mm",
-                  },
-                },
-                grid: { //격자 없앰
-                    show:false,
-                },
-                xaxis: {
-                  type: "datetime",
-                  categories: Data.ts_create
-                }
-            }}
-            />
-          </div>
-          
         </div>
       </div>
     )
