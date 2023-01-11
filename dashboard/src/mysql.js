@@ -94,7 +94,7 @@ app.post('/memory', (req,res) => {
 app.post('/disk', (req,res) => {
   var resData = {};
     conn.query(
-      'select disk_io_read_bytes/1024/1024 as read_bytes, disk_io_write_bytes/1024/1024 as write_bytes, ts_create from tbl_disk_io where system="system" and disk_io_name=""\"nvme0n1\""" ', (err, data) => {
+      'select disk_io_read_bytes/1024/1024 as read_bytes, disk_io_write_bytes/1024/1024 as write_bytes, ts_create from tbl_disk_io where system="system" and disk_io_name="nvme0n1" ', (err, data) => {
       if (err) {
       console.log("데이터 가져오기 실패");
     } else {
@@ -105,8 +105,8 @@ app.post('/disk', (req,res) => {
       if(data[0]){
         resData.ok = "true";
         data.forEach(function(val){
-          resData.read_bytes.push(val.read_bytes);
-          resData.write_bytes.push(val.write_bytes);
+          resData.read_bytes.push(parseInt(val.read_bytes));
+          resData.write_bytes.push(parseInt(val.write_bytes));
           resData.ts_create.push(val.ts_create);
         });
       }else{

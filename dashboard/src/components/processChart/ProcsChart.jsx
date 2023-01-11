@@ -24,7 +24,7 @@ export default class ProcsChart extends React.Component {
                     alert("오류");
                   } else {
                   //////////////////////////////////여기부터보자
-                  console.log(json);
+                  // console.log(json);
                     this.setState({
                       isLoaded: true,
                      data : json
@@ -34,19 +34,20 @@ export default class ProcsChart extends React.Component {
   }
     render() {
     const Data = this.state.data;
-    console.log(Data);
-    console.log(Data.procs_name);
+    //console.log(Data);
+    //console.log(Data.procs_name);
     const columns = [
         {
-            title: "procs_username",
+            title: "user",
             field: "procs_username",
+ 
         },
          {
-            title: "procs_name",
+            title: "이름",
             field: "procs_name",
         },
          {
-            title: "procs_pid",
+            title: "pid",
             field: "procs_pid",
         },
          {
@@ -54,22 +55,22 @@ export default class ProcsChart extends React.Component {
             field: "procs_ppid",
         },
          {
-            title: "procs_status",
+            title: "상태",
             field: "procs_status",
         },
          {
-            title: "procs_mem_full_uss",
+            title: "메모리사용량",
             field: "procs_mem_full_uss",
         },
         {
-            title: "ts_create",
+            title: "시간",
             field: "ts_create",
         },
         ]
-        console.log(columns);
+        //console.log(columns);
     return(
         <MaterialTable 
-        title="Company Details"
+        title="Process"
         data={Data}
         columns={columns}
         options={{
