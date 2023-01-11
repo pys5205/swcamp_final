@@ -1,8 +1,8 @@
 import React from 'react'
 import './home.css'
 import Test from '../../components/test/Test'
-import ProcsChart from '../../components/processChart/ProcsChart'
-import FeaturedInfo from '../../components/featuredInfo/FeaturedInfo'
+import MainChart from '../../components/main/main_chart/MainChart'
+import FeaturedInfo from '../../components/main/featuredInfo/FeaturedInfo'
 export default function Home() {
     return (
     <div  className="home">
@@ -22,13 +22,13 @@ export default function Home() {
         <div className= "chartComp">
             <div className="pchart">
                 <div className="oschart">
-                    <ProcsChart />
+                    <MainChart />
                 </div>
                 <div className="oschart">
-                    <ProcsChart />
+                    <MainChart />
                 </div>
                 <div className="oschart">
-                    <ProcsChart />
+                    <MainChart />
                 </div>
             </div>
         </div>
