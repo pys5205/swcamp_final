@@ -1,5 +1,5 @@
 import React from 'react'
-import './memChart.css'
+import './procsChart.css'
 import Chart from "react-apexcharts";
 
 // import * as dfd from "danfojs";
@@ -9,7 +9,7 @@ import Chart from "react-apexcharts";
 //     }
 // var test = [];
 
-export default class memchart extends React.Component {
+export default class procschart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,7 +18,7 @@ export default class memchart extends React.Component {
   }
   
  componentDidMount(){
-  fetch("/memory", { 
+  fetch("/list/os", { 
       method: "post", //통신방법
       headers: {
         "content-type": "application/json",
@@ -43,75 +43,29 @@ export default class memchart extends React.Component {
     console.log(this.state.data);
     const Data = this.state.data;
     return(
-      <div className="app">
-        <div className="row">
-          <div className="mixed-chart">
             <Chart
-             type="line"
+             type="bar"
             series={ [
-                { name: "memory_total",
-                  data: Data.mem_total,
+                { name: "os",
+                  data: Data.cnt_os,
                 },
                 ]} 
             options={{    
-                chart : {
-                    height: 200,
-                    width: 200,                    
+                plotOptions: {
+                bar: {
+                borderRadius: 4,
+                horizontal: true,
+                  }
                 },
-                 stroke: { //선의 커브를 부드럽게 하고, 두께를 3으로 지정
-                    curve: "smooth",
-                    width: 3,
-                },
-                tooltip: {
-                  x: {
-                    format: "dd/MM/yy HH:mm",
-                  },
-                },
-                grid: { //격자 없앰
-                    show:false,
+                dataLabels: {
+                  enabled: false
                 },
                 xaxis: {
-                  type: "datetime",
-                  categories: Data.ts_create
+                  categories: Data.os
                 }
             }}
             />
-          </div>
-          <div className="mixed-chart">
-            <Chart
-             type="line"
-            series={ [
-                { name: "mem_used",
-                  data: Data.mem_used,
-                },
-                ]} 
-            options={{    
-                chart : {
-                    height: 200,
-                    width: 200,                    
-                },
-                 stroke: { //선의 커브를 부드럽게 하고, 두께를 3으로 지정
-                    curve: "smooth",
-                    width: 3,
-                },
-                tooltip: {
-                  x: {
-                    format: "dd/MM/yy HH:mm",
-                  },
-                },
-                grid: { //격자 없앰
-                    show:false,
-                },
-                xaxis: {
-                  type: "datetime",
-                  categories: Data.ts_create
-                }
-            }}
-            />
-          </div>
-          
-        </div>
-      </div>
+        
     )
   }
 }

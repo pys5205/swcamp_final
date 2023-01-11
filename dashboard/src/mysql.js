@@ -90,6 +90,39 @@ app.post('/memory', (req,res) => {
     })
 })
 
+app.post('/list/os', (req,res) => {
+  var resData = {};
+    conn.query('SELECT count(os) as cnt_os, os, company, ts_insert, ts_create FROM tbl_sys_info', (err, data) => {
+      if (err) {
+      console.log("데이터 가져오기 실패");
+    } else {
+      // console.log(data);
+      resData.os =[];
+      resData.cnt_os =[];
+      resData.company =[];
+      resData.ts_insert =[];
+      resData.ts_create = [];
+      if(data[0]){
+        resData.ok = "true";
+        data.forEach(function(val){
+          resData.cnt_os.push(val.cnt_os);
+          resData.os.push(val.os);
+          resData.company.push(val.company);
+          resData.ts_insert.push(val.ts_insert);
+          resData.ts_create.push(val.ts_create);
+        });
+      }else{
+        resData.ok="false"
+      }
+      // var df = new dfd.DataFrame(data)
+      // console.log(df)
+      
+    }
+    // console.log(resData);
+    return res.json(resData);
+    })
+})
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
