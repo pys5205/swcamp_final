@@ -31,7 +31,7 @@ export default class cpuchart extends React.Component {
                     alert("오류");
                   } else {
                   //////////////////////////////////여기부터보자
-                  console.log(json);
+                  // console.log(json);
                     this.setState({
                       isLoaded: true,
                      data : json
@@ -40,13 +40,13 @@ export default class cpuchart extends React.Component {
       });
   }
   render() {
-    console.log(this.state.data);
+    // console.log(this.state.data);
     const Data = this.state.data;
+    // console.log(Data);
     return(
       <div className="app">
         <div className="row">
           <div className="mixed-chart">
-          cpu
             <Chart
              type="line"
             series={ [
@@ -78,39 +78,6 @@ export default class cpuchart extends React.Component {
             }}
             />
           </div>
-          <div className="mixed-chart">
-            <Chart
-             type="line"
-            series={ [
-                { name: "cpu_user",
-                  data: Data.cpu_user,
-                },
-                ]} 
-            options={{    
-                chart : {
-                    height: "auto",
-                    type: "area",                    
-                },
-                 stroke: { //선의 커브를 부드럽게 하고, 두께를 3으로 지정
-                    curve: "smooth",
-                    width: 3,
-                },
-                tooltip: {
-                  x: {
-                    format: "dd/MM/yy HH:mm",
-                  },
-                },
-                grid: { //격자 없앰
-                    show:false,
-                },
-                xaxis: {
-                  type: "datetime",
-                  categories: Data.ts_create
-                }
-            }}
-            />
-          </div>
-          
         </div>
       </div>
     )

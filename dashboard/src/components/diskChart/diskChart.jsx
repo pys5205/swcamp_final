@@ -1,5 +1,5 @@
 import React from 'react'
-import './procsChart.css'
+import './diskChart.css'
 import Chart from "react-apexcharts";
 
 // import * as dfd from "danfojs";
@@ -9,9 +9,7 @@ import Chart from "react-apexcharts";
 //     }
 // var test = [];
 
-
-export default class procschart extends React.Component {
-
+export default class diskChart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -20,9 +18,7 @@ export default class procschart extends React.Component {
   }
   
  componentDidMount(){
-
-  fetch("/list/os", { 
-
+  fetch("/disk", { 
       method: "post", //통신방법
       headers: {
         "content-type": "application/json",
@@ -44,44 +40,48 @@ export default class procschart extends React.Component {
       });
   }
   render() {
+    // console.log(this.state.data);
     const Data = this.state.data;
-    console.log(Data);
-    const content=(
-          <div className="divTableRow">
-            <div className="divTableCell">{Data.procs_username}</div> 
-            <div className="divTableCell">{Data.procs_name}</div> 
-            <div className="divTableCell">{Data.procs_pid}</div>
-            <div className="divTableCell">{Data.procs_ppid}</div>
-            <div className="divTableCell">{Data.procs_status}</div>
-            <div className="divTableCell">{Data.procs_mem_full_uss}</div>
-            <div className="divTableCell">{Data.ts_create}</div>
-          </div> 
-    );
     return(
+      <div className="app">
+        <div className="row">
+          <div className="mixed-chart">
             <Chart
-             type="bar"
+             type="line"
             series={ [
-                { name: "os",
-                  data: Data.cnt_os,
+                { name: "read_Bytes",
+                  data: Data.read_Bytes,
                 },
+                { name: "write_Bytes",
+                  data: Data.write_Bytes,
+                }
                 ]} 
             options={{    
-                plotOptions: {
-                bar: {
-                borderRadius: 4,
-                horizontal: true,
-                  }
+                chart : {
+                    height: 200,
+                    width: 200,                    
                 },
-                dataLabels: {
-                  enabled: false
+                 stroke: { //선의 커브를 부드럽게 하고, 두께를 3으로 지정
+                    curve: "smooth",
+                    width: 3,
+                },
+                tooltip: {
+                  x: {
+                    format: "dd/MM/yy HH:mm",
+                  },
+                },
+                grid: { //격자 없앰
+                    show:false,
                 },
                 xaxis: {
-                  categories: Data.os
+                type: "datetime",
+                  categories: Data.ts_create
                 }
             }}
             />
-        
+          </div>
+        </div>
+      </div>
     )
-
   }
 }

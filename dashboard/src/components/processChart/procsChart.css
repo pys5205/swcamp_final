@@ -1,0 +1,11 @@
+.divTable {
+    display:table;
+    width:700px;
+    text-align: center;
+    border-collapse: collapse;
+    margin-left:250px;
+}
+
+.procs_content {
+    text-align: center;
+}
