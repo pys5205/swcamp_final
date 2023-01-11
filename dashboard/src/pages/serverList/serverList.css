@@ -1,5 +1,9 @@
-.navigation{
-     margin-left:250px;
+
+.charts {
+    padding-top:100px;
+    display:fixed;
+    position:absolute;
+    margin-left:250px;
 }
 .cpu_mem{
     display:flex;
@@ -8,4 +12,9 @@
 .disk_net {
     margin-top : 50px;
     display:flex;
+}
+
+.proc {
+    margin-right:400px;
+    display:fixed;
 }

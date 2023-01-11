@@ -128,30 +128,8 @@ app.post('/process', (req,res) => {
       console.log("데이터 가져오기 실패");
     } else {
       // console.log(data);
-      resData.procs_username = [];
-      resData.procs_name = [];
-      resData.procs_pid = [];
-      resData.procs_ppid = [];
-      resData.procs_status = [];
-      resData.procs_mem_full_uss = [];
-      resData.ts_create = [];
-      if(data[0]) {
-        resData.ok = "true";
-        data.forEach(function(val){
-          resData.procs_username.push(val.procs_username);
-          resData.procs_name.push(val.procs_name);
-          resData.procs_pid.push(val.procs_pid);
-          resData.procs_ppid.push(val.procs_ppid);
-          resData.procs_status.push(val.procs_status);
-          resData.procs_mem_full_uss.push(val.procs_mem_full_uss);
-          resData.ts_create.push(val.ts_create);
-        });
-      }else {
-        resData.ok = "false";
-      }
+      res.send(data);
     }
-    // console.log(resData);
-    return res.json(resData);
     })
 })
 

@@ -7,18 +7,19 @@ import ProcsChart from '../../components/processChart/ProcsChart'
 export default function ServerList() {
     return (
     <div className="serverList">
-        <div className="navigation">
-            <p>server</p>
-        </div>
-        <div className="cpu_mem">
-            <CpuChart />
-            <MemChart />
-        </div>
-        <div className="disk_net">
-            <DiskChart />
-        </div>
-        <div className="proc">
-            <ProcsChart />
+        <div className = "charts">
+            <div className="navigation">
+            </div>
+            <div className="cpu_mem">
+                <CpuChart /> 
+                <MemChart />
+            </div>
+            <div className="disk_net">
+                <DiskChart />
+            </div>
+            <div className="proc">
+                <ProcsChart />
+            </div>
         </div>
     </div>
     )
