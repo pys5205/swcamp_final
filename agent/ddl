@@ -1,5 +1,5 @@
 
--- drop table tbl_sys_info;
+drop table tbl_sys_info;
 create table tbl_sys_info (
   ts_insert	datetime default current_timestamp,
   system	varchar(40),
@@ -9,14 +9,15 @@ create table tbl_sys_info (
   cpu_cnt	int,
   mem_total	bigint,
   ts_create	datetime,
-  sort key(ts_insert),
-  primary key(system, ts_create)
+--  primary key(system, ts_create),
+  sort key(ts_insert)
 );
 
 -- cpu
 create table tbl_cpu (
     ts_insert datetime default current_timestamp,
     system varchar(40),
+    cpu_per double,
     cpu_sys double,
     cpu_user double,
     cpu_wait double, 
@@ -26,8 +27,7 @@ create table tbl_cpu (
     cpu_loadavg_5 double,
     cpu_loadavg_15 double,
     ts_create datetime,
-    primary key(system, ts_create),
-    sort key(ts_insert),
+    sort key(ts_create),
     shard key(system)
 );
 
@@ -49,8 +49,7 @@ create table tbl_memory (
     memswap_sin bigint,
     memswap_sout bigint,
     ts_create datetime,
-    primary key(system, ts_create),
-    sort key(ts_insert),
+    sort key(ts_create),
     shard key(system)
 );
 
@@ -77,9 +76,8 @@ create table tbl_procs_doc(
     procs_mem_full_swap int,
     procs_cmdline varchar(100),
     ts_create datetime,
-    primary key(system, procs_pid, ts_create),
-    sort key(ts_insert),
-    shard key(system, procs_pid)
+    sort key(ts_create),
+    shard key(system)
 );
 /*
  create table tbl_procs_mem(
@@ -112,9 +110,8 @@ create table tbl_disk_part (
   disk_part_free	bigint,
   disk_part_percent	double,
   ts_create			datetime,
-  primary key(system, disk_part_mnt, ts_create),
-  sort key(ts_insert),
-  shard key(system, disk_part_mnt)
+  sort key(ts_create),
+  shard key(system)
 );
 
 
@@ -132,9 +129,8 @@ create table tbl_disk_io (
   disk_io_read_merged_cnt	bigint,
   disk_io_busy_time		bigint,
   ts_create		datetime,
-  primary key(system, disk_io_name, ts_create),
-  sort key(ts_insert),
-  shard key (system, disk_io_name)  
+  sort key(ts_create),
+  shard key (system)  
 );
 
 -- network io
@@ -151,9 +147,8 @@ ts_insert datetime default current_timestamp,
     net_dropin bigint,
     net_dropout bigint,
     ts_create datetime,
-    primary key(system, net_name, ts_create),
-    sort key(ts_insert),
-    shard key(system, net_name)
+    sort key(ts_create),
+    shard key(system)
 );
 
 -- network if
@@ -167,7 +162,7 @@ create table tbl_net_if (
     net_if_broadcast varchar(100),
     net_if_ptp varchar(100),
     ts_create datetime,
-    sort key(ts_insert),
+    sort key(ts_create),
     shard key(system)
 );
 
@@ -185,7 +180,7 @@ create table tbl_net_con (
     net_con_status varchar(40),
     net_con_pid varchar(40),
     ts_create datetime,
-    sort key(ts_insert),
+    sort key(ts_create),
     shard key(system)
 );
 
@@ -251,6 +246,7 @@ begin
     -- cpu
     insert into tbl_cpu (
         system,
+        cpu_per,
         cpu_sys,
         cpu_user,
         cpu_wait,
@@ -262,6 +258,7 @@ begin
         ts_create)
     select
         my_sys::$system,
+        infos::cpus::$cpu_per,
         infos::cpus::$cpu_sys,
         infos::cpus::cpu_user,
         infos::cpus::%cpu_wait,
@@ -337,8 +334,8 @@ begin
                 ts_create)
             values(
                 rec.system,
-                j::procs_username,
-                j::procs_name,
+                j::$procs_username,
+                j::$procs_name,
                 j::procs_pid,
                 j::procs_ppid,
                 j::procs_cput_user,
@@ -348,8 +345,8 @@ begin
                 j::procs_cput_iowait,
                 j::procs_percent,
                 j::procs_createtime,
-                j::procs_status,
-                j::procs_terminal,
+                j::$procs_status,
+                j::$procs_terminal,
                 j::procs_numtreads,
                 j::procs_mem_full_uss,
                 j::procs_mem_full_pss,
@@ -407,7 +404,7 @@ begin
 				ts_create)
 			values (
 				rec.system,
-				j::disk_io_name,
+				j::$disk_io_name,
 				j::disk_io_read_count,
 				j::disk_io_write_count,
 				j::disk_io_read_bytes,
@@ -439,7 +436,7 @@ begin
                 ts_create
             ) values (
                 rec.system,
-                j::net_name,
+                j::$net_name,
                 j::net_bytes_sent,
                 j::net_bytes_recv,
                 j::net_packets_sent,
@@ -468,11 +465,11 @@ begin
                 ts_create
             ) values (
                 rec.system,
-                j::net_if_name,
+                j::$net_if_name,
                 j::net_if_family,
-                j::net_if_address,
-                j::net_if_netmask,
-                j::net_if_broadcast,
+                j::$net_if_address,
+                j::$net_if_netmask,
+                j::$net_if_broadcast,
                 j::net_if_ptp,           
                 rec.ts_create
             );
@@ -501,10 +498,10 @@ begin
                 j::net_con_family,
                 j::net_con_type,
                 j::net_con_laddr_port,
-                j::net_con_laddr_ip,
+                j::$net_con_laddr_ip,
                 j::net_con_raddr_port,
-                j::net_con_raddr_ip,   
-                j::net_con_status,   
+                j::$net_con_raddr_ip,   
+                j::$net_con_status,   
                 j::net_con_pid,              
                 rec.ts_create
             );
@@ -520,6 +517,7 @@ delimiter ;
 
 create pipeline mainpipe
 as load data kafka 'ec2-15-165-51-112.ap-northeast-2.compute.amazonaws.com/metrics1_1'
+batch_interval 100
 into procedure `sp_load_metrics`
 (my_sys <- my_sys,
 type <- type,
@@ -551,3 +549,4 @@ truncate table tbl_disk_part;
 truncate table tbl_net_io;
 truncate table tbl_net_if;
 truncate table tbl_net_con;
+
