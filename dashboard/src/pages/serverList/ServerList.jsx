@@ -11,11 +11,19 @@ export default function ServerList() {
             <div className="navigation">
             </div>
             <div className="cpu_mem">
-                <CpuChart /> 
-                <MemChart />
+                <div className="cpu">
+                    <CpuChart /> 
+                </div>
+                <div className="memory">
+                    <MemChart />
+                </div>
             </div>
             <div className="disk_net">
-                <DiskChart />
+                <div className="disk">
+                    <DiskChart />
+                </div>
+                <div>
+                </div>
             </div>
             <div className="proc">
                 <ProcsChart />

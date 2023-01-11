@@ -1,20 +1,23 @@
-
 .charts {
     padding-top:100px;
     display:fixed;
     position:absolute;
     margin-left:250px;
 }
-.cpu_mem{
+.cpu_mem {
     display:flex;
 }
-
+.cpu{
+    
+}
+.memory {
+    margin-left:200px;
+}
 .disk_net {
     margin-top : 50px;
     display:flex;
 }
 
 .proc {
-    margin-right:400px;
     display:fixed;
 }

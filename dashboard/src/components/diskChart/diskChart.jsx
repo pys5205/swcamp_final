@@ -9,7 +9,7 @@ import Chart from "react-apexcharts";
 //     }
 // var test = [];
 
-export default class diskChart extends React.Component {
+export default class diskchart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -42,6 +42,7 @@ export default class diskChart extends React.Component {
   render() {
     // console.log(this.state.data);
     const Data = this.state.data;
+    //console.log(Data);
     return(
       <div className="app">
         <div className="row">
@@ -49,21 +50,21 @@ export default class diskChart extends React.Component {
             <Chart
              type="line"
             series={ [
-                { name: "read_Bytes",
-                  data: Data.read_Bytes,
+                { name: "read_bytes",
+                  data: Data.read_bytes,
                 },
-                { name: "write_Bytes",
-                  data: Data.write_Bytes,
-                }
+                { name: "write_bytes",
+                  data: Data.write_bytes,
+                },
                 ]} 
             options={{    
                 chart : {
-                    height: 200,
-                    width: 200,                    
+                    height: 300,
+                    width: 300,                    
                 },
                  stroke: { //선의 커브를 부드럽게 하고, 두께를 3으로 지정
                     curve: "smooth",
-                    width: 3,
+                    width: 1,
                 },
                 tooltip: {
                   x: {

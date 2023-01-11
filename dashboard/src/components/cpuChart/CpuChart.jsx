@@ -42,7 +42,7 @@ export default class cpuchart extends React.Component {
   render() {
     // console.log(this.state.data);
     const Data = this.state.data;
-    // console.log(Data);
+    //console.log(Data);
     return(
       <div className="app">
         <div className="row">
@@ -56,12 +56,12 @@ export default class cpuchart extends React.Component {
                 ]} 
             options={{    
                 chart : {
-                    height: 200,
-                    width: 200,                    
+                    height: 300,
+                    width: 300,                    
                 },
                  stroke: { //선의 커브를 부드럽게 하고, 두께를 3으로 지정
                     curve: "smooth",
-                    width: 3,
+                    width: 1,
                 },
                 tooltip: {
                   x: {
