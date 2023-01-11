@@ -1,18 +1,8 @@
 import React from 'react'
 import './procsChart.css'
-import Chart from "react-apexcharts";
 import MaterialTable from "material-table";
 
-// import * as dfd from "danfojs";
-
-// function createData(ts_insert, system, cpu_per, cpu_sys, cpu_user, cpu_wait, cpu_irq, cpu_softirq, cpu_loadavg_1,cpu_loadavg_5, cpu_loadavg_15, ts_create  ) {
-//     return {ts_insert, system, cpu_per, cpu_sys, cpu_user, cpu_wait, cpu_irq, cpu_softirq, cpu_loadavg_1,cpu_loadavg_5, cpu_loadavg_15, ts_create };
-//     }
-// var test = [];
-
-
-export default class procschart extends React.Component {
-
+export default class ProcsChart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,7 +11,7 @@ export default class procschart extends React.Component {
   }
   
  componentDidMount(){
-  fetch("/data", { 
+  fetch("/process", { 
       method: "post", //통신방법
       headers: {
         "content-type": "application/json",
@@ -45,38 +35,38 @@ export default class procschart extends React.Component {
     render() {
     const Data = this.state.data;
     console.log(Data);
+    console.log(Data.procs_name);
     const columns = [
         {
-            title: "company",
-            field: "company",
-            width:80
+            title: "procs_username",
+            field: "procs_username",
         },
          {
-            title: "cpu_cnt",
-            field: "cpu_cnt",
-            width:60
+            title: "procs_name",
+            field: "procs_name",
         },
          {
-            title: "mem_total",
-            field: "mem_total",
-            width:130
+            title: "procs_pid",
+            field: "procs_pid",
         },
          {
-            title: "os",
-            field: "os",
-            width:90
+            title: "procs_ppid",
+            field: "procs_ppid",
         },
          {
-            title: "service",
-            field: "service",
-            width: 80
+            title: "procs_status",
+            field: "procs_status",
         },
          {
-            title: "system",
-            field: "system",
-            width: 80
+            title: "procs_mem_full_uss",
+            field: "procs_mem_full_uss",
+        },
+        {
+            title: "ts_create",
+            field: "ts_create",
         },
         ]
+        console.log(columns);
     return(
         <MaterialTable 
         title="Company Details"

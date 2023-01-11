@@ -19,6 +19,8 @@
 
 /* Navbar CSS */
 .navbar {
+  position:fixed;
+  padding-top:80px;
   background-color: #ffffff;
   height: 80px;
   display: flex;
