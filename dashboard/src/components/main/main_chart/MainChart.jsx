@@ -46,17 +46,6 @@ export default class mainchart extends React.Component {
   render() {
     const Data = this.state.data;
     console.log(Data);
-    const content=(
-          <div className="divTableRow">
-            <div className="divTableCell">{Data.procs_username}</div> 
-            <div className="divTableCell">{Data.procs_name}</div> 
-            <div className="divTableCell">{Data.procs_pid}</div>
-            <div className="divTableCell">{Data.procs_ppid}</div>
-            <div className="divTableCell">{Data.procs_status}</div>
-            <div className="divTableCell">{Data.procs_mem_full_uss}</div>
-            <div className="divTableCell">{Data.ts_create}</div>
-          </div> 
-    );
     return(
             <Chart
              type="bar"

@@ -1,34 +1,29 @@
 import React from 'react'
 import './home.css'
-import Test from '../../components/test/Test'
 import MainChart from '../../components/main/main_chart/MainChart'
 import FeaturedInfo from '../../components/main/featuredInfo/FeaturedInfo'
+import FristChart from '../../components/main/first_chart/FristChart'
+import SecondChart from '../../components/main/second_chart/SecondChart'
+
 export default function Home() {
     return (
     <div  className="home">
+    
          <div className = "first">
-            <div className = "second">
-                <div className = "second1">
-                    gs
+                <div className = "second">
+                    <FristChart />
                 </div>
-                <div>
-                    dd
+                <div className="tt">
+                   
                 </div>
-            </div>
-            <div className="tt">
-               
-            </div>
         </div>
         <div className= "chartComp">
             <div className="pchart">
                 <div className="oschart">
                     <MainChart />
                 </div>
-                <div className="oschart">
-                    <MainChart />
-                </div>
-                <div className="oschart">
-                    <MainChart />
+                <div className="ttchart">
+                 <SecondChart />
                 </div>
             </div>
         </div>
