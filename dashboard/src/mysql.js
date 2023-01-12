@@ -121,6 +121,50 @@ app.post('/disk', (req,res) => {
     })
 })
 
+app.post('/disk/io/name', (req,res) => {
+  var input = req.query.input;
+  console.log(input);
+    conn.query(
+      'select distinct(disk_io_name) from tbl_disk_io', (err, data) => {
+      if (err) {
+      console.log("데이터 가져오기 실패");
+    } else {
+      // console.log(data);
+      res.send(data);
+    }
+    })
+})
+
+app.post('/network', (req,res) => {
+  var resData = {};
+    conn.query(
+      'select round(net_bytes_sent/1024/1024, 2) as net_bytes_sent, round(net_bytes_recv/1024/1024, 2) as net_bytes_recv, ts_create from tbl_net_io', (err, data) => {
+      if (err) {
+      console.log("데이터 가져오기 실패");
+    } else {
+      // console.log(data);
+      resData.bytes_sent = [];
+      resData.bytes_recv = [];
+      resData.ts_create = [];
+      if(data[0]){
+        resData.ok = "true";
+        data.forEach(function(val){
+          resData.bytes_sent.push(parseInt(val.net_bytes_sent));
+          resData.bytes_recv.push(parseInt(val.net_bytes_recv));
+          resData.ts_create.push(val.ts_create);
+        });
+      }else{
+        resData.ok="false"
+      }
+      // var df = new dfd.DataFrame(data)
+      // console.log(df)
+      
+    }
+    //console.log(resData);
+    return res.json(resData);
+    })
+})
+
 app.post('/process', (req,res) => {
   var resData = {};
     conn.query('SELECT procs_username, procs_name, procs_pid, procs_ppid, procs_status, procs_mem_full_uss, ts_create FROM tbl_procs_doc where ts_create = (select max(ts_create) from tbl_procs_doc)', (err, data) => {
