@@ -31,16 +31,17 @@ export default class diskchart extends React.Component {
                     alert("오류");
                   } else {
                   //////////////////////////////////여기부터보자
-                  // console.log(json);
                     this.setState({
                       isLoaded: true,
                      data : json
+                     
                     })
+                    // console.log(json);
                   }
       });
   }
   render() {
-    // console.log(this.state.data);
+    console.log(this.state.data);
     const Data = this.state.data;
     //console.log(Data);
     return(
