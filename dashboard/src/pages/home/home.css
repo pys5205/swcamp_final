@@ -1,49 +1,48 @@
 .home {
-    margin-top : 100px;
-    margin-left : 300px;
-    margin-right: 500px;
     position:absolute;
-}
-.serverlist{
-    font-size: 28px;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: #283c34;
-    text-align: center;
+    width: 1000px;
+    left: 150px;
+    right:50%;
+    top:10%;
 }
 .pchart{
     display :flex;
+    margin-bottom:30px;
+     height:430px;
 }
 .oschart{
-  
-    height:200px;
-    width:300px;
-    margin: 5px;
+    width:333px;
+    margin-right: 10px;
+    -webkit-box-shadow: 0px 0px 12px -2px #000000; 
+    box-shadow: 0px 0px 12px -2px #000000;
+}
+.ttchart{
+    width:660px;
     -webkit-box-shadow: 0px 0px 12px -2px #000000; 
     box-shadow: 0px 0px 12px -2px #000000;
 }
 
 .first{
     display:flex;
+    margin-bottom:30px;
+    width:1000px;
+    height:200px;
+    
 }
 .second{
-    width:300px;
-    height:500px;
+    width:400px;
     margin-right:10px;
-    margin-bottom: 30px;
     -webkit-box-shadow: 0px 0px 12px -2px #000000; 
     box-shadow: 0px 0px 12px -2px #000000;
 }
-.second1{
-    width: 150px;
-    height: 250px;
-}
+
+
 .tt{
-    width:615px;
-    margin-bottom: 30px;
+    width:600px;
     -webkit-box-shadow: 0px 0px 12px -2px #000000; 
     box-shadow: 0px 0px 12px -2px #000000;
+}
+
+.server_list{
+    width:1000px;
 }

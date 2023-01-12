@@ -165,7 +165,28 @@ app.post('/list/os', (req,res) => {
     return res.json(resData);
     })
 })
-
+app.post('/list/cpu', (req,res) => {
+   var resData = {};
+    conn.query('SELECT cpu_per, max(ts_create) FROM tbl_cpu', (err, data) => {
+      if (err) {
+      console.log("데이터 가져오기 실패");
+    } else {
+     resData.cpu_per =[];
+     if(data[0]){
+        resData.ok = "true";
+        data.forEach(function(val){
+          resData.cpu_per.push(val.cpu_per);
+        });
+     }else{
+        resData.ok="false"
+      }
+      // var df = new dfd.DataFrame(data)
+      // console.log(df)
+      
+    }
+    return res.json(resData);
+    })
+})
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });

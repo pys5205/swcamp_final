@@ -1,8 +1,9 @@
 import React from 'react'
 import './featuredInfo.css'
-import MaterialTable from "material-table";
-
+import MaterialTable,{ MTableBodyRow } from "material-table";
+import {useNavigate} from "react-router-dom"
 export default class featured extends React.Component {
+    
   constructor(props) {
     super(props);
     this.state = {
@@ -33,6 +34,7 @@ export default class featured extends React.Component {
       });
   }
     render() {
+    
     const Data = this.state.data;
     console.log(Data);
     const columns = [
@@ -67,6 +69,12 @@ export default class featured extends React.Component {
             width: 80
         },
         ]
+  
+        const handleClick = (event, rowData) => {
+            // alert(`event.target.row = '${rowData.company}'`);
+            // navigate(`'/server${rowData.company}'`);
+            // this.props.useNavigate(("/serverlist"));
+          };
     return(
         <MaterialTable 
         title="Company Details"
@@ -74,6 +82,13 @@ export default class featured extends React.Component {
         columns={columns}
         options={{
           selection: true
+        }}
+        components= {{
+            Row: (props) => {
+                return (
+                    <MTableBodyRow {...props} persistEvents onRowClick={handleClick} />
+                )
+            }
         }}
         pageSize={5}
         rowsPerPageOptions={[5]}
