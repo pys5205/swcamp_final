@@ -50,10 +50,10 @@ export default class diskchart extends React.Component {
             <Chart
              type="line"
             series={ [
-                { name: "read_bytes",
+                { name: "io읽기",
                   data: Data.read_bytes,
                 },
-                { name: "write_bytes",
+                { name: "io쓰기",
                   data: Data.write_bytes,
                 },
                 ]} 

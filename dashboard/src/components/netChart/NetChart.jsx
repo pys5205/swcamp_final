@@ -1,5 +1,5 @@
 import React from 'react'
-import './memChart.css'
+import './netChart.css'
 import Chart from "react-apexcharts";
 
 // import * as dfd from "danfojs";
@@ -9,7 +9,7 @@ import Chart from "react-apexcharts";
 //     }
 // var test = [];
 
-export default class memchart extends React.Component {
+export default class diskchart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,7 +18,7 @@ export default class memchart extends React.Component {
   }
   
  componentDidMount(){
-  fetch("/memory", { 
+  fetch("/network", { 
       method: "post", //통신방법
       headers: {
         "content-type": "application/json",
@@ -42,19 +42,43 @@ export default class memchart extends React.Component {
   render() {
     // console.log(this.state.data);
     const Data = this.state.data;
-    const test = Data.server_memory;
-    // console.log(test);
+    //console.log(Data);
     return(
       <div className="app">
         <div className="row">
-          <div className="donut">
+          <div className="mixed-chart">
             <Chart
-             type="pie"
-              series={test } 
-            options={{
-                labels: ['사용중', '빈공간', '버퍼', '캐시']
+             type="line"
+            series={ [
+                { name: "전송 속도",
+                  data: Data.bytes_sent,
+                },
+                { name: "받는 속도",
+                  data: Data.bytes_recv,
+                },
+                ]} 
+            options={{    
+                chart : {
+                    height: 300,
+                    width: 300,                    
+                },
+                 stroke: { //선의 커브를 부드럽게 하고, 두께를 3으로 지정
+                    curve: "smooth",
+                    width: 1,
+                },
+                tooltip: {
+                  x: {
+                    format: "dd/MM/yy HH:mm",
+                  },
+                },
+                grid: { //격자 없앰
+                    show:false,
+                },
+                xaxis: {
+                type: "datetime",
+                  categories: Data.ts_create
+                }
             }}
-            width ="380"
             />
           </div>
         </div>

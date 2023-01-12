@@ -4,20 +4,57 @@
     position:absolute;
     margin-left:250px;
 }
+
 .cpu_mem {
     display:flex;
-}
-.cpu{
     
 }
-.memory {
-    margin-left:200px;
+.cpu{
+    position:absolute;
 }
+.cpuNav {
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:10px;
+}
+.detailButton {
+   height:20px;
+}
+.memory {
+    margin-left:500px;
+    
+}
+.memNav {
+    display:flex;
+    justify-content:space-between;
+}
+
 .disk_net {
     margin-top : 50px;
     display:flex;
 }
-
+.disk {
+    position:absolute;
+}
+.diskNav {
+    display:flex;
+    justify-content:space-between;
+}
+.diskIoName{
+    width:230px;
+    margin-left:110px;
+}
+.net {
+    margin-left:500px;
+    
+}
+.netNav {
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:10px;
+}
 .proc {
+    margin-top:50px;
     display:fixed;
+    position:absolute;
 }

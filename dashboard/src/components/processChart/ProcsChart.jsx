@@ -51,7 +51,7 @@ export default class ProcsChart extends React.Component {
             field: "procs_pid",
         },
          {
-            title: "procs_ppid",
+            title: "ppid",
             field: "procs_ppid",
         },
          {
@@ -70,7 +70,7 @@ export default class ProcsChart extends React.Component {
         //console.log(columns);
     return(
         <MaterialTable 
-        title="Process"
+        title="프로세스"
         data={Data}
         columns={columns}
         options={{
