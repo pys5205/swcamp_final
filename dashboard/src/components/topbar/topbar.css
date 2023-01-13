@@ -1,19 +1,24 @@
 .topbar { 
-    width: 100%;
+    width: 1000px;
     height: 50px;
+    left:50%;
+    right:50%;
+    top:5%;
     background-color: white;
-    position:fixed;
+    position:absolute;
+    -ms-transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 .topbarWrapper{
     height: 100%;
-    padding : 0px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 .logo {
-    margin-left:150px;
     font-weight: bold;
     font-size: 30px;
     color:darkblue;

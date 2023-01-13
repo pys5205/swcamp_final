@@ -35,11 +35,11 @@ export default class secondchart extends React.Component {
     render() {
     const Data = this.state.data;
     console.log(Data.cpu_per);
-    return(
+    return( 
+              
                  <Chart
                      type="bar"
                      series={ [
-                     
                         {
                          name: 'Net Profit',
                           data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
@@ -53,6 +53,8 @@ export default class secondchart extends React.Component {
         
                         ]} 
                     options={{
+                        chart:{
+                        },
                         plotOptions: {
                           bar: {
                             horizontal: false,
