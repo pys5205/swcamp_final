@@ -19,6 +19,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.post('/data', (req,res) => {
+  // console.log(req);
     conn.query('SELECT * FROM tbl_sys_info', (err, data) => {
       if (err) {
       console.log("데이터 가져오기 실패");
@@ -231,6 +232,7 @@ app.post('/list/cpu', (req,res) => {
     return res.json(resData);
     })
 })
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });

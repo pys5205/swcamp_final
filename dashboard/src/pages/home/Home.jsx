@@ -17,18 +17,24 @@ export default function Home() {
                    
                 </div>
         </div>
+        
         <div className= "chartComp">
             <div className="pchart">
                 <div className="oschart">
                     <MainChart />
                 </div>
-                <div className="ttchart">
-                 <SecondChart />
+                <div className="server_list">
+                    <FeaturedInfo />
                 </div>
             </div>
         </div>
-        <div className="server_list">
-             <FeaturedInfo />
+        
+        <div className="thirdchartComp">
+                <div className="compfirst">
+                 <SecondChart />
+                </div>
+                <div className="compsecond">
+                </div>
         </div>
     </div>
     )

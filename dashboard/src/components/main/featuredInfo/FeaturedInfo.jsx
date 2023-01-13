@@ -2,6 +2,7 @@ import React from 'react'
 import './featuredInfo.css'
 import MaterialTable,{ MTableBodyRow } from "material-table";
 import {useNavigate} from "react-router-dom"
+
 export default class featured extends React.Component {
     
   constructor(props) {
@@ -10,7 +11,7 @@ export default class featured extends React.Component {
       data: []
     };
   }
-  
+
  componentDidMount(){
   fetch("/data", { 
       method: "post", //통신방법
@@ -34,7 +35,6 @@ export default class featured extends React.Component {
       });
   }
     render() {
-    
     const Data = this.state.data;
     console.log(Data);
     const columns = [
@@ -43,16 +43,16 @@ export default class featured extends React.Component {
             field: "company",
             width:80
         },
-         {
-            title: "cpu_cnt",
-            field: "cpu_cnt",
-            width:60
-        },
-         {
-            title: "mem_total",
-            field: "mem_total",
-            width:130
-        },
+        //  {
+        //     title: "cpu_cnt",
+        //     field: "cpu_cnt",
+        //     width:60
+        // },
+        //  {
+        //     title: "mem_total",
+        //     field: "mem_total",
+        //     width:130
+        // },
          {
             title: "os",
             field: "os",
@@ -65,16 +65,11 @@ export default class featured extends React.Component {
         },
          {
             title: "system",
-            field: "system",
+            field: "system",  
             width: 80
         },
         ]
-  
-        const handleClick = (event, rowData) => {
-            // alert(`event.target.row = '${rowData.company}'`);
-            // navigate(`'/server${rowData.company}'`);
-            // this.props.useNavigate(("/serverlist"));
-          };
+       
     return(
         <MaterialTable 
         title="Company Details"
@@ -85,6 +80,15 @@ export default class featured extends React.Component {
         }}
         components= {{
             Row: (props) => {
+             let navigate = useNavigate();
+              const handleClick = (event, rowData) => {
+                // alert(`event.target.row = '${rowData.company}'`);
+                    navigate(`/list/${rowData.company}`);
+            // navigate(`'/${rowData.company}'`);
+            // this.props.useNavigate(("/serverlist"));
+                
+                 };
+            
                 return (
                     <MTableBodyRow {...props} persistEvents onRowClick={handleClick} />
                 )

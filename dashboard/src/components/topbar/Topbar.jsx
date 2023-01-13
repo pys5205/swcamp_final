@@ -9,7 +9,7 @@ export default function Topbar() {
         <div className="topbar">
             <div className="topbarWrapper">
                 <div className="topLeft">
-                    <span className="logo"><Link to ="/" style={{ textDecoration: "none" }}>Dashboard</Link></span>
+                    <span className="logo"><Link to ="/" style={{ textDecoration: "none",color:"darkblue" }}>Dashboard</Link></span>
                 </div>
             <div className="topRight">
             
