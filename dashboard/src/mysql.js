@@ -6,6 +6,7 @@ const env = require("dotenv").config({ path: "../.env" });
 const app = express();
 const port = 3001;
 
+
 // const dfd = require("danfojs-node");
 
 const conn = new mysql.createConnection({
@@ -93,8 +94,11 @@ app.post('/memory', (req,res) => {
 
 app.post('/disk', (req,res) => {
   var resData = {};
+  var input = req.input;
+  console.log(input);
+
     conn.query(
-      'select disk_io_read_bytes/1024/1024 as read_bytes, disk_io_write_bytes/1024/1024 as write_bytes, ts_create from tbl_disk_io where system="system" and disk_io_name="nvme0n1" ', (err, data) => {
+      'select disk_io_read_bytes/1024/1024 as read_bytes, disk_io_write_bytes/1024/1024 as write_bytes, ts_create from tbl_disk_io where system="system" and disk_io_name='+input, (err, data) => {
       if (err) {
       console.log("데이터 가져오기 실패");
     } else {
@@ -122,10 +126,10 @@ app.post('/disk', (req,res) => {
 })
 
 app.post('/disk/io/name', (req,res) => {
-  var input = req.query.input;
+  var input = req.input;
   console.log(input);
     conn.query(
-      'select distinct(disk_io_name) from tbl_disk_io', (err, data) => {
+      'select distinct(disk_io_name) from tbl_disk_io where system="system"', (err, data) => {
       if (err) {
       console.log("데이터 가져오기 실패");
     } else {
@@ -209,6 +213,7 @@ app.post('/list/os', (req,res) => {
     return res.json(resData);
     })
 })
+
 app.post('/list/cpu', (req,res) => {
    var resData = {};
     conn.query('SELECT cpu_per, max(ts_create) FROM tbl_cpu', (err, data) => {
@@ -231,6 +236,7 @@ app.post('/list/cpu', (req,res) => {
     return res.json(resData);
     })
 })
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
