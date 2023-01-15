@@ -1,4 +1,5 @@
-import React, {useState} from 'react'
+import ReactDOM from "react-dom";
+import React, { useState, useEffect } from "react";
 
 export default class disk_io_select extends React.Component {
   constructor(props) {
@@ -30,15 +31,16 @@ export default class disk_io_select extends React.Component {
                   }
       });
   }
+
+
   render() {
     // console.log(this.state.data);
     const Data = this.state.data;
     
     const handleChange = (event) => {
         // alert(event.target.value);
-        const send = () => {
-            event.get(event.target.value);
-        }
+        
+        document.targetURL.location.href="/disk?input"+event.target.value;
     }
 
     const content= this.state.data.map((data) => (
