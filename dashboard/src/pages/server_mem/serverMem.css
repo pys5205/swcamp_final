@@ -1,0 +1,62 @@
+.mem_main{
+    position:absolute;
+    width: 1000px;
+    left: 50%;
+    right:50%;
+    top:60%;
+    -ms-transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+.mem_firstpart{
+    display:flex;
+    margin-bottom:30px;
+    height:200px;
+   
+}
+.mem_total{
+    width:200px;
+    margin-right:10px;
+     -webkit-box-shadow: 0px 0px 12px -2px #000000; 
+    box-shadow: 0px 0px 12px -2px #000000;
+}
+.mem_used{
+    width:790px;
+     -webkit-box-shadow: 0px 0px 12px -2px #000000; 
+    box-shadow: 0px 0px 12px -2px #000000;
+}
+
+.mem_secondpart{
+    display:flex;
+    height:200px;
+    margin-bottom:30px;
+}
+.mem_free{
+    width:495px;
+    margin-right:10px;
+   -webkit-box-shadow: 0px 0px 12px -2px #000000; 
+    box-shadow: 0px 0px 12px -2px #000000;
+}
+
+.mem_buffer{
+   width:495px;
+   -webkit-box-shadow: 0px 0px 12px -2px #000000; 
+    box-shadow: 0px 0px 12px -2px #000000;
+}
+
+.mem_thirdpart{
+    display:flex;
+    height:200px;
+}
+.mem_cache{
+    width:700px;
+    margin-right:10px;
+    -webkit-box-shadow: 0px 0px 12px -2px #000000; 
+    box-shadow: 0px 0px 12px -2px #000000;
+}
+.mem_shard{
+    width:290px;
+    -webkit-box-shadow: 0px 0px 12px -2px #000000; 
+    box-shadow: 0px 0px 12px -2px #000000;
+}

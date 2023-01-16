@@ -39,6 +39,7 @@ app.post('/server', (req,res) => {
       console.log("데이터 가져오기 실패");
     } else {
       // console.log(data);
+      resData.cpu_sys =[];
       resData.cpu_per =[];
       resData.cpu_user =[];
       resData.ts_insert =[];
@@ -46,6 +47,7 @@ app.post('/server', (req,res) => {
       if(data[0]){
         resData.ok = "true";
         data.forEach(function(val){
+          resData.cpu_sys.push(val.cpu_sys);
           resData.cpu_per.push(val.cpu_per);
           resData.cpu_user.push(val.cpu_user);
           resData.ts_insert.push(val.ts_insert);
