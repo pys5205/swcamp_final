@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import React, { useState, useEffect, Component } from "react";
+import React, { Component } from "react";
 
 
 export default class disk_io_select extends React.Component {
@@ -7,10 +7,10 @@ export default class disk_io_select extends React.Component {
     testbody: "",
   }
   
-  handleClick =(e)=> {
+  handleChange =(e)=> {
     this.setState({
       [e.target.name] : e.target.value,
-    });
+      });
   }
   
   constructor(props) {
@@ -48,19 +48,17 @@ export default class disk_io_select extends React.Component {
     // console.log(this.state.data);
     const Data = this.state.data;
     
-    const handleChange = (event) => {
-        alert(event.target.value);
-        
-        document.targetURL.location.href="/disk?input"+event.target.value;
-    }
+    // const handleChange = (event) => {
+    //     alert(event.target.value);
+    // }
 
     const content= this.state.data.map((data) => (
-        <option value={data.disk_io_name}>{data.disk_io_name}</option>
+        <option value={data.disk_io_name} name={data.disk_io_name}>{data.disk_io_name}</option>
     ));
     
    //  console.log(Data);
     return(
-      <select onChange={handleChange}>
+      <select onChange={this.handleChange}>
         {content}
       </select>
     )
