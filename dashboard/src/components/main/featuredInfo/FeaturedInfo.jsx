@@ -83,7 +83,7 @@ export default class featured extends React.Component {
              let navigate = useNavigate();
               const handleClick = (event, rowData) => {
                 // alert(`event.target.row = '${rowData.company}'`);
-                    navigate(`/list/${rowData.company}`);
+                    navigate(`/list/${rowData.system}`);
             // navigate(`'/${rowData.company}'`);
             // this.props.useNavigate(("/serverlist"));
                 

@@ -18,12 +18,17 @@ export default class cpuchart extends React.Component {
   }
   
  componentDidMount(){
+  const current = decodeURI(window.location.href);
+  const cpuname = current.substr(31);
   fetch("/server", { 
       method: "post", //통신방법
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify(),
+      body: JSON.stringify({
+        'system' : cpuname
+      }
+        ),
     })
       .then((res) => res.json())
       .then((json) => {
@@ -40,6 +45,7 @@ export default class cpuchart extends React.Component {
       });
   }
   render() {
+    
     // console.log(this.state.data);
     const Data = this.state.data;
     //console.log(Data);
