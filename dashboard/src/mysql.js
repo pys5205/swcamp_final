@@ -65,7 +65,8 @@ app.post('/server', (req,res) => {
 
 app.post('/memory', (req,res) => {
   var resData = {};
-    conn.query('SELECT mem_total,mem_used,mem_free,mem_buffer,mem_cached,max(ts_create) as ts_create FROM tbl_memory where system="system"', (err, data) => {
+  var input = req.body.system;
+    conn.query('SELECT mem_total,mem_used,mem_free,mem_buffer,mem_cached,max(ts_create) as ts_create FROM tbl_memory where system=?',[input], (err, data) => {
       if (err) {
       console.log("데이터 가져오기 실패");
     } else {
@@ -97,8 +98,7 @@ app.post('/memory', (req,res) => {
 
 app.post('/disk', (req,res) => {
   var resData = {};
-  var input = req.body.server;
-  console.log(input);
+  var input = req.body.system;
 
     conn.query(
       'select disk_io_read_bytes/1024/1024 as read_bytes, disk_io_write_bytes/1024/1024 as write_bytes, ts_create from tbl_disk_io where system=? and disk_io_name="nvme0n1p1"',[input], (err, data) => {
@@ -129,8 +129,6 @@ app.post('/disk', (req,res) => {
 })
 
 app.post('/disk/io/name', (req,res) => {
-  var input = req.input;
-  console.log(input);
     conn.query(
       'select distinct(disk_io_name) from tbl_disk_io where system="system"', (err, data) => {
       if (err) {
@@ -144,8 +142,9 @@ app.post('/disk/io/name', (req,res) => {
 
 app.post('/network', (req,res) => {
   var resData = {};
+  var input = req.body.system;
     conn.query(
-      'select round(net_bytes_sent/1024/1024, 2) as net_bytes_sent, round(net_bytes_recv/1024/1024, 2) as net_bytes_recv, ts_create from tbl_net_io', (err, data) => {
+      'select round(net_bytes_sent/1024/1024, 2) as net_bytes_sent, round(net_bytes_recv/1024/1024, 2) as net_bytes_recv, ts_create from tbl_net_io where system = ?',[input], (err, data) => {
       if (err) {
       console.log("데이터 가져오기 실패");
     } else {
@@ -174,7 +173,8 @@ app.post('/network', (req,res) => {
 
 app.post('/process', (req,res) => {
   var resData = {};
-    conn.query('SELECT procs_username, procs_name, procs_pid, procs_ppid, procs_status, procs_mem_full_uss, ts_create FROM tbl_procs_doc where ts_create = (select max(ts_create) from tbl_procs_doc)', (err, data) => {
+  var input = req.body.system;
+    conn.query('SELECT procs_username, procs_name, procs_pid, procs_ppid, procs_status, procs_mem_full_uss, ts_create FROM tbl_procs_doc where ts_create = (select max(ts_create) from tbl_procs_doc) and system = ?',[input], (err, data) => {
       if (err) {
       console.log("데이터 가져오기 실패");
     } else {

@@ -11,12 +11,17 @@ export default class ProcsChart extends React.Component {
   }
   
  componentDidMount(){
+    const current = decodeURI(window.location.href);
+   // console.log(current.split('/')[4])
+   const system = current.split('/')[4];
   fetch("/process", { 
       method: "post", //통신방법
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify(),
+      body: JSON.stringify({
+          'system' : system
+      }),
     })
       .then((res) => res.json())
       .then((json) => {

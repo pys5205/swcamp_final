@@ -10,7 +10,7 @@ import { useLocation } from 'react-router-dom';
 export default function Topbar() {
     const location = useLocation();
     
-    console.log((location.pathname).substr(6));
+    // console.log((location.pathname).substr(6));
         return (
             <div className="topbar">
                 <div className="topbarWrapper">
@@ -18,7 +18,7 @@ export default function Topbar() {
                         <span className="logo"><Link to ="/" style={{ textDecoration: "none",color:"darkblue" }}>Dashboard</Link></span>
                     </div>
                 <div className="topRight">
-                server : {(location.pathname).substr(6)}
+                system : {(location.pathname).substr(6)}
                  <div className="topbarIconContainer">
                    <NotificationsNoneIcon />
                    <span className="topIconBadge">2</span>

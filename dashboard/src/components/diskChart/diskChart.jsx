@@ -19,14 +19,15 @@ export default class diskchart extends React.Component {
   
  componentDidMount(){
    const current = decodeURI(window.location.href);
-   const server = current.substr(31);
+   // console.log(current.split('/')[4])
+   const system = current.split('/')[4];
   fetch("/disk", { 
       method: "post", //통신방법
       headers: {
         "content-type": "application/json",
       },
       body: JSON.stringify({
-        'server' : server
+        'system' : system
       }),
     })
       .then((res) => res.json())
@@ -45,7 +46,7 @@ export default class diskchart extends React.Component {
       });
   }
   render() {
-    console.log(this.state.data);
+    // console.log(this.state.data);
     const Data = this.state.data;
     //console.log(Data);
     return(
