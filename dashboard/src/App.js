@@ -3,6 +3,8 @@ import Sidebar from './components/sidebar/Sidebar'
 import './app.css'
 import Home from './pages/home/Home'
 import ServerList from './pages/serverList/ServerList'
+import ServerCPU from './pages/server_cpu/ServerCPU'
+import ServerMEM from './pages/server_mem/ServerMem'
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 export default class App extends React.Component{
@@ -38,6 +40,12 @@ export default class App extends React.Component{
       const listItems = this.state.data.map((data) => (
         <Route path={`/list/${data.system}`} element={<ServerList /> } />
         ));
+      const listCPU = this.state.data.map((data) => (
+            <Route path={`/list/${data.system}/cpu`} element={<ServerCPU /> } />
+      ));
+      const listMEM = this.state.data.map((data) => (
+            <Route path={`/list/${data.system}/mem`} element={<ServerMEM /> } />
+      ));
   return (
   // <div className="App">
     <Router>
@@ -48,6 +56,8 @@ export default class App extends React.Component{
             <Route exact path="/" element={<Home /> } />
             <Route path="/serverlist" element={<ServerList /> } />
             {listItems}
+            {listCPU}
+            {listMEM}
           </Routes>
       </div>
     </Router>
