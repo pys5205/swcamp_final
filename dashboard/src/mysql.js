@@ -95,11 +95,11 @@ app.post('/memory', (req,res) => {
 
 app.post('/disk', (req,res) => {
   var resData = {};
-  var input = req.input;
+  var input = req.body.server;
   console.log(input);
 
     conn.query(
-      'select disk_io_read_bytes/1024/1024 as read_bytes, disk_io_write_bytes/1024/1024 as write_bytes, ts_create from tbl_disk_io where system="system" and disk_io_name='+input, (err, data) => {
+      'select disk_io_read_bytes/1024/1024 as read_bytes, disk_io_write_bytes/1024/1024 as write_bytes, ts_create from tbl_disk_io where system=? and disk_io_name="nvme0n1p1"',[input], (err, data) => {
       if (err) {
       console.log("데이터 가져오기 실패");
     } else {
