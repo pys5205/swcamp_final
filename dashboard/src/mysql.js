@@ -31,8 +31,10 @@ app.post('/data', (req,res) => {
     })
 })
 app.post('/server', (req,res) => {
+  var sys = req.body.system;
+  console.log(sys);
   var resData = {};
-    conn.query('SELECT * FROM tbl_cpu where system="system" order by ts_create asc', (err, data) => {
+    conn.query('SELECT * FROM tbl_cpu where system=? order by ts_create asc',[sys], (err, data)=> {
       if (err) {
       console.log("데이터 가져오기 실패");
     } else {

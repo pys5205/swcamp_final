@@ -26,7 +26,7 @@ export default class App extends React.Component{
                     alert("오류");
                   } else {
                   //////////////////////////////////여기부터보자
-                  console.log(json);
+                  // console.log(json);
                     this.setState({
                       isLoaded: true,
                      data : json
@@ -36,7 +36,7 @@ export default class App extends React.Component{
   }
   render() {
       const listItems = this.state.data.map((data) => (
-        <Route path={`/list/${data.company}`} element={<ServerList /> } />
+        <Route path={`/list/${data.system}`} element={<ServerList /> } />
         ));
   return (
   // <div className="App">
