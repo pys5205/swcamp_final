@@ -52,6 +52,7 @@ export default class detailcpuchart extends React.Component {
     return(
             <Chart
             type= 'area'
+            height= "300"
             series={ [
                 { name: "cpu_sys",
                   data: Data.cpu_sys,

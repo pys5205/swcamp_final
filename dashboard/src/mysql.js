@@ -42,6 +42,12 @@ app.post('/server', (req,res) => {
       resData.cpu_sys =[];
       resData.cpu_per =[];
       resData.cpu_user =[];
+      resData.cpu_wait =[];
+      resData.cpu_irq =[];
+      resData.cpu_softirq =[];
+      resData.cpu_loadavg_1 =[];
+      resData.cpu_loadavg_5 =[];
+      resData.cpu_loadavg_15 =[];
       resData.ts_insert =[];
       resData.ts_create = [];
       if(data[0]){
@@ -50,6 +56,12 @@ app.post('/server', (req,res) => {
           resData.cpu_sys.push(val.cpu_sys);
           resData.cpu_per.push(val.cpu_per);
           resData.cpu_user.push(val.cpu_user);
+          resData.cpu_wait.push(val.cpu_wait);
+          resData.cpu_irq.push(val.cpu_irq);
+          resData.cpu_softirq.push(val.cpu_softirq);
+          resData.cpu_loadavg_1.push(val.cpu_loadavg_1);
+          resData.cpu_loadavg_5.push(val.cpu_loadavg_5);
+          resData.cpu_loadavg_15.push(val.cpu_loadavg_15);
           resData.ts_insert.push(val.ts_insert);
           resData.ts_create.push(val.ts_create);
         });
