@@ -115,7 +115,7 @@ app.post('/disk', (req,res) => {
   var input = req.body.system;
 
     conn.query(
-      'select disk_io_read_bytes/1024/1024 as read_bytes, disk_io_write_bytes/1024/1024 as write_bytes, ts_create from tbl_disk_io where system=? and disk_io_name="nvme0n1p1"',[input], (err, data) => {
+      'select avg(disk_io_read_bytes)/1024/1024 as read_bytes, avg(disk_io_write_bytes)/1024/1024 as write_bytes, ts_create from tbl_disk_io where system=? group by ts_create',[input], (err, data) => {
       if (err) {
       console.log("데이터 가져오기 실패");
     } else {

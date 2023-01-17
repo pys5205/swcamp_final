@@ -59,7 +59,7 @@ while(1):
     
     # kafka 사용
     producer.send(
-        "metrics1_1",
+        "metrics",
         key = hostname,
         value = cpu_info
     )
@@ -81,7 +81,7 @@ while(1):
     # print(mem_info)
 
     producer.send(
-        "metrics1_1",
+        "metrics",
         key = hostname,
         value = mem_info
     )
@@ -120,7 +120,7 @@ while(1):
     
     # print(procs_info)
     producer.send(
-        "metrics1_1",
+        "metrics",
         key = hostname,
         value = procs_info
     )
@@ -163,7 +163,7 @@ while(1):
     
     # kafka 사용
     producer.send(
-        "metrics1_1",
+        "metrics",
         key = hostname,
         value = disk_info
     )
@@ -212,7 +212,7 @@ while(1):
 
     #print(net_info)
     producer.send(
-        "metrics1_1",
+        "metrics",
         key = hostname,
         value = net_info
     )

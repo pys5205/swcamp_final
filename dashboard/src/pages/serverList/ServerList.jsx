@@ -49,9 +49,6 @@ export default function ServerList() {
                     <div className="diskNav">
                         <p>디스크</p><Button variant="outlined" className="detailButton"onClick={handleClickDisk}>상세보기</Button>
                     </div>
-                    <div className="diskIoName">
-                        <DiskIo />
-                    </div>
                     <DiskChart />
                 </div>
                 <div className="net">

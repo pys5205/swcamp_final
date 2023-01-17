@@ -2,12 +2,11 @@
     padding-top:100px;
     display:fixed;
     position:absolute;
-    margin-left:250px;
+    left:25%;
 }
 
 .cpu_mem {
     display:flex;
-    
 }
 .cpu{
     position:absolute;
