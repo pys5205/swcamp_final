@@ -55,6 +55,7 @@ export default class cpuchart extends React.Component {
           <div className="mixed-chart">
             <Chart
              type="line"
+             height="250"
             series={ [
                 { name: "cpu퍼센트",
                   data: Data.cpu_per,

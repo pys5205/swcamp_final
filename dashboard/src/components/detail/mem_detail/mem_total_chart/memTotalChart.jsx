@@ -1,5 +1,5 @@
 import React from 'react'
-
+import './memtotalchart.css'
 export default class detailcpuavg extends React.Component {
   constructor(props) {
     super(props);
@@ -40,11 +40,11 @@ export default class detailcpuavg extends React.Component {
     
     // console.log(this.state.data);
     const Data = this.state.data;
-    console.log(Data.mem_total);
+    console.log(Data.total/1024/1024);
     //console.log(Data);
     return(
            <div className="circle">
-                
+                {Data.total}
            </div>
     )
   }

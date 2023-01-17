@@ -1,0 +1,9 @@
+.circle{
+    width:200px;
+    height:200px;
+    border-radius:50%;
+    background-color:#6667AB;
+    text-align:center;
+    line-height:200px;
+    color:white;
+}

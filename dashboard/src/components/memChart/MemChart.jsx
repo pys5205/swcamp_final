@@ -55,11 +55,11 @@ export default class memchart extends React.Component {
           <div className="donut">
             <Chart
              type="pie"
+             height="300"
               series={test } 
             options={{
                 labels: ['사용중', '빈공간', '버퍼', '캐시']
             }}
-            width ="380"
             />
           </div>
         </div>

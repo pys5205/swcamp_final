@@ -54,6 +54,7 @@ export default class diskchart extends React.Component {
           <div className="mixed-chart">
             <Chart
              type="line"
+             height= "270"
             series={ [
                 { name: "전송 속도",
                   data: Data.bytes_sent,

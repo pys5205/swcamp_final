@@ -55,6 +55,7 @@ export default class diskchart extends React.Component {
           <div className="mixed-chart">
             <Chart
              type="line"
+             height= "280"
             series={ [
                 { name: "io읽기",
                   data: Data.read_bytes,
@@ -65,7 +66,7 @@ export default class diskchart extends React.Component {
                 ]} 
             options={{    
                 chart : {
-                    height: 300,
+                    
                     width: 300,                    
                 },
                  stroke: { //선의 커브를 부드럽게 하고, 두께를 3으로 지정

@@ -58,9 +58,9 @@ export default function ServerList() {
                     <NetChart />
                 </div>
             </div>
-            <div className="proc">
-                <ProcsChart />
-            </div>
+        </div>
+        <div className="proc">
+            <ProcsChart />
         </div>
     </div>
     )
