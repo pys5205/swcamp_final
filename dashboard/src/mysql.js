@@ -113,7 +113,6 @@ app.post('/memory', (req,res) => {
 app.post('/disk', (req,res) => {
   var resData = {};
   var input = req.body.system;
-
     conn.query(
       'select avg(disk_io_read_bytes)/1024/1024 as read_bytes, avg(disk_io_write_bytes)/1024/1024 as write_bytes, ts_create from tbl_disk_io where system=? group by ts_create',[input], (err, data) => {
       if (err) {
@@ -142,6 +141,88 @@ app.post('/disk', (req,res) => {
     })
 })
 
+app.post('/disk/io_count', (req,res) => {
+  var resData = {};
+  var input = req.body.system;
+    conn.query(
+      'select disk_io_read_count as read_count, disk_io_write_count as write_count, ts_create from tbl_disk_io where system=? and disk_io_name = "nvme0n1"',[input], (err, data) => {
+      if (err) {
+      console.log("데이터 가져오기 실패");
+    } else {
+      resData.read_count = [];
+      resData.write_count = [];
+      resData.ts_create = [];
+      if(data[0]){
+        resData.ok = "true";
+        data.forEach(function(val){
+          resData.read_count.push(parseInt(val.read_count));
+          resData.write_count.push(parseInt(val.write_count));
+          resData.ts_create.push(val.ts_create);
+        });
+      }else{
+        resData.ok="false"
+      }
+    }
+    // console.log(resData);
+    return res.json(resData);
+    })
+})
+
+app.post('/disk/io_bytes', (req,res) => {
+  var resData = {};
+  var input = req.body.system;
+    conn.query(
+      'select disk_io_read_bytes/1024/1024 as read_bytes, disk_io_write_bytes/1024/1024 as write_bytes, ts_create from tbl_disk_io where system=? and disk_io_name = "nvme0n1"',[input], (err, data) => {
+      if (err) {
+      console.log("데이터 가져오기 실패");
+    } else {
+      resData.read_bytes = [];
+      resData.write_bytes = [];
+      resData.ts_create = [];
+      if(data[0]){
+        resData.ok = "true";
+        data.forEach(function(val){
+          resData.read_bytes.push(parseInt(val.read_bytes));
+          resData.write_bytes.push(parseInt(val.write_bytes));
+          resData.ts_create.push(val.ts_create);
+        });
+      }else{
+        resData.ok="false"
+      }
+    }
+    return res.json(resData);
+    })
+})
+
+app.post('/disk/io_time', (req,res) => {
+  var resData = {};
+  var input = req.body.system;
+    conn.query(
+      'select disk_io_read_time, disk_io_write_time, disk_io_busy_time, ts_create from tbl_disk_io where system=? and disk_io_name="nvme0n1"',[input], (err, data) => {
+      if (err) {
+      console.log("데이터 가져오기 실패");
+    } else {
+      resData.read_time = [];
+      resData.write_time = [];
+      resData.busy_time = [];
+      resData.ts_create = [];
+      if(data[0]){
+        resData.ok = "true";
+        data.forEach(function(val){
+          resData.read_time.push(parseInt(val.disk_io_read_time));
+          resData.write_time.push(parseInt(val.disk_io_write_time));
+          resData.busy_time.push(parseInt(val.disk_io_busy_time));
+          resData.ts_create.push(val.ts_create);
+        });
+      }else{
+        resData.ok="false"
+      }
+    }
+    // console.log(resData);
+    return res.json(resData);
+    })
+})
+const test = '';
 app.post('/disk/io/name', (req,res) => {
     conn.query(
       'select distinct(disk_io_name) from tbl_disk_io where system="system"', (err, data) => {

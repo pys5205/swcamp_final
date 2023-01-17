@@ -3,16 +3,6 @@ import React, { Component } from "react";
 
 
 export default class disk_io_select extends React.Component {
-    state = {
-    testbody: "",
-  }
-  
-  handleChange =(e)=> {
-    this.setState({
-      [e.target.name] : e.target.value,
-      });
-  }
-  
   constructor(props) {
     super(props);
     this.state = {
@@ -43,14 +33,13 @@ export default class disk_io_select extends React.Component {
       });
   }
 
-
   render() {
     // console.log(this.state.data);
     const Data = this.state.data;
     
-    // const handleChange = (event) => {
-    //     alert(event.target.value);
-    // }
+    const handleChange = (event) => {
+        alert(event.target.value);
+    }
 
     const content= this.state.data.map((data) => (
         <option value={data.disk_io_name} name={data.disk_io_name}>{data.disk_io_name}</option>
@@ -58,7 +47,7 @@ export default class disk_io_select extends React.Component {
     
    //  console.log(Data);
     return(
-      <select onChange={this.handleChange}>
+      <select onChange={handleChange}>
         {content}
       </select>
     )
