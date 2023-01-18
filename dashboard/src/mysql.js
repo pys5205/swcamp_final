@@ -30,6 +30,7 @@ app.post('/data', (req,res) => {
     }
     })
 })
+
 app.post('/server', (req,res) => {
   var sys = req.body.system;
   console.log(sys);
@@ -145,7 +146,7 @@ app.post('/disk/io_count', (req,res) => {
   var resData = {};
   var input = req.body.system;
     conn.query(
-      'select disk_io_read_count as read_count, disk_io_write_count as write_count, ts_create from tbl_disk_io where system=? and disk_io_name = "nvme0n1"',[input], (err, data) => {
+      'select disk_io_read_count as read_count, disk_io_write_count as write_count, ts_create from tbl_disk_io where system=? and disk_io_name = "nvme0n1" order by ts_create asc',[input], (err, data) => {
       if (err) {
       console.log("데이터 가져오기 실패");
     } else {
@@ -172,7 +173,7 @@ app.post('/disk/io_bytes', (req,res) => {
   var resData = {};
   var input = req.body.system;
     conn.query(
-      'select disk_io_read_bytes/1024/1024 as read_bytes, disk_io_write_bytes/1024/1024 as write_bytes, ts_create from tbl_disk_io where system=? and disk_io_name = "nvme0n1"',[input], (err, data) => {
+      'select disk_io_read_bytes/1024/1024 as read_bytes, disk_io_write_bytes/1024/1024 as write_bytes, ts_create from tbl_disk_io where system=? and disk_io_name = "nvme0n1" order by ts_create asc',[input], (err, data) => {
       if (err) {
       console.log("데이터 가져오기 실패");
     } else {
@@ -198,7 +199,7 @@ app.post('/disk/io_time', (req,res) => {
   var resData = {};
   var input = req.body.system;
     conn.query(
-      'select disk_io_read_time, disk_io_write_time, disk_io_busy_time, ts_create from tbl_disk_io where system=? and disk_io_name="nvme0n1"',[input], (err, data) => {
+      'select disk_io_read_time, disk_io_write_time, disk_io_busy_time, ts_create from tbl_disk_io where system=? and disk_io_name="nvme0n1" order by ts_create asc',[input], (err, data) => {
       if (err) {
       console.log("데이터 가져오기 실패");
     } else {
@@ -222,7 +223,36 @@ app.post('/disk/io_time', (req,res) => {
     return res.json(resData);
     })
 })
-const test = '';
+
+app.post('/disk/part', (req,res) => {
+  var resData = {};
+  var input = req.body.system;
+    conn.query(
+      'select disk_io_read_time, disk_io_write_time, disk_io_busy_time, ts_create from tbl_disk_io where system=? and disk_io_name="nvme0n1" order by ts_create asc',[input], (err, data) => {
+      if (err) {
+      console.log("데이터 가져오기 실패");
+    } else {
+      resData.read_time = [];
+      resData.write_time = [];
+      resData.busy_time = [];
+      resData.ts_create = [];
+      if(data[0]){
+        resData.ok = "true";
+        data.forEach(function(val){
+          resData.read_time.push(parseInt(val.disk_io_read_time));
+          resData.write_time.push(parseInt(val.disk_io_write_time));
+          resData.busy_time.push(parseInt(val.disk_io_busy_time));
+          resData.ts_create.push(val.ts_create);
+        });
+      }else{
+        resData.ok="false"
+      }
+    }
+    // console.log(resData);
+    return res.json(resData);
+    })
+})
+
 app.post('/disk/io/name', (req,res) => {
     conn.query(
       'select distinct(disk_io_name) from tbl_disk_io where system="system"', (err, data) => {
@@ -262,6 +292,37 @@ app.post('/network', (req,res) => {
       
     }
     //console.log(resData);
+    return res.json(resData);
+    })
+})
+
+app.post('/network/io_bytes', (req,res) => {
+  var resData = {};
+  var input = req.body.system;
+    conn.query(
+      'select round(net_bytes_sent/1024/1024, 2) as net_bytes_sent, round(net_bytes_recv/1024/1024, 2) as net_bytes_recv, ts_create from tbl_net_io where system = ?',[input], (err, data) => {
+      if (err) {
+      console.log("데이터 가져오기 실패");
+    } else {
+      // console.log(data);
+      resData.bytes_sent = [];
+      resData.bytes_recv = [];
+      resData.ts_create = [];
+      if(data[0]){
+        resData.ok = "true";
+        data.forEach(function(val){
+          resData.bytes_sent.push(parseInt(val.net_bytes_sent));
+          resData.bytes_recv.push(parseInt(val.net_bytes_recv));
+          resData.ts_create.push(val.ts_create);
+        });
+      }else{
+        resData.ok="false"
+      }
+      // var df = new dfd.DataFrame(data)
+      // console.log(df)
+      
+    }
+    // console.log(resData);
     return res.json(resData);
     })
 })
