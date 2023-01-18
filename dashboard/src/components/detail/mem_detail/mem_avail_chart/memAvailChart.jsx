@@ -1,15 +1,7 @@
 import React from 'react'
-import './memChart.css'
 import Chart from "react-apexcharts";
 
-// import * as dfd from "danfojs";
-
-// function createData(ts_insert, system, cpu_per, cpu_sys, cpu_user, cpu_wait, cpu_irq, cpu_softirq, cpu_loadavg_1,cpu_loadavg_5, cpu_loadavg_15, ts_create  ) {
-//     return {ts_insert, system, cpu_per, cpu_sys, cpu_user, cpu_wait, cpu_irq, cpu_softirq, cpu_loadavg_1,cpu_loadavg_5, cpu_loadavg_15, ts_create };
-//     }
-// var test = [];
-
-export default class memchart extends React.Component {
+export default class memavilchart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,8 +13,7 @@ export default class memchart extends React.Component {
    const current = decodeURI(window.location.href);
    // console.log(current.split('/')[4])
    const system = current.split('/')[4];
-    const interval = setInterval(async () => {
-  fetch("/memory", { 
+  fetch("/detail/memory", { 
       method: "post", //통신방법
       headers: {
         "content-type": "application/json",
@@ -44,29 +35,37 @@ export default class memchart extends React.Component {
                     })
                   }
       });
- }, 1000);
-    return () => clearInterval(interval);
   }
   render() {
     // console.log(this.state.data);
     const Data = this.state.data;
-    const test = Data.server_memory;
     // console.log(test);
     return(
-      <div className="app">
-        <div className="row">
-          <div className="donut">
             <Chart
-             type="pie"
-             height="300"
-              series={test } 
+             type='area'
+             height="200"
+              series={ [
+                { name: "mem_avail",
+                  data: Data.mem_avail ,
+                },
+                ]} 
             options={{
-                labels: ['사용중', '빈공간', '버퍼', '캐시']
+                legend: {
+                  position: 'top',
+                  horizontalAlign: 'left'
+                },
+                tooltip: {
+                  x: {
+                    format: "dd/MM/yy HH:mm",
+                  },
+                },
+                xaxis: {
+                type: "datetime",
+                  categories: Data.ts_create
+                },
             }}
             />
-          </div>
-        </div>
-      </div>
+
     )
   }
 }

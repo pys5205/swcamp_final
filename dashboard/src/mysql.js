@@ -30,9 +30,10 @@ app.post('/data', (req,res) => {
     }
     })
 })
+
 app.post('/server', (req,res) => {
   var sys = req.body.system;
-  console.log(sys);
+  // console.log(sys);
   var resData = {};
     conn.query('SELECT * FROM tbl_cpu where system=? order by ts_create asc',[sys], (err, data)=> {
       if (err) {
@@ -63,6 +64,43 @@ app.post('/server', (req,res) => {
           resData.cpu_loadavg_5.push(val.cpu_loadavg_5);
           resData.cpu_loadavg_15.push(val.cpu_loadavg_15);
           resData.ts_insert.push(val.ts_insert);
+          resData.ts_create.push(val.ts_create);
+        });
+      }else{
+        resData.ok="false"
+      }
+      // var df = new dfd.DataFrame(data)
+      // console.log(df)
+      
+    }
+    // console.log(resData);
+    return res.json(resData);
+    })
+})
+
+app.post('/detail/memory', (req,res) => {
+  var sys = req.body.system;
+  // console.log(sys);
+  var resData = {};
+    conn.query('SELECT mem_used, mem_avail, mem_free,mem_buffer, mem_cached, ts_create FROM tbl_memory where system=? order by ts_create asc',[sys], (err, data)=> {
+      if (err) {
+      console.log("데이터 가져오기 실패");
+    } else {
+      // console.log(data);
+      resData.mem_used =[];
+      resData.mem_avail =[];
+      resData.mem_free =[];
+      resData.mem_buffer =[];
+      resData.mem_cached =[];
+      resData.ts_create = [];
+      if(data[0]){
+        resData.ok = "true";
+        data.forEach(function(val){
+          resData.mem_used.push(val.mem_used);
+          resData.mem_avail.push(val.mem_avail);
+          resData.mem_free.push(val.mem_free);
+          resData.mem_buffer.push(val.mem_buffer);
+          resData.mem_cached.push(val.mem_cached);
           resData.ts_create.push(val.ts_create);
         });
       }else{
@@ -222,7 +260,7 @@ app.post('/disk/io_time', (req,res) => {
     return res.json(resData);
     })
 })
-const test = '';
+
 app.post('/disk/io/name', (req,res) => {
     conn.query(
       'select distinct(disk_io_name) from tbl_disk_io where system="system"', (err, data) => {
@@ -337,13 +375,6 @@ app.post('/list/cpu', (req,res) => {
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
-});
-
-app.post("/text", (req, res) => {
-  const user_id = req.body.inText;
-  // console.log(user_id);
-  //////query문 추가할 곳/////
-  
 });
 
 app.listen(port, () => {
