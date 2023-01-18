@@ -45,7 +45,7 @@ export default class mainchart extends React.Component {
   }
   render() {
     const Data = this.state.data;
-    console.log(Data);
+    // console.log(Data);
     return(
             <Chart
              type="bar"

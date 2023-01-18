@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import './cpuChart.css'
 import Chart from "react-apexcharts";
 
@@ -17,10 +17,11 @@ export default class cpuchart extends React.Component {
     };
   }
   
- componentDidMount(){
+componentDidMount(){
   const current = decodeURI(window.location.href);
   const server = current.split('/')[4];
-  fetch("/server", { 
+    const interval = setInterval(async () => {
+      fetch("/server", { 
       method: "post", //통신방법
       headers: {
         "content-type": "application/json",
@@ -43,12 +44,12 @@ export default class cpuchart extends React.Component {
                     })
                   }
       });
-  }
+    }, 1000);
+    return () => clearInterval(interval);
+}
   render() {
-    
     // console.log(this.state.data);
     const Data = this.state.data;
-    //console.log(Data);
     return(
       <div className="app">
         <div className="row">
@@ -62,25 +63,24 @@ export default class cpuchart extends React.Component {
                 },
                 ]} 
             options={{    
-                chart : {
-                    height: 300,
-                    width: 300,                    
-                },
                  stroke: { //선의 커브를 부드럽게 하고, 두께를 3으로 지정
                     curve: "smooth",
                     width: 1,
                 },
                 tooltip: {
                   x: {
-                    format: "dd/MM/yy HH:mm",
+                    format: "yy/MM/dd HH:mm:ss",
                   },
                 },
                 grid: { //격자 없앰
                     show:false,
                 },
                 xaxis: {
-                type: "datetime",
-                  categories: Data.ts_create
+                  categories: Data.ts_create,
+                  range:4,
+                  axisBorder: { show: false },
+                  axisTicks: { show: false },
+                  labels: { show: false },
                 }
             }}
             />

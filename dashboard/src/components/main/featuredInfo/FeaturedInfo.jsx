@@ -26,7 +26,7 @@ export default class featured extends React.Component {
                     alert("오류");
                   } else {
                   //////////////////////////////////여기부터보자
-                  console.log(json);
+                //   console.log(json);
                     this.setState({
                       isLoaded: true,
                      data : json
@@ -36,7 +36,7 @@ export default class featured extends React.Component {
   }
     render() {
     const Data = this.state.data;
-    console.log(Data);
+    // console.log(Data);
     const columns = [
         {
             title: "company",
