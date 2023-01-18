@@ -6,6 +6,7 @@ import ServerList from './pages/serverList/ServerList'
 import ServerCPU from './pages/server_cpu/ServerCPU'
 import ServerMEM from './pages/server_mem/ServerMem'
 import ServerDISK from './pages/server_disk/ServerDisk'
+import ServerNET from './pages/server_net/ServerNet'
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 export default class App extends React.Component{
@@ -50,6 +51,9 @@ export default class App extends React.Component{
       const listDISK = this.state.data.map((data) => (
             <Route path={`/list/${data.system}/disk`} element={<ServerDISK /> } />
       ));
+      const listNET = this.state.data.map((data) => (
+            <Route path={`/list/${data.system}/net`} element={<ServerNET /> } />
+      ));
   return (
   // <div className="App">
     <Router>
@@ -63,6 +67,7 @@ export default class App extends React.Component{
             {listCPU}
             {listMEM}
             {listDISK}
+            {listNET}
           </Routes>
       </div>
     </Router>
