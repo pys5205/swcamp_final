@@ -1,8 +1,7 @@
 import React from 'react'
-import './procsChart.css'
 import MaterialTable from "material-table";
 
-export default class ProcsChart extends React.Component {
+export default class NetCon extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -14,7 +13,7 @@ componentDidMount(){
   const current = decodeURI(window.location.href);
   const server = current.split('/')[4];
     const interval = setInterval(async () => {
-      fetch("/process", { 
+      fetch("/network/con", { 
       method: "post", //통신방법
       headers: {
         "content-type": "application/json",
@@ -46,29 +45,20 @@ componentDidMount(){
     //console.log(Data.procs_name);
     const columns = [
         {
-            title: "user",
-            field: "procs_username",
- 
+            title: "fd",
+            field: "net_con_fd",
         },
          {
-            title: "이름",
-            field: "procs_name",
+            title: "laddr_port",
+            field: "net_con_laddr_port",
         },
          {
-            title: "pid",
-            field: "procs_pid",
-        },
-         {
-            title: "ppid",
-            field: "procs_ppid",
+            title: "laddr_ip",
+            field: "net_con_laddr_ip",
         },
          {
             title: "상태",
-            field: "procs_status",
-        },
-         {
-            title: "메모리사용량",
-            field: "procs_mem_full_uss",
+            field: "net_con_status",
         },
         {
             title: "시간",
@@ -78,7 +68,7 @@ componentDidMount(){
         //console.log(columns);
     return(
         <MaterialTable 
-        title="프로세스"
+        title="네트워크 연결"
         data={Data}
         columns={columns}
         options={{

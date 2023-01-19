@@ -17,18 +17,19 @@ export default class diskchart extends React.Component {
     };
   }
   
- componentDidMount(){
-   const current = decodeURI(window.location.href);
-   // console.log(current.split('/')[4])
-   const system = current.split('/')[4];
-  fetch("/disk", { 
+componentDidMount(){
+  const current = decodeURI(window.location.href);
+  const server = current.split('/')[4];
+    const interval = setInterval(async () => {
+      fetch("/disk", { 
       method: "post", //통신방법
       headers: {
         "content-type": "application/json",
       },
       body: JSON.stringify({
-        'system' : system
-      }),
+        'system' : server
+      }
+        ),
     })
       .then((res) => res.json())
       .then((json) => {
@@ -36,19 +37,21 @@ export default class diskchart extends React.Component {
                     alert("오류");
                   } else {
                   //////////////////////////////////여기부터보자
+                  // console.log(json);
                     this.setState({
                       isLoaded: true,
                      data : json
-                     
                     })
-                    // console.log(json);
                   }
       });
-  }
+    }, 2000);
+    return () => clearInterval(interval);
+}
   render() {
     // console.log(this.state.data);
     const Data = this.state.data;
-    //console.log(Data);
+    const time = Data.ts_create;
+    
     return(
       <div className="app">
         <div className="row">
@@ -66,7 +69,6 @@ export default class diskchart extends React.Component {
                 ]} 
             options={{    
                 chart : {
-                    
                     width: 300,                    
                 },
                  stroke: { //선의 커브를 부드럽게 하고, 두께를 3으로 지정
@@ -84,6 +86,7 @@ export default class diskchart extends React.Component {
                 xaxis: {
                   categories: Data.ts_create,
                    labels: { show: false },
+
                 }
             }}
             />

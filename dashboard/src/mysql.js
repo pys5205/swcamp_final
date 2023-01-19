@@ -364,6 +364,63 @@ app.post('/network/io_bytes', (req,res) => {
     })
 })
 
+app.post('/network/io_packets', (req,res) => {
+  var resData = {};
+  var input = req.body.system;
+    conn.query(
+      'select net_packets_sent, net_packets_recv, ts_create from tbl_net_io where system = ?',[input], (err, data) => {
+      if (err) {
+      console.log("데이터 가져오기 실패");
+    } else {
+      // console.log(data);
+      resData.packets_sent = [];
+      resData.packets_recv = [];
+      resData.ts_create = [];
+      if(data[0]){
+        resData.ok = "true";
+        data.forEach(function(val){
+          resData.packets_sent.push(parseInt(val.net_packets_sent));
+          resData.packets_recv.push(parseInt(val.net_packets_recv));
+          resData.ts_create.push(val.ts_create);
+        });
+      }else{
+        resData.ok="false"
+      }
+      // var df = new dfd.DataFrame(data)
+      // console.log(df)
+      
+    }
+    // console.log(resData);
+    return res.json(resData);
+    })
+})
+
+app.post('/network/if', (req,res) => {
+  var resData = {};
+  var input = req.body.system;
+    conn.query('SELECT net_if_name, net_if_address, net_if_netmask, net_if_broadcast, ts_create FROM tbl_net_if where ts_create = (select max(ts_create) from tbl_net_if) and system = ?',[input], (err, data) => {
+      if (err) {
+      console.log("데이터 가져오기 실패");
+    } else {
+      // console.log(data);
+      res.send(data);
+    }
+    })
+})
+
+app.post('/network/con', (req,res) => {
+  var resData = {};
+  var input = req.body.system;
+    conn.query('SELECT net_con_fd, net_con_laddr_port, net_con_laddr_ip, net_con_raddr_port, net_con_raddr_ip, net_con_status, ts_create FROM tbl_net_con where ts_create = (select max(ts_create) from tbl_net_con) and system = ?',[input], (err, data) => {
+      if (err) {
+      console.log("데이터 가져오기 실패");
+    } else {
+      // console.log(data);
+      res.send(data);
+    }
+    })
+})
+
 app.post('/process', (req,res) => {
   var resData = {};
   var input = req.body.system;

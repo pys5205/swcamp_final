@@ -1,8 +1,7 @@
 import React from 'react'
-import './procsChart.css'
 import MaterialTable from "material-table";
 
-export default class ProcsChart extends React.Component {
+export default class NetIf extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -14,7 +13,7 @@ componentDidMount(){
   const current = decodeURI(window.location.href);
   const server = current.split('/')[4];
     const interval = setInterval(async () => {
-      fetch("/process", { 
+      fetch("/network/if", { 
       method: "post", //통신방법
       headers: {
         "content-type": "application/json",
@@ -46,29 +45,20 @@ componentDidMount(){
     //console.log(Data.procs_name);
     const columns = [
         {
-            title: "user",
-            field: "procs_username",
- 
-        },
-         {
             title: "이름",
-            field: "procs_name",
+            field: "net_if_name",
         },
          {
-            title: "pid",
-            field: "procs_pid",
+            title: "주소",
+            field: "net_if_address",
         },
          {
-            title: "ppid",
-            field: "procs_ppid",
+            title: "넷마스크",
+            field: "net_if_netmask",
         },
          {
-            title: "상태",
-            field: "procs_status",
-        },
-         {
-            title: "메모리사용량",
-            field: "procs_mem_full_uss",
+            title: "브로드캐스트",
+            field: "net_if_broadcast",
         },
         {
             title: "시간",
@@ -78,14 +68,14 @@ componentDidMount(){
         //console.log(columns);
     return(
         <MaterialTable 
-        title="프로세스"
+        title="네트워크 인터페이스"
         data={Data}
         columns={columns}
         options={{
           selection: true
         }}
         pageSize={5}
-        rowsPerPageOptions={[5]}
+        rowsPerPageOptions={[4]}
         />
         )
 }
