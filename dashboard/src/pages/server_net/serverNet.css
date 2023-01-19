@@ -10,14 +10,42 @@
   transform: translate(-50%, -50%);
 }
 .net_firstpart{
+    margin-top:350px;
     display:flex;
     margin-bottom:30px;
-    height:200px;
+    height:300px;
 }
 .net_io_bytes{
     width:500px;
     height:300px;
     margin-right:10px;
+     -webkit-box-shadow: 0px 0px 12px -2px #000000; 
+    box-shadow: 0px 0px 12px -2px #000000;
+}
+.net_io_packets{
+    width:500px;
+    height:300px;
+    margin-right:10px;
+     -webkit-box-shadow: 0px 0px 12px -2px #000000; 
+    box-shadow: 0px 0px 12px -2px #000000;
+}
+.net_secondpart{
+    display:flex;
+    margin-bottom:30px;
+    height:420px;
+}
+.net_interface{
+    width:990px;
+     -webkit-box-shadow: 0px 0px 12px -2px #000000; 
+    box-shadow: 0px 0px 12px -2px #000000;
+}
+.net_thirdpart{
+    display:flex;
+    margin-bottom:30px;
+    height:420;
+}
+.net_con{
+    width:990px;
      -webkit-box-shadow: 0px 0px 12px -2px #000000; 
     box-shadow: 0px 0px 12px -2px #000000;
 }
