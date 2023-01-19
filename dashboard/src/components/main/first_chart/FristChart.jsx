@@ -38,11 +38,11 @@ export default class firstchart extends React.Component {
     return(
                  <Chart
                      type="radialBar"
+                     height="300"
                      series={ [
                          Data.cpu_per
                         ]} 
                     options={{
-                        height: 350,
                         labels:["CPU"],
                         colors: ["#20E647"],
                         plotOptions: {

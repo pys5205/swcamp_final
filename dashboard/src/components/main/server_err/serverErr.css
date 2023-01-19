@@ -1,0 +1,25 @@
+.servererr{
+    padding-top:50px;
+    display:flex;
+    justify-content: space-between;
+    
+}
+
+.count{
+    font-size:30px;
+    padding-left: 50px;
+    padding-top:20px;
+}
+.server{
+    padding-left:10px;
+}
+.server p{
+    font-size:15px;
+}
+.icon{
+    padding-right:15px;
+}
+.button{
+    padding-top:15px;
+    text-align:center;
+}

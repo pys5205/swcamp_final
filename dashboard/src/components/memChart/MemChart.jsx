@@ -53,9 +53,6 @@ export default class memchart extends React.Component {
     const test = Data.server_memory;
     // console.log(test);
     return(
-      <div className="app">
-        <div className="row">
-          <div className="donut">
             <Chart
              type="pie"
              height="300"
@@ -64,9 +61,6 @@ export default class memchart extends React.Component {
                 labels: ['사용중', '빈공간', '버퍼', '캐시']
             }}
             />
-          </div>
-        </div>
-      </div>
     )
   }
 }

@@ -379,20 +379,23 @@ app.post('/process', (req,res) => {
 
 app.post('/list/os', (req,res) => {
   var resData = {};
-    conn.query('SELECT count(os) as cnt_os, os, company, ts_insert, ts_create FROM tbl_sys_info', (err, data) => {
+    conn.query('SELECT count(case when os = "centos" then 1 end) as cent_os,count(case when os = "ubuntu" then 1 end) as ubuntu_os, count(os) as cnt_os,os, company, ts_insert, ts_create FROM tbl_sys_info', (err, data) => {
       if (err) {
       console.log("데이터 가져오기 실패");
     } else {
       // console.log(data);
       resData.os =[];
       resData.cnt_os =[];
+      resData.count_os =[];
       resData.company =[];
       resData.ts_insert =[];
       resData.ts_create = [];
       if(data[0]){
         resData.ok = "true";
         data.forEach(function(val){
-          resData.cnt_os.push(val.cnt_os);
+          resData.cnt_os.push(val.cent_os);
+          resData.cnt_os.push(val.ubuntu_os);
+          resData.count_os.push(val.cnt_os);
           resData.os.push(val.os);
           resData.company.push(val.company);
           resData.ts_insert.push(val.ts_insert);

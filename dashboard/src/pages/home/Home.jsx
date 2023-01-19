@@ -3,7 +3,9 @@ import './home.css'
 import MainChart from '../../components/main/main_chart/MainChart'
 import FeaturedInfo from '../../components/main/featuredInfo/FeaturedInfo'
 import FristChart from '../../components/main/first_chart/FristChart'
-import SecondChart from '../../components/main/second_chart/SecondChart'
+import ServerCnt from '../../components/main/server_cnt/ServerCnt'
+import ServerErr from '../../components/main/server_err/ServerErr'
+
 
 export default function Home() {
     return (
@@ -14,6 +16,12 @@ export default function Home() {
                     <FristChart />
                 </div>
                 <div className="tt">
+                    <div className="normal">
+                        <ServerCnt />
+                    </div>
+                    <div className="error">
+                        <ServerErr />
+                    </div>
                    
                 </div>
         </div>
@@ -29,13 +37,6 @@ export default function Home() {
             </div>
         </div>
         
-        <div className="thirdchartComp">
-                <div className="compfirst">
-                 <SecondChart />
-                </div>
-                <div className="compsecond">
-                </div>
-        </div>
     </div>
     )
 }
