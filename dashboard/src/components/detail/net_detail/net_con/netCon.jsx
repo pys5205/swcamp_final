@@ -56,14 +56,6 @@ componentDidMount(){
             title: "laddr_ip",
             field: "net_con_laddr_ip",
         },
-        {
-            title: "raddr_port",
-            field: "net_con_raddr_port",
-        },
-        {
-            title: "raddr_ip",
-            field: "net_con_raddr_ip",
-        },
          {
             title: "상태",
             field: "net_con_status",
