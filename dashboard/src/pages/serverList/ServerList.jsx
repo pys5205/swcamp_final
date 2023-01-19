@@ -33,13 +33,13 @@ export default function ServerList() {
             <div className="cpu_mem">
                 <div className="cpu">
                     <div className="cpuNav">
-                        <p>cpu</p><Button variant="outlined" className="detailButton" onClick={handleClickCPU}>상세보기</Button>
+                        <p className="name">cpu</p><Button variant="outlined" className="detailButton" onClick={handleClickCPU}>상세보기</Button>
                     </div>
                     <CpuChart /> 
                 </div>
                 <div className="memory">
                     <div className="memNav">
-                        <p>메모리</p><Button variant="outlined" className="detailButton"onClick={handleClickMem}>상세보기</Button>
+                        <p className="name">메모리</p><Button variant="outlined" className="detailButton"onClick={handleClickMem}>상세보기</Button>
                     </div>
                     <MemChart />
                 </div>
@@ -47,13 +47,13 @@ export default function ServerList() {
             <div className="disk_net">
                 <div className="disk">
                     <div className="diskNav">
-                        <p>디스크</p><Button variant="outlined" className="detailButton"onClick={handleClickDisk}>상세보기</Button>
+                        <p className="name">디스크</p><Button variant="outlined" className="detailButton"onClick={handleClickDisk}>상세보기</Button>
                     </div>
                     <DiskChart />
                 </div>
                 <div className="net">
                     <div className="netNav">
-                        <p>네트워크</p><Button variant="outlined" className="detailButton"onClick={handleClickNet}>상세보기</Button>
+                        <p className="name">네트워크</p><Button variant="outlined" className="detailButton"onClick={handleClickNet}>상세보기</Button>
                     </div>
                     <NetChart />
                 </div>

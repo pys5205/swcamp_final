@@ -18,17 +18,18 @@ export default class diskchart extends React.Component {
   }
   
  componentDidMount(){
-      const current = decodeURI(window.location.href);
-   // console.log(current.split('/')[4])
-   const system = current.split('/')[4];
-  fetch("/network", { 
+  const current = decodeURI(window.location.href);
+  const server = current.split('/')[4];
+    const interval = setInterval(async () => {
+      fetch("/network", { 
       method: "post", //통신방법
       headers: {
         "content-type": "application/json",
       },
       body: JSON.stringify({
-        'system' : system
-      }),
+        'system' : server
+      }
+        ),
     })
       .then((res) => res.json())
       .then((json) => {
@@ -43,7 +44,9 @@ export default class diskchart extends React.Component {
                     })
                   }
       });
-  }
+    }, 2000);
+    return () => clearInterval(interval);
+}
   render() {
     // console.log(this.state.data);
     const Data = this.state.data;
@@ -81,8 +84,8 @@ export default class diskchart extends React.Component {
                     show:false,
                 },
                 xaxis: {
-                type: "datetime",
-                  categories: Data.ts_create
+                  categories: Data.ts_create,
+                  range:4
                 }
             }}
             />
