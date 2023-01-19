@@ -13,6 +13,7 @@ export default class membufferchart extends React.Component {
    const current = decodeURI(window.location.href);
    // console.log(current.split('/')[4])
    const system = current.split('/')[4];
+   const interval = setInterval(async () => {
   fetch("/detail/memory", { 
       method: "post", //통신방법
       headers: {
@@ -35,6 +36,8 @@ export default class membufferchart extends React.Component {
                     })
                   }
       });
+ }, 2000);
+    return () => clearInterval(interval);
   }
   render() {
     // console.log(this.state.data);

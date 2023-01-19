@@ -53,7 +53,9 @@ export default class memchart extends React.Component {
     const test = Data.server_memory;
     // console.log(test);
     return(
+
           <div className="donut">
+
             <Chart
              type="pie"
              height="250"
@@ -63,6 +65,7 @@ export default class memchart extends React.Component {
             }}
             />
           </div>
+
     )
   }
 }

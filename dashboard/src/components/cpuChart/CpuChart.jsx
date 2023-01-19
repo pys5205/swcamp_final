@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import './cpuChart.css'
 import Chart from "react-apexcharts";
 
@@ -77,9 +77,6 @@ componentDidMount(){
                 },
                 xaxis: {
                   categories: Data.ts_create,
-                  range:4,
-                  axisBorder: { show: false },
-                  axisTicks: { show: false },
                   labels: { show: false },
                 }
             }}

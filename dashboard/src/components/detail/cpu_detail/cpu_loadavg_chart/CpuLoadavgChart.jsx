@@ -19,6 +19,7 @@ export default class detailcpuavg extends React.Component {
  componentDidMount(){
   const current = decodeURI(window.location.href);
   const server = current.split('/')[4];
+  const interval = setInterval(async () => {
   fetch("/server", { 
       method: "post", //통신방법햣
       headers: {
@@ -42,6 +43,8 @@ export default class detailcpuavg extends React.Component {
                     })
                   }
       });
+    }, 2000);
+    return () => clearInterval(interval);
   }
   render() {
     
