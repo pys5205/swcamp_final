@@ -212,9 +212,10 @@ while(1):
     # net connections 정보
     net_con_i = psutil.net_connections()
     for x in net_con_i:
-        net_con_info = {"net_con_fd":x.fd, "net_con_family":x.family, "net_con_type":x.type, "net_con_laddr_port":x.laddr.port, "net_con_laddr_ip":x.laddr.ip, "net_con_raddr_port":x.raddr.port, "net_con_raddr_ip":x.raddr.ip, "net_con_status":x.status, "net_con_pid":x.pid}
+        net_con_info = {"net_con_fd":x.fd, "net_con_family":x.family, "net_con_type":x.type, "net_con_laddr_port":x.laddr.port,"net_con_laddr_ip":x.laddr.ip, "net_con_raddr":x.raddr, "net_con_status":x.status, "net_con_pid":x.pid}
         if x.status in data.get("network_conn_list"):
             net_info["infos"]["net_con"].append(net_con_info)
+            # print(net_info)
         elif data.get("network_conn_list") == [None]:
             net_info["infos"]["net_con"].append(net_con_info)
 
