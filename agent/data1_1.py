@@ -146,19 +146,23 @@ while(1):
 
     partitions = psutil.disk_partitions()
     for p in partitions:
+        du = psutil.disk_usage(p.mountpoint)
+        disk_part_info = {"disk_part_device":p.device, "disk_part_mountpoint":p.mountpoint, "disk_part_fstype":p.fstype,"disk_part_opts":p.opts,"disk_part_total":(du.total),"disk_part_used":(du.used),"disk_part_free":(du.free), "disk_part_percent":du.percent}
         if p.mountpoint in data.get("disk_mnt_list"):
-            du = psutil.disk_usage(p.mountpoint)
-            disk_part_info = {"disk_part_device":p.device, "disk_part_mountpoint":p.mountpoint, "disk_part_fstype":p.fstype,"disk_part_opts":p.opts,"disk_part_total":(du.total),"disk_part_used":(du.used),"disk_part_free":(du.free), "disk_part_percent":du.percent}
             #disk_part["disk_part"].append(disk_part_info)
             disk_info["infos"]["disk_part"].append(disk_part_info)
+        elif data.get("disk_mnt_list") == [None]:
+            disk_info["infos"]["disk_part"].append(disk_part_info)
+
             # print(disk_part_info)
 
     # disk io counters 정보
     disk_io_info = psutil.disk_io_counters(perdisk=True)
     for name, name_io in disk_io_info.items():
+        disk_io_cnt = {"disk_io_name":name, "disk_io_read_count":name_io.read_count, "disk_io_write_count":name_io.write_count, "disk_io_read_bytes":name_io.read_bytes, "disk_io_write_bytes":name_io.write_bytes, "disk_io_read_time":name_io.read_time, "disk_io_write_time":name_io.write_time, "disk_io_read_merged_count":name_io.read_merged_count, "disk_io_busy_time":name_io.busy_time}
         if name in data.get("disk_info_list"):
-            disk_io_cnt = {"disk_io_name":name, "disk_io_read_count":name_io.read_count, "disk_io_write_count":name_io.write_count, "disk_io_read_bytes":name_io.read_bytes, "disk_io_write_bytes":name_io.write_bytes, "disk_io_read_time":name_io.read_time, "disk_io_write_time":name_io.write_time, "disk_io_read_merged_count":name_io.read_merged_count, "disk_io_busy_time":name_io.busy_time}
-            
+            disk_info["infos"]["disk_io"].append(disk_io_cnt)
+        elif data.get("disk_info_list") == [None]:
             disk_info["infos"]["disk_io"].append(disk_io_cnt)
     
     # kafka 사용
@@ -189,25 +193,29 @@ while(1):
 
     for name, name_io in net_io_info.items():
         # print(iface)
+        net_io_cnt_info = {"net_name":name, "net_bytes_sent":name_io.bytes_sent, "net_bytes_recv":name_io.bytes_recv, "net_packets_sent":name_io.packets_sent, "net_packets_recv":name_io.packets_recv, "net_errin":name_io.errin, "net_errout":name_io.errout, "net_dropin":name_io.dropin, "net_dropout":name_io.dropout}
         if name in data.get("network_name_list"):
-            net_io_cnt_info = {"net_name":name, "net_bytes_sent":name_io.bytes_sent, "net_bytes_recv":name_io.bytes_recv, "net_packets_sent":name_io.packets_sent, "net_packets_recv":name_io.packets_recv, "net_errin":name_io.errin, "net_errout":name_io.errout, "net_dropin":name_io.dropin, "net_dropout":name_io.dropout}
-            # print(net_io_cnt_info)
+            net_info["infos"]["net_io"].append(net_io_cnt_info)
+        elif data.get("network_name_list") == [None]:
             net_info["infos"]["net_io"].append(net_io_cnt_info)
 
     # net if addrs 정보
     net_if_i = psutil.net_if_addrs()
     for name, addrs in net_if_i.items():
         for addr in addrs:
+            net_if_info = {"net_if_name":name, "net_if_family":addr.family, "net_if_address":addr.address, "net_if_netmask":addr.netmask, "net_if_broadcast":addr.broadcast, "net_if_ptp":addr.ptp}
             if name in data.get("network_name_list"):
-                net_if_info = {"net_if_name":name, "net_if_family":addr.family, "net_if_address":addr.address, "net_if_netmask":addr.netmask, "net_if_broadcast":addr.broadcast, "net_if_ptp":addr.ptp}
-                # print(net_if_info)
+                net_info["infos"]["net_if"].append(net_if_info)
+            elif data.get("network_name_list") == [None]:
                 net_info["infos"]["net_if"].append(net_if_info)
 
     # net connections 정보
     net_con_i = psutil.net_connections()
     for x in net_con_i:
+        net_con_info = {"net_con_fd":x.fd, "net_con_family":x.family, "net_con_type":x.type, "net_con_laddr_port":x.laddr.port, "net_con_laddr_ip":x.laddr.ip, "net_con_raddr_port":x.raddr.port, "net_con_raddr_ip":x.raddr.ip, "net_con_status":x.status, "net_con_pid":x.pid}
         if x.status in data.get("network_conn_list"):
-            net_con_info = {"net_con_fd":x.fd, "net_con_family":x.family, "net_con_type":x.type, "net_con_laddr_port":x.laddr.port, "net_con_laddr_ip":x.laddr.ip, "net_con_raddr_port":x.raddr.port, "net_con_raddr_ip":x.raddr.ip, "net_con_status":x.status, "net_con_pid":x.pid}
+            net_info["infos"]["net_con"].append(net_con_info)
+        elif data.get("network_conn_list") == [None]:
             net_info["infos"]["net_con"].append(net_con_info)
 
     #print(net_info)
