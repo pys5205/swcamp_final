@@ -3,6 +3,7 @@ import React, { Component } from "react";
 
 
 export default class disk_io_select extends React.Component {
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -10,13 +11,20 @@ export default class disk_io_select extends React.Component {
     };
   }
   
- componentDidMount(){
-  fetch("/disk/io/name", { 
+componentDidMount(){
+  const current = decodeURI(window.location.href);
+  const server = current.split('/')[4];
+  const name = "testtest";
+      fetch("/disk/io/name", { 
       method: "post", //통신방법
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify(),
+      body: JSON.stringify({
+        'system' : server,
+        'name' : name,
+      }
+        ),
     })
       .then((res) => res.json())
       .then((json) => {
@@ -31,14 +39,16 @@ export default class disk_io_select extends React.Component {
                     })
                   }
       });
-  }
-
+}
   render() {
     // console.log(this.state.data);
     const Data = this.state.data;
     
     const handleChange = (event) => {
-        alert(event.target.value);
+        // alert(event.target.value);
+        this.setState({
+          [event.target.name]: event.target.value,
+        })
     }
 
     const content= this.state.data.map((data) => (
@@ -47,7 +57,7 @@ export default class disk_io_select extends React.Component {
     
    //  console.log(Data);
     return(
-      <select onChange={handleChange}>
+      <select onChange={handleChange} id="diskname">
         {content}
       </select>
     )
