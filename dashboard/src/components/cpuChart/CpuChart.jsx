@@ -2,13 +2,6 @@ import React from 'react'
 import './cpuChart.css'
 import Chart from "react-apexcharts";
 
-// import * as dfd from "danfojs";
-
-// function createData(ts_insert, system, cpu_per, cpu_sys, cpu_user, cpu_wait, cpu_irq, cpu_softirq, cpu_loadavg_1,cpu_loadavg_5, cpu_loadavg_15, ts_create  ) {
-//     return {ts_insert, system, cpu_per, cpu_sys, cpu_user, cpu_wait, cpu_irq, cpu_softirq, cpu_loadavg_1,cpu_loadavg_5, cpu_loadavg_15, ts_create };
-//     }
-// var test = [];
-
 export default class cpuchart extends React.Component {
   constructor(props) {
     super(props);
@@ -16,40 +9,41 @@ export default class cpuchart extends React.Component {
       data: []
     };
   }
-  
-componentDidMount(){
-  const current = decodeURI(window.location.href);
-  const server = current.split('/')[4];
+
+  componentDidMount() {
+    const current = decodeURI(window.location.href);
+    const server = current.split('/')[4];
     const interval = setInterval(async () => {
-      fetch("/server", { 
-      method: "post", //통신방법
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        'system' : server
-      }
+      fetch("/server", {
+        method: "post", //통신방법
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          'system': server
+        }
         ),
-    })
-      .then((res) => res.json())
-      .then((json) => {
-       if (json === undefined) {
-                    alert("오류");
-                  } else {
-                  //////////////////////////////////여기부터보자
-                  // console.log(json);
-                    this.setState({
-                      isLoaded: true,
-                     data : json
-                    })
-                  }
-      });
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          if (json === undefined) {
+            alert("오류");
+          } else {
+            //////////////////////////////////여기부터보자
+            // console.log(json);
+            this.setState({
+              isLoaded: true,
+              data: json
+            })
+          }
+        });
     }, 2000);
     return () => clearInterval(interval);
-}
+  }
   render() {
     // console.log(this.state.data);
     const Data = this.state.data;
+
     return(
       <div className="app">
         <div className="row">
@@ -85,6 +79,7 @@ componentDidMount(){
           </div>
         </div>
       </div>
+
     )
   }
 }

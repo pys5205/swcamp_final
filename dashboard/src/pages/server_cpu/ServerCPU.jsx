@@ -5,22 +5,28 @@ import CpuWait from '../../components/detail/cpu_detail/cpu_wait_chart/CpuWaitCh
 import CpuIrq from '../../components/detail/cpu_detail/cpu_irq_chart/CpuIrqChart'
 import CpuAvg from '../../components/detail/cpu_detail/cpu_loadavg_chart/CpuLoadavgChart'
 export default function serverCPU() {
-    return(
+    return (
         <div className="main">
             <div className="firstpart">
-                    sys<CpuSys />
+
+                CPU 사용률
+                <CpuSys />
             </div>
             <div className="secondpart">
                 <div className="cpu_wait">
-                   wait<CpuWait />
+                    CPU I/O 완료를 기다리는 데 소요된 시간
+                    <CpuWait />
                 </div>
                 <div className="cpu_irq">
-                    irq<CpuIrq />
+                    CPU 하드웨어,소프트웨어 인터럽트 서비스에 소요된 시간
+                    <CpuIrq />
                 </div>
             </div>
             <div className="thirdpart">
-                avg<CpuAvg />
-            </div>   
+                CPU 프로세스 처리 대기 시간
+                <CpuAvg />
+            </div>
+
         </div>
-        )
+    )
 }

@@ -15,41 +15,42 @@ export default class detailcpuwait extends React.Component {
       data: []
     };
   }
-  
- componentDidMount(){
-  const current = decodeURI(window.location.href);
-  const server = current.split('/')[4];
-  const interval = setInterval(async () => {
-  fetch("/server", { 
-      method: "post", //통신방법
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        'system' : server
-      }
+
+  componentDidMount() {
+    const current = decodeURI(window.location.href);
+    const server = current.split('/')[4];
+    const interval = setInterval(async () => {
+      fetch("/server", {
+        method: "post", //통신방법
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          'system': server
+        }
         ),
-    })
-      .then((res) => res.json())
-      .then((json) => {
-       if (json === undefined) {
-                    alert("오류");
-                  } else {
-                  // console.log(json);
-                    this.setState({
-                      isLoaded: true,
-                     data : json
-                    })
-                  }
-      });
-  }, 2000);
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          if (json === undefined) {
+            alert("오류");
+          } else {
+            // console.log(json);
+            this.setState({
+              isLoaded: true,
+              data: json
+            })
+          }
+        });
+    }, 2000);
     return () => clearInterval(interval);
   }
   render() {
-    
+
     // console.log(this.state.data);
     const Data = this.state.data;
     //console.log(Data);
+
     return(
             <Chart
             type= 'line'
