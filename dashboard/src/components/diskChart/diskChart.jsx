@@ -85,8 +85,8 @@ componentDidMount(){
                 },
                 xaxis: {
                   categories: Data.ts_create,
-                   labels: { show: false },
-
+                  labels: { show: false },
+                  range:20,
                 }
             }}
             />

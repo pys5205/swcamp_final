@@ -64,8 +64,9 @@ export default class memcachedchart extends React.Component {
                   },
                 },
                 xaxis: {
-                type: "datetime",
-                  categories: Data.ts_create
+                  categories: Data.ts_create,
+                  labels: { show: false },
+                  range:20,
                 },
             }}
             />

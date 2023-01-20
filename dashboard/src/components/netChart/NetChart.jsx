@@ -84,10 +84,9 @@ export default class diskchart extends React.Component {
                     show:false,
                 },
                 xaxis: {
-
-                 categories: Data.ts_create,
-                   labels: { show: false },
-
+                  categories: Data.ts_create,
+                  labels: { show: false },
+                  range:20,
                 }
             }}
             />
