@@ -10,10 +10,10 @@ export default function ServerNet() {
         <div className="net_main">
             <div className="net_firstpart">
                 <div className="net_io_bytes">
-                    <NetIoBytes />
+                    IoBytes<NetIoBytes />
                 </div>
                 <div className="net_io_packets">
-                    <NetIoPackets />
+                    IoPackets<NetIoPackets />
                 </div>
             </div>
             <div className="net_secondpart">

@@ -8,18 +8,18 @@ export default function serverCPU() {
     return(
         <div className="main">
             <div className="firstpart">
-                    <CpuSys />
+                    sys<CpuSys />
             </div>
             <div className="secondpart">
                 <div className="cpu_wait">
-                   <CpuWait />
+                   wait<CpuWait />
                 </div>
                 <div className="cpu_irq">
-                    <CpuIrq />
+                    irq<CpuIrq />
                 </div>
             </div>
             <div className="thirdpart">
-                <CpuAvg />
+                avg<CpuAvg />
             </div>   
         </div>
         )

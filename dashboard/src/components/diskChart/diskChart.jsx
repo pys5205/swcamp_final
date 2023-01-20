@@ -2,14 +2,8 @@ import React, { component } from 'react'
 import './diskChart.css'
 import Chart from "react-apexcharts";
 
-// import * as dfd from "danfojs";
-
-// function createData(ts_insert, system, cpu_per, cpu_sys, cpu_user, cpu_wait, cpu_irq, cpu_softirq, cpu_loadavg_1,cpu_loadavg_5, cpu_loadavg_15, ts_create  ) {
-//     return {ts_insert, system, cpu_per, cpu_sys, cpu_user, cpu_wait, cpu_irq, cpu_softirq, cpu_loadavg_1,cpu_loadavg_5, cpu_loadavg_15, ts_create };
-//     }
-// var test = [];
-
 export default class diskchart extends React.Component {
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -51,10 +45,7 @@ componentDidMount(){
     // console.log(this.state.data);
     const Data = this.state.data;
     const time = Data.ts_create;
-    
     return(
-      <div className="app">
-        <div className="row">
           <div className="mixed-chart">
             <Chart
              type="line"
@@ -91,8 +82,6 @@ componentDidMount(){
             }}
             />
           </div>
-        </div>
-      </div>
     )
   }
 }
