@@ -88,8 +88,9 @@ export default class detailcpuavg extends React.Component {
                 },
                 colors: ['#008FFB', '#00E396', '#808080'],
                 xaxis: {
-                type: "datetime",
-                  categories: Data.ts_create
+                  categories: Data.ts_create,
+                  labels: { show: false },
+                  range:20,
                 },
             }}
             />

@@ -86,8 +86,9 @@ export default class detailcpuchart extends React.Component {
                 },
                 colors: ['#008FFB', '#00E396'],
                 xaxis: {
-                type: "datetime",
-                  categories: Data.ts_create
+                  categories: Data.ts_create,
+                  labels: { show: false },
+                  range:20,
                 },
             }}
             />

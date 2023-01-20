@@ -80,8 +80,9 @@ export default class detailcpuwait extends React.Component {
                     show:false,
                 },
                 xaxis: {
-                type: "datetime",
-                  categories: Data.ts_create
+                  categories: Data.ts_create,
+                  labels: { show: false },
+                  range:20,
                 },
             }}
             />

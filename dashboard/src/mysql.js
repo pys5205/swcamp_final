@@ -118,7 +118,7 @@ app.post('/detail/memory', (req,res) => {
 app.post('/memory', (req,res) => {
   var resData = {};
   var input = req.body.system;
-    conn.query('SELECT mem_total,mem_used,mem_free,mem_buffer,mem_cached,max(ts_create) as ts_create FROM tbl_memory where system=?',[input], (err, data) => {
+    conn.query('SELECT mem_total,mem_used,mem_free,mem_buffer,mem_cached,max(ts_create) as ts_create FROM tbl_memory where system=? order by ts_create asc',[input], (err, data) => {
       if (err) {
       console.log("데이터 가져오기 실패");
     } else {
@@ -152,7 +152,7 @@ app.post('/disk', (req,res) => {
   var resData = {};
   var input = req.body.system;
     conn.query(
-      'select avg(disk_io_read_bytes)/1024/1024 as read_bytes, avg(disk_io_write_bytes)/1024/1024 as write_bytes, ts_create from tbl_disk_io where system=? group by ts_create',[input], (err, data) => {
+      'select avg(disk_io_read_bytes)/1024/1024 as read_bytes, avg(disk_io_write_bytes)/1024/1024 as write_bytes, ts_create from tbl_disk_io where system=? group by ts_create order by ts_create asc',[input], (err, data) => {
       if (err) {
       console.log("데이터 가져오기 실패");
     } else {
@@ -292,7 +292,7 @@ app.post('/disk/part', (req,res) => {
 
 app.post('/disk/io/name', (req,res) => {
     conn.query(
-      'select distinct(disk_io_name) from tbl_disk_io where system="system"', (err, data) => {
+      'select distinct(disk_io_name) from tbl_disk_io where system="system" order by ts_create asc', (err, data) => {
       if (err) {
       console.log("데이터 가져오기 실패");
     } else {
@@ -306,7 +306,7 @@ app.post('/network', (req,res) => {
   var resData = {};
   var input = req.body.system;
     conn.query(
-      'select round(net_bytes_sent/1024/1024, 2) as net_bytes_sent, round(net_bytes_recv/1024/1024, 2) as net_bytes_recv, ts_create from tbl_net_io where system = ?',[input], (err, data) => {
+      'select round(net_bytes_sent/1024/1024, 2) as net_bytes_sent, round(net_bytes_recv/1024/1024, 2) as net_bytes_recv, ts_create from tbl_net_io where system = ? order by ts_create asc',[input], (err, data) => {
       if (err) {
       console.log("데이터 가져오기 실패");
     } else {

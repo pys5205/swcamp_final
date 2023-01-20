@@ -78,7 +78,8 @@ export default class diskiobytes extends React.Component {
                 },
                 xaxis: {
                   categories: Data.ts_create,
-                  range:5
+                  labels: { show: false },
+                  range:20,
                 },
                 yaxis: [
                   {
