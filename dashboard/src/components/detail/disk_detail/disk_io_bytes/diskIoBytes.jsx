@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { component } from 'react'
 import Chart from "react-apexcharts";
-import './diskIoBytes.css'
+import './diskIoBytes.css';
+import DiskIoSelect from '../../../diskChart/disk_io_select';
 
 export default class diskiobytes extends React.Component {
   constructor(props) {
@@ -44,10 +45,10 @@ export default class diskiobytes extends React.Component {
     // console.log(this.state.data);
     const Data = this.state.data;
     //console.log(Data);
+    // const [diskname, setDiskname]= useState();
     return(
-      <div className="app">
-        <div className="row">
           <div className="mixed-chart">
+            <DiskIoSelect />
             <Chart
              type="line"
              height="250"
@@ -78,7 +79,8 @@ export default class diskiobytes extends React.Component {
                 },
                 xaxis: {
                   categories: Data.ts_create,
-                  range:5
+                  labels: { show: false },
+                  range:20,
                 },
                 yaxis: [
                   {
@@ -95,8 +97,6 @@ export default class diskiobytes extends React.Component {
             }}
             />
           </div>
-        </div>
-      </div>
     )
   }
 }

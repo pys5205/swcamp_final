@@ -52,47 +52,47 @@ export default class detailcpuchart extends React.Component {
     // console.log(this.state.data);
     const Data = this.state.data;
     //console.log(Data);
-    return (
-      <Chart
-        type='area'
-        height="300"
-        series={[
-          {
-            name: "cpu_sys",
-            data: Data.cpu_sys,
-          },
-          {
-            name: "cpu_user",
-            data: Data.cpu_user,
-          },
-        ]}
-        options={{
-          chart: {
-            stacked: true,
-          },
-          stroke: { //선의 커브를 부드럽게 하고, 두께를 3으로 지정
-            curve: "smooth",
-          },
-          legend: {
-            position: 'top',
-            horizontalAlign: 'left'
-          },
 
-          tooltip: {
-            x: {
-              format: "dd/MM/yy HH:mm",
-            },
-          },
-          grid: { //격자 없앰
-            show: false,
-          },
-          colors: ['#008FFB', '#00E396'],
-          xaxis: {
-            categories: Data.ts_create,
-            labels: { show: false },
-          },
-        }}
-      />
+    return(
+            <Chart
+            type= 'area'
+            height= "300"
+            series={ [
+                { name: "cpu_sys",
+                  data: Data.cpu_sys,
+                },
+                {name: "cpu_user",
+                  data: Data.cpu_user,
+                },
+                ]} 
+            options={{    
+                chart : {
+                    stacked: true,
+                },
+                 stroke: { //선의 커브를 부드럽게 하고, 두께를 3으로 지정
+                    curve: "smooth",
+                },
+                legend: {
+                  position: 'top',
+                  horizontalAlign: 'left'
+                },
+                
+                tooltip: {
+                  x: {
+                    format: "dd/MM/yy HH:mm",
+                  },
+                },
+                grid: { //격자 없앰
+                    show:false,
+                },
+                colors: ['#008FFB', '#00E396'],
+                xaxis: {
+                  categories: Data.ts_create,
+                  labels: { show: false },
+                  range:20,
+                },
+            }}
+            />
     )
   }
 }

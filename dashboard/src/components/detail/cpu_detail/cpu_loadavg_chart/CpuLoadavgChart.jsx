@@ -51,51 +51,50 @@ export default class detailcpuavg extends React.Component {
     // console.log(this.state.data);
     const Data = this.state.data;
     //console.log(Data);
-    return (
-      <Chart
-        type='area'
-        height="200"
-        series={[
-          {
-            name: "cpu_loadavg1",
-            data: Data.cpu_loadavg_1,
-          },
-          {
-            name: "cpu_loadavg5",
-            data: Data.cpu_loadavg_5,
-          },
-          {
-            name: "cpu_loadavg15",
-            data: Data.cpu_loadavg_15,
-          },
-        ]}
-        options={{
-          chart: {
-            stacked: true,
-          },
-          stroke: { //선의 커브를 부드럽게 하고, 두께를 3으로 지정
-            curve: "smooth",
-          },
-          legend: {
-            position: 'top',
-            horizontalAlign: 'left'
-          },
 
-          tooltip: {
-            x: {
-              format: "dd/MM/yy HH:mm",
-            },
-          },
-          grid: { //격자 없앰
-            show: false,
-          },
-          colors: ['#008FFB', '#00E396', '#808080'],
-          xaxis: {
-            categories: Data.ts_create,
-            labels: { show: false },
-          },
-        }}
-      />
+    return(
+            <Chart
+            type= 'area'
+            height= "200"
+            series={ [
+                { name: "cpu_loadavg1",
+                  data: Data.cpu_loadavg_1,
+                },
+                {name: "cpu_loadavg5",
+                  data: Data.cpu_loadavg_5,
+                },
+                {name: "cpu_loadavg15",
+                  data: Data.cpu_loadavg_15,
+                },
+                ]} 
+            options={{    
+                chart : {
+                    stacked: true,
+                },
+                 stroke: { //선의 커브를 부드럽게 하고, 두께를 3으로 지정
+                    curve: "smooth",
+                },
+                legend: {
+                  position: 'top',
+                  horizontalAlign: 'left'
+                },
+                
+                tooltip: {
+                  x: {
+                    format: "dd/MM/yy HH:mm",
+                  },
+                },
+                grid: { //격자 없앰
+                    show:false,
+                },
+                colors: ['#008FFB', '#00E396', '#808080'],
+                xaxis: {
+                  categories: Data.ts_create,
+                  labels: { show: false },
+                  range:20,
+                },
+            }}
+            />
     )
   }
 }
