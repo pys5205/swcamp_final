@@ -215,10 +215,9 @@ app.post('/disk', (req, res) => {
     })
 })
 
-app.post('/disk/io_count', (req, res) => {
+app.post('/disk/io_count', (req,res) => {
   var resData = {};
   var input = req.body.system;
-
   var sql1 = 'select disk_io_read_count as read_count, disk_io_write_count as write_count, ts_create from tbl_disk_io where system=? and disk_io_name = "nvme0n1p1" order by ts_create asc;';
   var sql1s = mysql.format(sql1, input);
   
@@ -243,10 +242,10 @@ app.post('/disk/io_count', (req, res) => {
         });
       }else{
         resData.ok="false"
-
       }
-      // console.log(resData);
-      return res.json(resData);
+    }
+    // console.log(resData);
+    return res.json(resData);
     })
     // console.log(resData);
 })

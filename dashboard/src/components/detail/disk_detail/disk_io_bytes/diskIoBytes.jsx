@@ -46,9 +46,6 @@ export default class diskiobytes extends React.Component {
     const Data = this.state.data;
     //console.log(Data);
     return (
-      <div className="app">
-        <div className="row">
-
           <div className="mixed-chart">
             <Chart
               type="line"
