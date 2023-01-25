@@ -7,10 +7,10 @@ export default class disk_io_select extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: []
+      iodata: []
     };
   }
-  
+
 componentDidMount(){
   const current = decodeURI(window.location.href);
   const server = current.split('/')[4];
@@ -28,20 +28,21 @@ componentDidMount(){
     })
       .then((res) => res.json())
       .then((json) => {
-       if (json === undefined) {
-                    alert("오류");
-                  } else {
-                  //////////////////////////////////여기부터보자
-                  // console.log(json);
-                    this.setState({
-                      isLoaded: true,
-                     data : json
-                    })
-                  }
+        if (json === undefined) {
+          alert("오류");
+        } else {
+          //////////////////////////////////여기부터보자
+          // console.log(json);
+          this.setState({
+            isLoaded: true,
+            iodata: json
+          })
+        }
       });
 }
   render() {
     // console.log(this.state.data);
+
     const Data = this.state.data;
     // let navigate = useNavigate();
     const handleChange = (event) => {
@@ -52,13 +53,14 @@ componentDidMount(){
         // })
     }
 
-    const content= this.state.data.map((data) => (
-        <option value={data.disk_io_name} name={data.disk_io_name}>{data.disk_io_name}</option>
+    const content = this.state.iodata.map((iodata) => (
+      <option value={iodata.disk_io_name} name={iodata.disk_io_name}>{iodata.disk_io_name}</option>
     ));
-    
+
    //  console.log(Data);
     return(
       <select onChange={handleChange} id="diskname">
+
         {content}
       </select>
     )

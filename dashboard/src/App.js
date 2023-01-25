@@ -51,6 +51,9 @@ export default class App extends React.Component {
     const listDISK = this.state.data.map((data) => (
       <Route path={`/list/${data.system}/disk`} element={<ServerDISK />} />
     ));
+    const nameDISK = this.state.data.map((data) => (
+      <Route path={`/list/${data.system}/disk/${data.disk_io_name}`} element={<ServerDISK />} />
+    ));
     const listNET = this.state.data.map((data) => (
       <Route path={`/list/${data.system}/net`} element={<ServerNET />} />
     ));
@@ -68,6 +71,7 @@ export default class App extends React.Component {
             {listMEM}
             {listDISK}
             {listNET}
+            {nameDISK}
           </Routes>
         </div>
       </Router>

@@ -1,20 +1,19 @@
 import React from 'react'
 import NewReleasesOutlinedIcon from '@mui/icons-material/NewReleasesOutlined';
 import { red } from '@mui/material/colors';
-import { Button } from "@material-ui/core";
+import Button from '@mui/material/Button';
 import './serverErr.css'
+import Modal from './modal'
 export default class servererror extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      data: []
+      data: [],
+      isModalOpen: false,
     };
-  }
-  
- componentDidMount(){
-
-  fetch("/list/os", { 
+}
+  componentDidMount() {
+    fetch("/server/error", {
       method: "post", //통신방법
       headers: {
         "content-type": "application/json",
@@ -23,41 +22,49 @@ export default class servererror extends React.Component {
     })
       .then((res) => res.json())
       .then((json) => {
-       if (json === undefined) {
-                    alert("오류");
-                  } else {
-                  //////////////////////////////////여기부터보자
-                  // console.log(json);
-                    this.setState({
-                      isLoaded: true,
-                     data : json
-                    })
-                  }
+        if (json === undefined) {
+          alert("오류");
+        } else {
+          //////////////////////////////////여기부터보자
+          // console.log(json);
+          this.setState({
+            isLoaded: true,
+            data: json
+          })
+        }
       });
   }
+  openModal = () => {
+    this.setState({ isModalOpen: true });
+  };
+
+  closeModal = () => {
+    this.setState({ isModalOpen: false });
+  };
+
   render() {
     const Data = this.state.data;
-    console.log(Data.count_os);
-    return(
+    // console.log(Data.cnt_system);
+    return (
       <div>
         <div className="servererr">
-                <div className="count">
-                    {Data.count_os} EA 
-                    <div className="server">
-                        <p>Error</p>
-                    </div>
-                </div>
-                <div className="icon">
-                    <NewReleasesOutlinedIcon sx={{ color:red[500], fontSize: 70 }}  />
-                </div>
-        </div>
-          <div className="button">
-            <Button variant="contained" color="secondary">
-            Error server
-            </Button>
+          <div className="count">
+            {Data.cnt_system} EA
+            <div className="server">
+              <p>Error</p>
+            </div>
+          </div>
+          <div className="icon">
+            <NewReleasesOutlinedIcon sx={{ color: red[500], fontSize: 70 }} />
           </div>
         </div>
+        <div className="button">
+          <Button variant="outlined" color="error" onClick={this.openModal}>
+            Error
+          </Button>
+          <Modal isOpen={this.state.isModalOpen} close={this.closeModal} />
+        </div>
+      </div>
     )
-
   }
 }
