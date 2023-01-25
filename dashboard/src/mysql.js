@@ -5,6 +5,7 @@ const cors = require('cors');
 const env = require("dotenv").config({ path: "../.env" });
 const app = express();
 const port = 3001;
+const spawn = require('child_process').spawn;
 
 
 // const dfd = require("danfojs-node");
@@ -19,9 +20,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 app.use(bodyParser.json());
 
+app.get('/start', function(req, res, next) {
+    //shell.exec('sh /data/python/start.sh');
+    spawn('python3',['~/project/pys/swcamp_final/dashboard/test.py'], {
+        detached: true
+    })
+})
+
 app.post('/data', (req,res) => {
   // console.log(req);
-    conn.query('SELECT * FROM tbl_sys_info', (err, data) => {
+    conn.query('SELECT * FROM tbl_sys_info group by system, company, os, service', (err, data) => {
       if (err) {
       console.log("데이터 가져오기 실패");
     } else {

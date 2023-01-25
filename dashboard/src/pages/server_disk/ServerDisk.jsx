@@ -11,13 +11,13 @@ export default function serverDisk() {
             <div className="disk_firstpart">
                 <div className="disk_io_count">
                     <div className="selectbox">
-                        IoCount <DiskIoSelect />
+                        IoCount 
                     </div>
                     <DiskIoCount />
                 </div>
                 <div className="disk_io_bytes">
                     <div className="selectbox">
-                        IoBytes <DiskIoSelect />
+                        IoBytes 
                     </div>
                     <DiskIoBytes />
                 </div>
@@ -25,7 +25,7 @@ export default function serverDisk() {
             <div className="disk_secondpart">
                 <div className="disk_io_time">
                     <div className="selectbox">
-                        IoTime <DiskIoSelect />
+                        IoTime 
                     </div>
                     <DiskIoTime />
                 </div>

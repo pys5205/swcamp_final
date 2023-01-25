@@ -48,7 +48,6 @@ export default class diskiobytes extends React.Component {
     // const [diskname, setDiskname]= useState();
     return(
           <div className="mixed-chart">
-            <DiskIoSelect />
             <Chart
              type="line"
              height="250"
