@@ -4,6 +4,7 @@
     left: 50%;
     right:50%;
     top:60%;
+    margin-top:150px;
     -ms-transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
   -moz-transform: translate(-50%, -50%);

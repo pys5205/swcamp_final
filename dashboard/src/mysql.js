@@ -5,6 +5,7 @@ const cors = require('cors');
 const env = require("dotenv").config({ path: "../.env" });
 const app = express();
 const port = 3001;
+const spawn = require('child_process').spawn;
 
 
 // const dfd = require("danfojs-node");
@@ -19,10 +20,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 app.use(bodyParser.json());
 
-app.post('/data', (req, res) => {
+
+app.get('/start', function(req, res, next) {
+    //shell.exec('sh /data/python/start.sh');
+    spawn('python3',['~/project/pys/swcamp_final/dashboard/test.py'], {
+        detached: true
+    })
+})
+
+app.post('/data', (req,res) => {
   // console.log(req);
-  conn.query('SELECT * FROM tbl_sys_info', (err, data) => {
-    if (err) {
+    conn.query('SELECT * FROM tbl_sys_info group by system, company, os, service', (err, data) => {
+      if (err) {
       console.log("데이터 가져오기 실패");
     } else {
       // console.log(data);
@@ -143,8 +152,9 @@ app.post('/detail/memory', (req, res) => {
 app.post('/memory', (req, res) => {
   var resData = {};
   var input = req.body.system;
-  conn.query('SELECT mem_total,mem_used,mem_free,mem_buffer,mem_cached,max(ts_create) as ts_create FROM tbl_memory where system=?', [input], (err, data) => {
-    if (err) {
+
+    conn.query('SELECT mem_total,mem_used,mem_free,mem_buffer,mem_cached,max(ts_create) as ts_create FROM tbl_memory where system=? order by ts_create asc',[input], (err, data) => {
+      if (err) {
       console.log("데이터 가져오기 실패");
     } else {
       // console.log(data);
@@ -176,8 +186,9 @@ app.post('/memory', (req, res) => {
 app.post('/disk', (req, res) => {
   var resData = {};
   var input = req.body.system;
-  conn.query(
-    'select avg(disk_io_read_bytes)/1024/1024 as read_bytes, avg(disk_io_write_bytes)/1024/1024 as write_bytes, ts_create from tbl_disk_io where system=? group by ts_create', [input], (err, data) => {
+
+    conn.query(
+      'select avg(disk_io_read_bytes)/1024/1024 as read_bytes, avg(disk_io_write_bytes)/1024/1024 as write_bytes, ts_create from tbl_disk_io where system=? group by ts_create order by ts_create asc',[input], (err, data) => {
       if (err) {
         console.log("데이터 가져오기 실패");
       } else {
@@ -207,28 +218,37 @@ app.post('/disk', (req, res) => {
 app.post('/disk/io_count', (req, res) => {
   var resData = {};
   var input = req.body.system;
-  conn.query(
-    'select disk_io_read_count as read_count, disk_io_write_count as write_count, ts_create from tbl_disk_io where system=? and disk_io_name = "nvme0n1" order by ts_create asc', [input], (err, data) => {
+
+  var sql1 = 'select disk_io_read_count as read_count, disk_io_write_count as write_count, ts_create from tbl_disk_io where system=? and disk_io_name = "nvme0n1p1" order by ts_create asc;';
+  var sql1s = mysql.format(sql1, input);
+  
+  var sql2 = 'select distinct(disk_io_name) from tbl_disk_io where system=? order by ts_create asc;';
+  var sql2s = mysql.format(sql2, input);
+  // console.log(sql2s);
+    conn.query(
+      sql1s, function (err, data) {
       if (err) {
-        console.log("데이터 가져오기 실패");
-      } else {
-        resData.read_count = [];
-        resData.write_count = [];
-        resData.ts_create = [];
-        if (data[0]) {
-          resData.ok = "true";
-          data.forEach(function (val) {
-            resData.read_count.push(parseInt(val.read_count));
-            resData.write_count.push(parseInt(val.write_count));
-            resData.ts_create.push(val.ts_create);
-          });
-        } else {
-          resData.ok = "false"
-        }
+      console.log("데이터 가져오기 실패");
+    } else {
+      // console.log(data);
+      resData.read_count = [];
+      resData.write_count = [];
+      resData.ts_create = [];
+      if(data[0]){
+        resData.ok = "true";
+        data.forEach(function(val){
+          resData.read_count.push(parseInt(val.read_count));
+          resData.write_count.push(parseInt(val.write_count));
+          resData.ts_create.push(val.ts_create);
+        });
+      }else{
+        resData.ok="false"
+
       }
       // console.log(resData);
       return res.json(resData);
     })
+    // console.log(resData);
 })
 
 app.post('/disk/io_bytes', (req, res) => {
@@ -315,9 +335,13 @@ app.post('/disk/part', (req, res) => {
     })
 })
 
-app.post('/disk/io/name', (req, res) => {
-  conn.query(
-    'select distinct(disk_io_name) from tbl_disk_io where system="system"', (err, data) => {
+
+app.post('/disk/io/name', (req,res) => {
+  var input = req.body.system;
+  var name = req.body.name;
+    conn.query(
+      'select distinct(disk_io_name) from tbl_disk_io where system=? order by ts_create asc',[input], (err, data) => {
+
       if (err) {
         console.log("데이터 가져오기 실패");
       } else {
@@ -330,8 +354,10 @@ app.post('/disk/io/name', (req, res) => {
 app.post('/network', (req, res) => {
   var resData = {};
   var input = req.body.system;
-  conn.query(
-    'select round(net_bytes_sent/1024/1024, 2) as net_bytes_sent, round(net_bytes_recv/1024/1024, 2) as net_bytes_recv, ts_create from tbl_net_io where system = ?', [input], (err, data) => {
+
+    conn.query(
+      'select round(net_bytes_sent/1024/1024, 2) as net_bytes_sent, round(net_bytes_recv/1024/1024, 2) as net_bytes_recv, ts_create from tbl_net_io where system = ? order by ts_create asc',[input], (err, data) => {
+
       if (err) {
         console.log("데이터 가져오기 실패");
       } else {

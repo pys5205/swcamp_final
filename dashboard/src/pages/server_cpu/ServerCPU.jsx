@@ -8,6 +8,7 @@ export default function serverCPU() {
     return (
         <div className="main">
             <div className="firstpart">
+
                 CPU 사용률
                 <CpuSys />
             </div>
@@ -25,6 +26,7 @@ export default function serverCPU() {
                 CPU 프로세스 처리 대기 시간
                 <CpuAvg />
             </div>
+
         </div>
     )
 }

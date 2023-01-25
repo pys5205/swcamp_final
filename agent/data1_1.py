@@ -13,7 +13,7 @@ from kafka import KafkaProducer
 from kafka.errors import KafkaError
 
 
-producer = KafkaProducer(bootstrap_servers="localhost:9092", value_serializer=lambda x: dumps(x).encode("utf-8"))
+producer = KafkaProducer(bootstrap_servers="ec2-15-165-51-112.ap-northeast-2.compute.amazonaws.com:9092", value_serializer=lambda x: dumps(x).encode("utf-8"))
 hostname = str.encode(socket.gethostname())
 # rpk topic delete test
 # rpk topic consume test
