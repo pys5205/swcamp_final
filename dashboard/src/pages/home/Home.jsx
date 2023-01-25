@@ -10,7 +10,6 @@ import ServerErr from '../../components/main/server_err/ServerErr'
 export default function Home() {
     return (
     <div  className="home">
-    
          <div className = "first">
                 <div className = "second">
                     <FristChart />
