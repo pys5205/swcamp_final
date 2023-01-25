@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import './serverList.css'
 import CpuChart from '../../components/cpuChart/CpuChart'
 import MemChart from '../../components/memChart/MemChart'
@@ -6,13 +6,16 @@ import DiskChart from '../../components/diskChart/diskChart'
 import DiskIo from '../../components/diskChart/disk_io_select'
 import ProcsChart from '../../components/processChart/ProcsChart'
 import NetChart from '../../components/netChart/NetChart'
-import {useNavigate} from "react-router-dom"
+import Start from '../../components/button/start/Start'
 import Button from '@mui/material/Button';
+import {useNavigate} from "react-router-dom"
+
 
 export default function ServerList() {
     const current = decodeURI(window.location.href);
     const server = current.split('/')[4];
     let navigate = useNavigate();
+    
     const handleClickCPU = () => {
                     navigate(`/list/${server}/cpu`);
                  };
@@ -28,7 +31,8 @@ export default function ServerList() {
     return (
     <div className="serverList">
         <div className = "charts">
-            <div className="navigation">
+            <div>
+                <Start />
             </div>
             <div className="cpu_mem">
                 <div className="cpu">

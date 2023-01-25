@@ -84,6 +84,7 @@ componentDidMount(){
         options={{
           selection: true
         }}
+        
         pageSize={5}
         rowsPerPageOptions={[5]}
         />
