@@ -1,7 +1,6 @@
-import React, { component } from 'react'
+import React from 'react'
 import Chart from "react-apexcharts";
 import './diskIoBytes.css';
-import DiskIoSelect from '../../../diskChart/disk_io_select';
 
 export default class diskiobytes extends React.Component {
   constructor(props) {
