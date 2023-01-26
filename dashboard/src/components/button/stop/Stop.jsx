@@ -1,7 +1,7 @@
 import React from 'react'
 import Button from '@mui/material/Button';
 
-export default class start extends React.Component {
+export default class stop extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -9,7 +9,7 @@ export default class start extends React.Component {
     };
   }
    handleclick = () => {
-    fetch("/start", { 
+    fetch("/stop", { 
         method: "get", //통신방법
         headers: {
           "content-type": "application/json",
@@ -32,9 +32,8 @@ export default class start extends React.Component {
    };
   render() {
     const Data = this.state.data;
-    console.log(Data);
     return(
-        <Button variant="outlined" onClick ={this.handleclick}>start</Button>
+        <Button variant="outlined" onClick ={this.handleclick} color="error">stop</Button>
     )
   }
 }

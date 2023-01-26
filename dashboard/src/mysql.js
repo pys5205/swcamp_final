@@ -6,7 +6,7 @@ const env = require("dotenv").config({ path: "../.env" });
 const app = express();
 const port = 3001;
 const spawn = require('child_process').spawn;
-
+const shell = require('shelljs')
 
 // const dfd = require("danfojs-node");
 
@@ -21,11 +21,20 @@ app.use(cors());
 app.use(bodyParser.json());
 
 
-app.get('/start', function (req, res, next) {
-  //shell.exec('sh /data/python/start.sh');
-  spawn('python3', ['~/project/pys/swcamp_final/dashboard/test.py'], {
-    detached: true
+app.get('/start', function(req, res) {
+ conn.query('SELECT * FROM tbl_sys_info group by system, company, os, service', (err, data) => {
+      if (err) {
+      console.log("데이터 가져오기 실패");
+    } else {
+      // console.log(data);
+      res.send(data);
+      // shell.exec('sh ~/project/pys/swcamp_final/agent/start.sh');
+    }
   })
+})
+
+app.get('/stop', function(req, res) {
+   shell.exec('sh ~/project/pys/swcamp_final/dashboard/src/components/button/stop/stop.sh');
 })
 
 app.post('/data', (req, res) => {
@@ -86,6 +95,7 @@ app.post('/server', (req, res) => {
     return res.json(resData);
   })
 })
+
 app.post('/server/error', (req, res) => {
   // console.log(sys);
   var resData = {};
@@ -113,6 +123,7 @@ app.post('/server/error', (req, res) => {
   })
 })
 
+
 app.post('/server/error/modal', (req, res) => {
   // console.log(sys);
   var resData = {};
@@ -128,7 +139,6 @@ app.post('/server/error/modal', (req, res) => {
     // console.log(resData)
 })
 })
-
 
 
 app.post('/detail/memory', (req, res) => {
@@ -237,7 +247,7 @@ app.post('/disk', (req, res) => {
 app.post('/disk/io_count', (req, res) => {
   var resData = {};
   var input = req.body.system;
-  var sql1 = 'select disk_io_read_count as read_count, disk_io_write_count as write_count, ts_create from tbl_disk_io where system=? and disk_io_name = "nvme0n1p1" order by ts_create asc;';
+  var sql1 = 'select avg(disk_io_read_count) as read_count, avg(disk_io_write_count) as write_count, ts_create from tbl_disk_io where system=? group by ts_create order by ts_create asc;';
   var sql1s = mysql.format(sql1, input);
 
   var sql2 = 'select distinct(disk_io_name) from tbl_disk_io where system=? order by ts_create asc;';
@@ -273,7 +283,7 @@ app.post('/disk/io_bytes', (req, res) => {
   var resData = {};
   var input = req.body.system;
   conn.query(
-    'select disk_io_read_bytes/1024/1024 as read_bytes, disk_io_write_bytes/1024/1024 as write_bytes, ts_create from tbl_disk_io where system=? and disk_io_name = "nvme0n1" order by ts_create asc', [input], (err, data) => {
+    'select avg(disk_io_read_bytes)/1024/1024 as read_bytes, avg(disk_io_write_bytes)/1024/1024 as write_bytes, ts_create from tbl_disk_io where system=? group by ts_create order by ts_create asc', [input], (err, data) => {
       if (err) {
         console.log("데이터 가져오기 실패");
       } else {
@@ -299,7 +309,7 @@ app.post('/disk/io_time', (req, res) => {
   var resData = {};
   var input = req.body.system;
   conn.query(
-    'select disk_io_read_time, disk_io_write_time, disk_io_busy_time, ts_create from tbl_disk_io where system=? and disk_io_name="nvme0n1" order by ts_create asc', [input], (err, data) => {
+    'select avg(disk_io_read_time) as disk_io_read_time, avg(disk_io_write_time) as disk_io_write_time, avg(disk_io_busy_time) as disk_io_busy_time, ts_create from tbl_disk_io where system=? group by ts_create order by ts_create asc', [input], (err, data) => {
       if (err) {
         console.log("데이터 가져오기 실패");
       } else {
@@ -354,7 +364,8 @@ app.post('/disk/part', (req, res) => {
 })
 
 
-app.post('/disk/io/name', (req, res) => {
+app.post('/disk/io/name', (req,res) => {
+
   var input = req.body.system;
   var name = req.body.name;
   conn.query(
@@ -373,8 +384,8 @@ app.post('/network', (req, res) => {
   var resData = {};
   var input = req.body.system;
 
-  conn.query(
-    'select round(net_bytes_sent/1024/1024, 2) as net_bytes_sent, round(net_bytes_recv/1024/1024, 2) as net_bytes_recv, ts_create from tbl_net_io where system = ? order by ts_create asc', [input], (err, data) => {
+    conn.query(
+      'select round(avg(net_bytes_sent)/1024/1024, 2) as net_bytes_sent, round(avg(net_bytes_recv)/1024/1024, 2) as net_bytes_recv, ts_create from tbl_net_io where system=? group by ts_create order by ts_create asc',[input], (err, data) => {
 
       if (err) {
         console.log("데이터 가져오기 실패");
@@ -505,27 +516,43 @@ app.post('/process', (req, res) => {
 
 app.post('/list/os', (req, res) => {
   var resData = {};
-  conn.query('SELECT count(case when os = "centos" then 1 end) as cent_os,count(case when os = "ubuntu" then 1 end) as ubuntu_os, count(os) as cnt_os,os, company, ts_insert, ts_create FROM tbl_sys_info', (err, data) => {
+  conn.query('select os, count(*) as cnt_os from (select system, os from tbl_sys_info group by system, os) group by os;', (err, data) => {
     if (err) {
       console.log("데이터 가져오기 실패");
     } else {
       // console.log(data);
       resData.os = [];
       resData.cnt_os = [];
-      resData.count_os = [];
-      resData.company = [];
-      resData.ts_insert = [];
-      resData.ts_create = [];
       if (data[0]) {
         resData.ok = "true";
         data.forEach(function (val) {
-          resData.cnt_os.push(val.cent_os);
-          resData.cnt_os.push(val.ubuntu_os);
-          resData.count_os.push(val.cnt_os);
+          resData.cnt_os.push(val.cnt_os);
           resData.os.push(val.os);
-          resData.company.push(val.company);
-          resData.ts_insert.push(val.ts_insert);
-          resData.ts_create.push(val.ts_create);
+        });
+      } else {
+        resData.ok = "false"
+      }
+      // var df = new dfd.DataFrame(data)
+      // console.log(df)
+
+    }
+    // console.log(resData);
+    return res.json(resData);
+  })
+})
+
+app.post('/list/cnt', (req, res) => {
+  var resData = {};
+  conn.query('select count(distinct(system)) as cnt_os from tbl_sys_info', (err, data) => {
+    if (err) {
+      console.log("데이터 가져오기 실패");
+    } else {
+      // console.log(data);
+      resData.cnt_os = [];
+      if (data[0]) {
+        resData.ok = "true";
+        data.forEach(function (val) {
+          resData.cnt_os.push(val.cnt_os);
         });
       } else {
         resData.ok = "false"

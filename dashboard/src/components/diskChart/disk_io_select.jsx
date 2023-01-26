@@ -1,6 +1,4 @@
-import ReactDOM from "react-dom";
-import React, { Component } from "react";
-import {useNavigate} from "react-router-dom";
+import React from "react";
 
 export default class disk_io_select extends React.Component {
   
@@ -42,8 +40,6 @@ componentDidMount(){
 }
   render() {
     // console.log(this.state.data);
-
-    const Data = this.state.data;
     // let navigate = useNavigate();
     const handleChange = (event) => {
         // alert(event.target.value);

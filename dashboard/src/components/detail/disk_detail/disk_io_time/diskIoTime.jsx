@@ -43,7 +43,6 @@ export default class diskiocount extends React.Component {
   render() {
     // console.log(this.state.data);
     const Data = this.state.data;
-    const Time = Data.ts_create;
     return(
       <div className="app">
         <div className="row">
