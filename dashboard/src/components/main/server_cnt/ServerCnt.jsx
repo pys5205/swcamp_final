@@ -11,28 +11,30 @@ export default class servercnt extends React.Component {
     };
   }
   
- componentDidMount(){
-
-  fetch("/list/os", { 
-      method: "post", //통신방법
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(),
-    })
-      .then((res) => res.json())
-      .then((json) => {
-       if (json === undefined) {
-                    alert("오류");
-                  } else {
-                  //////////////////////////////////여기부터보자
-                  // console.log(json);
-                    this.setState({
-                      isLoaded: true,
-                     data : json
-                    })
-                  }
-      });
+  componentDidMount() {
+    const interval = setInterval(async () => {
+      fetch("/list/cnt", {
+        method: "post", //통신방법
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(),
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          if (json === undefined) {
+            alert("오류");
+          } else {
+            //////////////////////////////////여기부터보자
+            // console.log(json);
+            this.setState({
+              isLoaded: true,
+              data: json
+            })
+          }
+        });
+    }, 2000);
+    return () => clearInterval(interval);
   }
   render() {
     const Data = this.state.data;
@@ -40,7 +42,7 @@ export default class servercnt extends React.Component {
     return(
         <div className="servercnt">
                 <div className="count">
-                    {Data.count_os} EA 
+                    {Data.cnt_os} EA 
                     <div className="server">
                         <p>Server</p>
                     </div>

@@ -1,5 +1,4 @@
 import './serverDisk.css'
-import DiskIoSelect from '../../components/diskChart/disk_io_select'
 import DiskIoCount from '../../components/detail/disk_detail/disk_io_count/diskIoCount'
 import DiskIoBytes from '../../components/detail/disk_detail/disk_io_bytes/diskIoBytes'
 import DiskIoTime from '../../components/detail/disk_detail/disk_io_time/diskIoTime'

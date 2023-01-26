@@ -1,4 +1,4 @@
-import React, { component } from 'react'
+import React from 'react'
 import './diskChart.css'
 import Chart from "react-apexcharts";
 
@@ -44,7 +44,6 @@ componentDidMount(){
   render() {
     // console.log(this.state.data);
     const Data = this.state.data;
-    const time = Data.ts_create;
     return(
           <div className="mixed-chart">
             <Chart
