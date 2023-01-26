@@ -1,66 +1,71 @@
 .home {
-    position:absolute;
+    position: absolute;
     width: 1000px;
     left: 50%;
-    right:50%;
-    top:60%;
+    right: 50%;
+    top: 60%;
     -ms-transform: translate(-50%, -50%);
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+
 }
-.pchart{
-    display :flex;
-    margin-bottom:30px;
-    height:423px;
+
+.pchart {
+    display: flex;
+    margin-bottom: 30px;
+    height: 423px;
 }
-.oschart{
-    width:333px;
+
+.oschart {
+    width: 333px;
     margin-right: 10px;
-    -webkit-box-shadow: 0px 0px 12px -2px #000000; 
-    box-shadow: 0px 0px 12px -2px #000000;
-} 
-.ttchart{
-    width:500px;
-    -webkit-box-shadow: 0px 0px 12px -2px #000000; 
+    -webkit-box-shadow: 0px 0px 12px -2px #000000;
     box-shadow: 0px 0px 12px -2px #000000;
 }
 
-.first{
-    display:flex;
-    margin-bottom:30px;
-    width:1000px;
-    height:200px;
-    
+.ttchart {
+    width: 500px;
+    -webkit-box-shadow: 0px 0px 12px -2px #000000;
+    box-shadow: 0px 0px 12px -2px #000000;
 }
-.second{
-    width:400px;
-    margin-right:10px;
-    -webkit-box-shadow: 0px 0px 12px -2px #000000; 
+
+.first {
+    display: flex;
+    margin-bottom: 30px;
+    width: 1000px;
+    height: 200px;
+}
+
+.second {
+    width: 400px;
+    margin-right: 10px;
+    -webkit-box-shadow: 0px 0px 12px -2px #000000;
     box-shadow: 0px 0px 12px -2px #000000;
 }
 
 
-.tt{
-    display:flex;
-    width:590px;
+.tt {
+    display: flex;
+    width: 590px;
 }
-.normal{
-    width:295px;
-    margin-right:10px;
-    -webkit-box-shadow: 0px 0px 12px -2px #000000; 
+
+.normal {
+    width: 295px;
+    margin-right: 10px;
+    -webkit-box-shadow: 0px 0px 12px -2px #000000;
     box-shadow: 0px 0px 12px -2px #000000;
-    
+
 }
-.error{
-    width:295px;
-    -webkit-box-shadow: 0px 0px 12px -2px #000000; 
+
+.error {
+    width: 295px;
+    -webkit-box-shadow: 0px 0px 12px -2px #000000;
     box-shadow: 0px 0px 12px -2px #000000;
 }
 
-.server_list{
-    width:700px;
-    -webkit-box-shadow: 0px 0px 12px -2px #000000; 
+.server_list {
+    width: 700px;
+    -webkit-box-shadow: 0px 0px 12px -2px #000000;
     box-shadow: 0px 0px 12px -2px #000000;
 }

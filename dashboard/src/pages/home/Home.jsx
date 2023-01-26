@@ -9,33 +9,32 @@ import ServerErr from '../../components/main/server_err/ServerErr'
 
 export default function Home() {
     return (
-    <div  className="home">
-         <div className = "first">
-                <div className = "second">
-                    <FristChart />
-                </div>
-                <div className="tt">
-                    <div className="normal">
-                        <ServerCnt />
+        <div className="home">
+            <div>
+                <div className="first">
+                    <div className="second">
+                        <FristChart />
                     </div>
-                    <div className="error">
-                        <ServerErr />
+                    <div className="tt">
+                        <div className="normal">
+                            <ServerCnt />
+                        </div>
+                        <div className="error">
+                            <ServerErr />
+                        </div>
                     </div>
-                   
                 </div>
-        </div>
-        
-        <div className= "chartComp">
-            <div className="pchart">
-                <div className="oschart">
-                    <MainChart />
-                </div>
-                <div className="server_list">
-                    <FeaturedInfo />
+                <div className="chartComp">
+                    <div className="pchart">
+                        <div className="oschart">
+                            <MainChart />
+                        </div>
+                        <div className="server_list">
+                            <FeaturedInfo />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        
-    </div>
     )
 }
