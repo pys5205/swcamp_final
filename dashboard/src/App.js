@@ -61,7 +61,6 @@ export default class App extends React.Component {
       // <div className="App">
       <Router>
         <Topbar />
-        <div className="container">
           <Sidebar />
           <Routes>
             <Route exact path="/" element={<Home />} />
@@ -73,7 +72,6 @@ export default class App extends React.Component {
             {listNET}
             {nameDISK}
           </Routes>
-        </div>
       </Router>
     )
   }

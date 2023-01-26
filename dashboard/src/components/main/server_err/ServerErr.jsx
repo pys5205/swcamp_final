@@ -11,7 +11,7 @@ export default class servererror extends React.Component {
       data: [],
       isModalOpen: false,
     };
-}
+  }
   componentDidMount() {
     fetch("/server/error", {
       method: "post", //통신방법
@@ -60,9 +60,9 @@ export default class servererror extends React.Component {
         </div>
         <div className="button">
           <Button variant="outlined" color="error" onClick={this.openModal}>
-            Error
+            Error server
           </Button>
-          <Modal isOpen={this.state.isModalOpen} close={this.closeModal} />
+          <Modal isOpen={this.state.isModalOpen} close={this.closeModal} data={this.state.data} />
         </div>
       </div>
     )

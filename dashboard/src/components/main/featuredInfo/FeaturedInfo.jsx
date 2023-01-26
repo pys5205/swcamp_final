@@ -1,16 +1,17 @@
 import React from 'react'
 import './featuredInfo.css'
-import MaterialTable,{ MTableBodyRow } from "material-table";
-import {useNavigate} from "react-router-dom"
+import MaterialTable, { MTableBodyRow } from "material-table";
+import { useNavigate } from "react-router-dom"
 
 export default class featured extends React.Component {
-    
+
   constructor(props) {
     super(props);
     this.state = {
       data: []
     };
   }
+
 
 componentDidMount() {
     const interval = setInterval(async () => {
@@ -36,70 +37,70 @@ componentDidMount() {
         });
     }, 2000);
     return () => clearInterval(interval);
+
   }
-    render() {
+  render() {
     const Data = this.state.data;
-    // console.log(Data);
+    console.log(Data);
     const columns = [
-        {
-            title: "company",
-            field: "company",
-            width:80
-        },
-        //  {
-        //     title: "cpu_cnt",
-        //     field: "cpu_cnt",
-        //     width:60
-        // },
-        //  {
-        //     title: "mem_total",
-        //     field: "mem_total",
-        //     width:130
-        // },
-         {
-            title: "os",
-            field: "os",
-            width:90
-        },
-         {
-            title: "service",
-            field: "service",
-            width: 80
-        },
-         {
-            title: "system",
-            field: "system",  
-            width: 80
-        },
-        ]
-       
-    return(
-        <MaterialTable 
+      {
+        title: "company",
+        field: "company",
+        width: 80
+      },
+      //  {
+      //     title: "cpu_cnt",
+      //     field: "cpu_cnt",
+      //     width:60
+      // },
+      //  {
+      //     title: "mem_total",
+      //     field: "mem_total",
+      //     width:130
+      // },
+      {
+        title: "os",
+        field: "os",
+        width: 90
+      },
+      {
+        title: "service",
+        field: "service",
+        width: 80
+      },
+      {
+        title: "system",
+        field: "system",
+        width: 80
+      },
+    ]
+
+    return (
+      <MaterialTable
         title="Company Details"
         data={Data}
         columns={columns}
         options={{
           selection: true
         }}
-        components= {{
-            Row: (props) => {
-             let navigate = useNavigate();
-              const handleClick = (event, rowData) => {
-                // alert(`event.target.row = '${rowData.company}'`);
-                    navigate(`/list/${rowData.system}`);
-            // navigate(`'/${rowData.company}'`);
-            // this.props.useNavigate(("/serverlist"));
-                
-                 };
-            
-                return (
-                    <MTableBodyRow {...props} persistEvents onRowClick={handleClick} />
-                )
-            }
+        components={{
+          Row: (props) => {
+            let navigate = useNavigate();
+            const handleClick = (event, rowData) => {
+              // alert(`event.target.row = '${rowData.company}'`);
+              navigate(`/list/${rowData.system}`);
+              // navigate(`'/${rowData.company}'`);
+              // this.props.useNavigate(("/serverlist"));
+
+            };
+            return (
+              <MTableBodyRow {...props} persistEvents onRowClick={handleClick} />
+            )
+          }
         }}
         pageSize={5}
         rowsPerPageOptions={[5]}
-        />
-        )
-}
+      />
+    )
+  }
 }
