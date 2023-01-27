@@ -3,7 +3,7 @@
     width: 1000px;
     left: 50%;
     right:50%;
-    top:60%;
+    top:80%;
     margin-top:150px;
     -ms-transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
@@ -11,7 +11,6 @@
   transform: translate(-50%, -50%);
 }
 .net_firstpart{
-    margin-top:350px;
     display:flex;
     margin-bottom:30px;
     height:300px;

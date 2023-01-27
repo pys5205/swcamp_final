@@ -70,7 +70,7 @@ class Modal extends Component {
                             let navigate = useNavigate();
                             const handleClick = (event, rowData) => {
                               // alert(`event.target.row = '${rowData.company}'`);
-                              console.log(rowData);
+                              // console.log(rowData);
                               navigate(`/list/${rowData.system}/cpu`);
                               // navigate(`'/${rowData.company}'`);
                               // this.props.useNavigate(("/serverlist"));

@@ -3,11 +3,12 @@ import NetIoBytes from '../../components/detail/net_detail/net_io_bytes/netIoByt
 import NetIoPackets from '../../components/detail/net_detail/net_io_packets/netIoPackets'
 import NetIf from '../../components/detail/net_detail/net_if/netIf'
 import NetCon from '../../components/detail/net_detail/net_con/netCon'
-
+import Title from '../../components/detail/detailtitle'
 
 export default function ServerNet() {
     return(
         <div className="net_main">
+        <Title title="Network" />
             <div className="net_firstpart">
                 <div className="net_io_bytes">
                     IoBytes<NetIoBytes />
