@@ -62,7 +62,7 @@ export default class servererror extends React.Component {
           <Button variant="outlined" color="error" onClick={this.openModal}>
             Error server
           </Button>
-          <Modal isOpen={this.state.isModalOpen} close={this.closeModal} data={this.state.data} />
+          <Modal isOpen={this.state.isModalOpen} close={this.closeModal} />
         </div>
       </div>
     )

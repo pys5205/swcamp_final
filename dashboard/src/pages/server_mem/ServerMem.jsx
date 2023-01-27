@@ -5,9 +5,12 @@ import MemFree from '../../components/detail/mem_detail/mem_free_chart/memFreeCh
 import MemAvail from '../../components/detail/mem_detail/mem_avail_chart/memAvailChart'
 import MemCached from '../../components/detail/mem_detail/mem_cached_chart/memCachedChart'
 import MemBuffer from '../../components/detail/mem_detail/mem_buffer_chart/memBufferChart'
+import Title from '../../components/detail/detailtitle'
 export default function serverMem() {
     return(
+        
         <div className="mem_main">
+            <Title title="Memory" />
             <div className="mem_firstpart">
                 <div className="mem_total">
                     <MemTotal />
