@@ -1,0 +1,36 @@
+Arguments: 
+  /home/ec2-user/.nvm/versions/node/v16.18.1/bin/node /home/ec2-user/.nvm/versions/node/v16.18.1/bin/yarn add child-proccess
+
+PATH: 
+  /home/ec2-user/.nvm/versions/node/v16.18.1/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/ec2-user/singlestore/tools/singlestore-client:/home/ec2-user/singlestore/tools/singlestoredb-toolbox:/home/ec2-user/singlestore/tools/singlestoredb-studio
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  16.18.1
+
+Platform: 
+  linux x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/child-proccess: Not found
+      at Request.params.callback [as _callback] (/home/ec2-user/.nvm/versions/node/v16.18.1/lib/node_modules/yarn/lib/cli.js:66145:18)
+      at Request.self.callback (/home/ec2-user/.nvm/versions/node/v16.18.1/lib/node_modules/yarn/lib/cli.js:140890:22)
+      at Request.emit (node:events:513:28)
+      at Request.<anonymous> (/home/ec2-user/.nvm/versions/node/v16.18.1/lib/node_modules/yarn/lib/cli.js:141862:10)
+      at Request.emit (node:events:513:28)
+      at IncomingMessage.<anonymous> (/home/ec2-user/.nvm/versions/node/v16.18.1/lib/node_modules/yarn/lib/cli.js:141784:12)
+      at Object.onceWrapper (node:events:627:28)
+      at IncomingMessage.emit (node:events:525:35)
+      at endReadableNT (node:internal/streams/readable:1358:12)
+      at processTicksAndRejections (node:internal/process/task_queues:83:21)
+
+npm manifest: 
+  No manifest
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
