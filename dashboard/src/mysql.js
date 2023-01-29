@@ -29,6 +29,9 @@ app.get('/start', function(req, res) {
       // console.log(data);
       res.send(data);
       // shell.exec('sh ~/project/pys/swcamp_final/agent/start.sh');
+      spawn('sh',['~/project/pys/swcamp_final/agent/start.sh'], {
+          detached: true
+      })
     }
   })
 })
