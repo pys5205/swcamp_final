@@ -29,7 +29,7 @@ app.get('/start', function(req, res) {
       // console.log(data);
       res.send(data);
       // shell.exec('sh ~/project/pys/swcamp_final/agent/start.sh');
-      spawn('sh',['~/project/pys/swcamp_final/agent/start.sh'], {
+      spawn('sh',['../../agent/start.sh'], {
           detached: true
       })
     }
@@ -37,7 +37,15 @@ app.get('/start', function(req, res) {
 })
 
 app.get('/stop', function(req, res) {
-   shell.exec('sh ~/project/pys/swcamp_final/dashboard/src/components/button/stop/stop.sh');
+  const stop = "stop";
+   conn.query('SELECT * FROM tbl_sys_info group by system, company, os, service', (err, data) => {
+    if (err) {
+    } else {
+      // console.log(data);
+      shell.exec('sh ~/project/pys/swcamp_final/dashboard/src/components/button/stop/stop.sh');
+      res.send(stop);
+    }
+  })
 })
 
 app.post('/data', (req, res) => {
