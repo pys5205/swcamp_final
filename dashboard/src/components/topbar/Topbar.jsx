@@ -5,7 +5,7 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LanguageIcon from '@mui/icons-material/Language';
 import { useLocation } from 'react-router-dom';
-
+import Cloud from './cloud.png'
 
 export default function Topbar() {
     const location = useLocation();
@@ -15,7 +15,12 @@ export default function Topbar() {
             <div className="topbar">
                 <div className="topbarWrapper">
                     <div className="topLeft">
-                        <span className="logo"><Link to ="/" style={{ textDecoration: "none",color:"darkblue" }}>Dashboard</Link></span>
+                        <div className="cloud">
+                        <img src={Cloud}  width='180'height='90'  alt='cloud' />
+                        </div>
+                        <div className="text">
+                        <span className="logo"><Link to ="/" style={{ textDecoration: "none",color:"white" }}>Dashboard</Link></span>
+                        </div>
                     </div>
                 <div className="topRight">
                 system : {(location.pathname).substr(6)}

@@ -18,6 +18,16 @@
     justify-content: space-between;
     
 }
+.topLeft{
+    position:relative;
+}
+.topLeft img{
+    vertical-align:middle;
+}
+.text{
+    position:absolute;
+    top:35%;
+}
 .logo {
     font-weight: bold;
     font-size: 30px;
