@@ -38,7 +38,6 @@ export default class servercnt extends React.Component {
   }
   render() {
     const Data = this.state.data;
-    console.log(Data.count_os);
     return(
         <div className="servercnt">
                 <div className="count">

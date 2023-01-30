@@ -41,7 +41,6 @@ componentDidMount() {
   }
   render() {
     const Data = this.state.data;
-    console.log(Data);
     const columns = [
       {
         title: "company",
