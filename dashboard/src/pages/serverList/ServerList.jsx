@@ -31,7 +31,7 @@ export default function ServerList() {
     return (
     <div className="serverList">
         <div className = "charts">
-            <div>
+            <div className="start_stop">
                 <Start /><Stop />
             </div>
             <div className="cpu_mem">

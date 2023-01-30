@@ -4,10 +4,15 @@ import DiskIoBytes from '../../components/detail/disk_detail/disk_io_bytes/diskI
 import DiskIoTime from '../../components/detail/disk_detail/disk_io_time/diskIoTime'
 import DiskPart from '../../components/detail/disk_detail/disk_part/diskPart'
 import Title from '../../components/detail/detailtitle'
+import Start from '../../components/button/start/Start'
+import Stop from '../../components/button/stop/Stop'
 export default function serverDisk() {
     return (
         <div className="disk_main">
          <Title title="Disk" />
+         <div className="start_stop">
+                <Start /><Stop />
+            </div>
             <div className="disk_firstpart">
                 <div className="disk_io_count">
                     <div className="selectbox">

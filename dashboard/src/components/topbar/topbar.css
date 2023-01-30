@@ -34,7 +34,9 @@
     color:darkblue;
     cursor:pointer;
 }
-
+.icons{
+    margin-left:10px;
+}
 .topbarIconContainer{
     position: relative;
     margin-right: 15px;
