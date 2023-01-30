@@ -5,13 +5,16 @@ import CpuWait from '../../components/detail/cpu_detail/cpu_wait_chart/CpuWaitCh
 import CpuIrq from '../../components/detail/cpu_detail/cpu_irq_chart/CpuIrqChart'
 import CpuAvg from '../../components/detail/cpu_detail/cpu_loadavg_chart/CpuLoadavgChart'
 import Title from '../../components/detail/detailtitle'
-
+import Start from '../../components/button/start/Start'
+import Stop from '../../components/button/stop/Stop'
 export default function serverCPU() {
     return (
         <div className="main">
             <Title title="CPU" />
+            <div className="start_stop">
+                <Start /><Stop />
+            </div>
             <div className="firstpart">
-
                 CPU 사용률
                 <CpuSys />
             </div>

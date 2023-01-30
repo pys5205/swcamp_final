@@ -4,11 +4,16 @@ import NetIoPackets from '../../components/detail/net_detail/net_io_packets/netI
 import NetIf from '../../components/detail/net_detail/net_if/netIf'
 import NetCon from '../../components/detail/net_detail/net_con/netCon'
 import Title from '../../components/detail/detailtitle'
+import Start from '../../components/button/start/Start'
+import Stop from '../../components/button/stop/Stop'
 
 export default function ServerNet() {
     return(
         <div className="net_main">
         <Title title="Network" />
+        <div className="start_stop">
+                <Start /><Stop />
+            </div>
             <div className="net_firstpart">
                 <div className="net_io_bytes">
                     IoBytes<NetIoBytes />

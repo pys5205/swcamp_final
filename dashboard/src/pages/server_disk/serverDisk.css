@@ -9,6 +9,9 @@
   -moz-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+.start_stop{
+    margin-bottom:15px;
+}
 .disk_firstpart{
     display:flex;
     margin-bottom:50px;

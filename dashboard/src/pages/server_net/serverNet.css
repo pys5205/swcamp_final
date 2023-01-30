@@ -10,6 +10,9 @@
   -moz-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+.start_stop{
+    margin-bottom:15px;
+}
 .net_firstpart{
     display:flex;
     margin-bottom:30px;

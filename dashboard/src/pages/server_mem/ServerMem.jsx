@@ -6,11 +6,16 @@ import MemAvail from '../../components/detail/mem_detail/mem_avail_chart/memAvai
 import MemCached from '../../components/detail/mem_detail/mem_cached_chart/memCachedChart'
 import MemBuffer from '../../components/detail/mem_detail/mem_buffer_chart/memBufferChart'
 import Title from '../../components/detail/detailtitle'
+import Start from '../../components/button/start/Start'
+import Stop from '../../components/button/stop/Stop'
 export default function serverMem() {
     return(
         
         <div className="mem_main">
             <Title title="Memory" />
+            <div className="start_stop">
+                <Start /><Stop />
+            </div>
             <div className="mem_firstpart">
                 <div className="mem_total">
                     <MemTotal />
