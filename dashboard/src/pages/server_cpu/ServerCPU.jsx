@@ -5,6 +5,7 @@ import CpuWait from '../../components/detail/cpu_detail/cpu_wait_chart/CpuWaitCh
 import CpuIrq from '../../components/detail/cpu_detail/cpu_irq_chart/CpuIrqChart'
 import CpuAvg from '../../components/detail/cpu_detail/cpu_loadavg_chart/CpuLoadavgChart'
 import Title from '../../components/detail/detailtitle'
+
 export default function serverCPU() {
     return (
         <div className="main">
@@ -28,7 +29,9 @@ export default function serverCPU() {
                 CPU 프로세스 처리 대기 시간
                 <CpuAvg />
             </div>
-
+            <div>
+                
+            </div>
         </div>
     )
 }
