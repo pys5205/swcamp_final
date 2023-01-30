@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import './modal.css'
 import MaterialTable, { MTableBodyRow } from "material-table";
 import { useNavigate } from "react-router-dom"
-class Modal extends Component {
+
+export default class Modal extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,8 +34,6 @@ class Modal extends Component {
   }
 
   render() {
-    const { isOpen, close } = this.props;//아까 버튼에서 props로 가져온것
-    // console.log(this.state.data);
     const Data = this.state.data;
     const columns =
                         [
@@ -43,51 +42,40 @@ class Modal extends Component {
                           { title: "time", field: "ts_create" },
                         ]
     return (
-      <>
-        {isOpen ? (
-          <div className="modal">
-            <div onClick={close}>
-              <div className="loginModal">
-                <span className="close" onClick={close}>
-                  &times;
-                </span>
-                <div className="modalContents" onClick={isOpen}>
+          ////만약 isopen(this.state.isModalOpen)이 true일때 코드를 실행 false면  null
+          /// <div onClick={close}> 로그인창 말고 회색 바탕을 누를시 모달이 꺼지게 만듬
+          ///<span className="close" onClick={close}>&times;</span> x버튼 누를시 꺼짐
+          ////<div className="modalContents" onClick={isOpen}> 로그인 화면은 버튼 클릭해서 들어오면
+          /// true인 상태로 있어서 화면이 안꺼진다.
+          <div>
                   <div className="Header">
                     <img src="https://100dayscss.com/codepen/alert.png" width="50" height="38" />
                   </div>
-                  <div className="table">
                     <MaterialTable
-                      title="Error"
-                      data={Data}
+                    title="Error"
                       columns={columns}
-                      options={{
-                        selection: true
-                      }}
+                      data={Data}
                       components={{
-                        Row: (props) => {
-                          let navigate = useNavigate();
-                          const handleClick = (event, rowData) => {
-                            // alert(`event.target.row = '${rowData.company}'`);
-                            navigate(`/list/${rowData.system}`);
-                          };
+                          Row: (props) => {
+                            let navigate = useNavigate();
+                            const handleClick = (event, rowData) => {
+                              // alert(`event.target.row = '${rowData.company}'`);
+                              // console.log(rowData);
+                              navigate(`/list/${rowData.system}/cpu`);
+                              // navigate(`'/${rowData.company}'`);
+                              // this.props.useNavigate(("/serverlist"));
+                            };
                           return (
                             <MTableBodyRow {...props} persistEvents onRowClick={handleClick} />
-                          )
+                          );
                         }
                       }}
                       pageSize={5}
                       rowsPerPageOptions={[5]}
                     />
-                  </div>
-                  
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : null}
-      </>
-    );
-  }
+           </div> 
+           )
+
 }
 
-export default Modal;
+}
