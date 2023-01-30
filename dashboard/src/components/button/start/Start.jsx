@@ -32,7 +32,6 @@ export default class start extends React.Component {
    };
   render() {
     const Data = this.state.data;
-    console.log(Data);
     return(
         <Button variant="outlined" onClick ={this.handleclick}>start</Button>
     )

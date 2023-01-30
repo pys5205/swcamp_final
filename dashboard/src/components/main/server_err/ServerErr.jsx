@@ -37,11 +37,25 @@ export default class servererror extends React.Component {
   openModal = () => {
     this.setState({ isModalOpen: true });
   };
-
+  
   closeModal = () => {
     this.setState({ isModalOpen: false });
   };
-
+  
+  isModalOpen = (event) => {
+    event.target.value = 1;
+  }
+  isModalClose = (event) => {
+    event.target.value = 0;
+  }
+  
+  asdfModal = (event) => {
+    if (event.target.value == 1) {
+      this.setState({ isModalOpen: true });
+    } else {
+      this.setState({ isModalOpen: false });
+    }
+  }
   render() {
     const Data = this.state.data;
     // console.log(Data.cnt_system);
@@ -59,10 +73,10 @@ export default class servererror extends React.Component {
           </div>
         </div>
         <div className="button">
-          <Button variant="outlined" color="error" onClick={this.openModal}>
+          <Button variant="outlined" color="error" value="1" onClick={this.asdfModal}>
             Error server
           </Button>
-          <Modal isOpen={this.state.isModalOpen} close={this.closeModal} />
+          <Modal isOpen={this.state.isModalOpen} value="0" close={this.closeModal} />
         </div>
       </div>
     )
