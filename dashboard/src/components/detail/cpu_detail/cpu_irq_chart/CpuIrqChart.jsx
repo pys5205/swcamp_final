@@ -1,10 +1,11 @@
 import React from 'react'
 import Chart from "react-apexcharts";
-
+import Loding from '../../../main/loding'
 export default class detailcpuirq extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoaded: true,
       data: []
     };
   }
@@ -31,7 +32,7 @@ export default class detailcpuirq extends React.Component {
             //////////////////////////////////여기부터보자
             // console.log(json);
             this.setState({
-              isLoaded: true,
+              isLoaded: false,
               data: json
             })
           }
@@ -41,11 +42,14 @@ export default class detailcpuirq extends React.Component {
   }
   render() {
 
-    console.log(this.state.data);
+    // console.log(this.state.data);
     const Data = this.state.data;
     //console.log(Data);
 
     return(
+       <>
+      {this.state.isLoaded ? 
+    <Loding /> : 
             <Chart
             type= 'line'
             height= "200"
@@ -85,6 +89,8 @@ export default class detailcpuirq extends React.Component {
                 },
             }}
             />
+      }
+            </>
 
     )
   }

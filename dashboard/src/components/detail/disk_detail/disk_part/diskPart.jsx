@@ -1,11 +1,12 @@
 import React from 'react'
 import Chart from "react-apexcharts";
 import './diskPart.css'
-
+import Loding from '../../../main/loding'
 export default class diskpart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoaded: true,
       data: []
     };
   }
@@ -32,7 +33,7 @@ componentDidMount(){
                   //////////////////////////////////여기부터보자
                   // console.log(json);
                     this.setState({
-                      isLoaded: true,
+                      isLoaded: false,
                      data : json
                     })
                   }
@@ -46,6 +47,9 @@ componentDidMount(){
     const test = Data.server_memory;
     // console.log(test);
     return(
+      <>
+      {this.state.isLoaded ? 
+    <Loding /> : 
       <div className="app">
         <div className="row">
           <div className="donut">
@@ -60,6 +64,8 @@ componentDidMount(){
           </div>
         </div>
       </div>
+      }
+      </>
     )
   }
 }

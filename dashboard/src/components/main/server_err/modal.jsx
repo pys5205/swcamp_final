@@ -48,9 +48,7 @@ export default class Modal extends Component {
           ////<div className="modalContents" onClick={isOpen}> 로그인 화면은 버튼 클릭해서 들어오면
           /// true인 상태로 있어서 화면이 안꺼진다.
           <div>
-                  <div className="Header">
-                    <img src="https://100dayscss.com/codepen/alert.png" width="50" height="38" />
-                  </div>
+                  
                     <MaterialTable
                     title="Error"
                       columns={columns}

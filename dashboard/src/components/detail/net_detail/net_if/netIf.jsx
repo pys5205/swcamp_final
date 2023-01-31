@@ -1,10 +1,12 @@
 import React from 'react'
 import MaterialTable from "material-table";
+import Loding from '../../../main/loding'
 
 export default class NetIf extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoaded: true,
       data: []
     };
   }
@@ -31,7 +33,7 @@ componentDidMount(){
                   //////////////////////////////////여기부터보자
                   // console.log(json);
                     this.setState({
-                      isLoaded: true,
+                      isLoaded: false,
                      data : json
                     })
                   }
@@ -67,6 +69,9 @@ componentDidMount(){
         ]
         //console.log(columns);
     return(
+      <>
+      {this.state.isLoaded ? 
+    <Loding /> :
         <MaterialTable 
         title="네트워크 인터페이스"
         data={Data}
@@ -77,6 +82,8 @@ componentDidMount(){
         pageSize={5}
         rowsPerPageOptions={[4]}
         />
+      }
+      </>
         )
 }
 }

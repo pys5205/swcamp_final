@@ -2,18 +2,21 @@ import React from 'react'
 import './featuredInfo.css'
 import MaterialTable, { MTableBodyRow } from "material-table";
 import { useNavigate } from "react-router-dom"
-
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 export default class featured extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
+      isLoaded: true,
       data: []
     };
   }
 
 
 componentDidMount() {
+  
     const interval = setInterval(async () => {
       fetch("/data", {
         method: "post", //통신방법
@@ -30,7 +33,7 @@ componentDidMount() {
             //////////////////////////////////여기부터보자
             // console.log(json);
             this.setState({
-              isLoaded: true,
+              isLoaded: false,
               data: json
             })
           }
@@ -75,6 +78,13 @@ componentDidMount() {
     ]
 
     return (
+      <>
+      {this.state.isLoaded ? 
+      <div className="loding">
+    <Box sx={{ display: "flex"}}>
+      <CircularProgress color="inherit"  />
+    </Box>
+    </div>: 
       <MaterialTable
         title="Company Details"
         data={Data}
@@ -100,6 +110,9 @@ componentDidMount() {
         pageSize={5}
         rowsPerPageOptions={[5]}
       />
+
+      }
+      </>
     )
   }
 }
