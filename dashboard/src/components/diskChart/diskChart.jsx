@@ -1,12 +1,14 @@
 import React from 'react'
 import './diskChart.css'
 import Chart from "react-apexcharts";
+import Loding from '../main/loding';
 
 export default class diskchart extends React.Component {
   
   constructor(props) {
     super(props);
     this.state = {
+      isLoaded: true,
       data: []
     };
   }
@@ -33,7 +35,7 @@ componentDidMount(){
                   //////////////////////////////////여기부터보자
                   // console.log(json);
                     this.setState({
-                      isLoaded: true,
+                      isLoaded: false,
                      data : json
                     })
                   }
@@ -45,6 +47,9 @@ componentDidMount(){
     // console.log(this.state.data);
     const Data = this.state.data;
     return(
+      <>
+      {this.state.isLoaded ? 
+    <Loding /> :
           <div className="mixed-chart">
             <Chart
              type="line"
@@ -81,6 +86,8 @@ componentDidMount(){
             }}
             />
           </div>
+      }
+      </>
     )
   }
 }

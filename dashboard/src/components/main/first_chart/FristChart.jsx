@@ -1,11 +1,13 @@
 import React from 'react'
 import './firstChart.css'
 import Chart from "react-apexcharts";
-
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 export default class firstchart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoaded: true,
       data: []
     };
   }
@@ -24,9 +26,9 @@ export default class firstchart extends React.Component {
           alert("오류");
         } else {
           //////////////////////////////////여기부터보자
-          console.log(json);
+          // console.log(json);
           this.setState({
-            isLoaded: true,
+            isLoaded: false,
             data: json
           })
         }
@@ -36,6 +38,11 @@ export default class firstchart extends React.Component {
     const Data = this.state.data;
     // console.log(Data.cpu_per);
     return (
+      <>
+      {this.state.isLoaded ? 
+    <Box sx={{ display: "flex"}}>
+      <CircularProgress />
+    </Box> : 
       <Chart
         type="radialBar"
         height="300"
@@ -79,6 +86,8 @@ export default class firstchart extends React.Component {
           },
         }}
       />
+      }
+      </>
     )
   }
 }

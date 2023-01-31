@@ -1,9 +1,11 @@
 import React from 'react'
 import './memtotalchart.css'
+import Loding from '../../../main/loding'
 export default class detailcpuavg extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoaded: true,
       data: []
     };
   }
@@ -30,7 +32,7 @@ export default class detailcpuavg extends React.Component {
                   //////////////////////////////////여기부터보자
                   // console.log(json);
                     this.setState({
-                      isLoaded: true,
+                      isLoaded: false,
                      data : json
                     })
                   }
@@ -45,9 +47,14 @@ export default class detailcpuavg extends React.Component {
     console.log(Data.total/1024/1024);
     //console.log(Data);
     return(
+      <>
+      {this.state.isLoaded ? 
+    <Loding /> :
            <div className="circle">
                 {Data.total}
            </div>
+      }
+      </>
     )
   }
 }

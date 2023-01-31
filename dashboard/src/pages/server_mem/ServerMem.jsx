@@ -18,6 +18,7 @@ export default function serverMem() {
             </div>
             <div className="mem_firstpart">
                 <div className="mem_total">
+                total
                     <MemTotal />
                 </div>
                 <div className="mem_used">

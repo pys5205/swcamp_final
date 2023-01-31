@@ -1,10 +1,11 @@
 import React from 'react'
 import Chart from "react-apexcharts";
-
+import Loding from '../../../main/loding'
 export default class diskiocount extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoaded:true,
       data: []
     };
   }
@@ -31,7 +32,7 @@ export default class diskiocount extends React.Component {
                   //////////////////////////////////여기부터보자
                   // console.log(json);
                     this.setState({
-                      isLoaded: true,
+                      isLoaded: false,
                      data : json
                     })
                   }
@@ -44,6 +45,9 @@ export default class diskiocount extends React.Component {
     const Data = this.state.data;
     // console.log(Data.ts_create);
     return(
+      <>
+       {this.state.isLoaded ? 
+    <Loding /> : 
           <div className="mixed-chart">
             <Chart
              type="line"
@@ -81,6 +85,8 @@ export default class diskiocount extends React.Component {
             }}
             />
           </div>
+       }
+       </>
     )
   }
 }

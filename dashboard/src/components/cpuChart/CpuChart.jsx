@@ -1,11 +1,12 @@
 import React from 'react'
 import './cpuChart.css'
 import Chart from "react-apexcharts";
-
+import Loding from '../main/loding'
 export default class cpuchart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoaded: true,
       data: []
     };
   }
@@ -32,7 +33,7 @@ export default class cpuchart extends React.Component {
             //////////////////////////////////여기부터보자
             // console.log(json);
             this.setState({
-              isLoaded: true,
+              isLoaded: false,
               data: json
             })
           }
@@ -43,8 +44,11 @@ export default class cpuchart extends React.Component {
   render() {
     // console.log(this.state.data);
     const Data = this.state.data;
-
+    
     return(
+      <>
+      {this.state.isLoaded ? 
+    <Loding /> : 
       <div className="app">
         <div className="row">
           <div className="mixed-chart">
@@ -79,7 +83,8 @@ export default class cpuchart extends React.Component {
           </div>
         </div>
       </div>
-
+      }
+      </>
     )
   }
 }

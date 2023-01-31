@@ -1,6 +1,5 @@
 import React from 'react'
 import './topbar.css'
-import Chart from "react-apexcharts";
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 
 export default class erroricon extends React.Component {

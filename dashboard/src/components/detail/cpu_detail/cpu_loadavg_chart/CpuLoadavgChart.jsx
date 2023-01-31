@@ -1,6 +1,6 @@
 import React from 'react'
 import Chart from "react-apexcharts";
-
+import Loding from '../../../main/loding'
 // import * as dfd from "danfojs";
 
 // function createData(ts_insert, system, cpu_per, cpu_sys, cpu_user, cpu_wait, cpu_irq, cpu_softirq, cpu_loadavg_1,cpu_loadavg_5, cpu_loadavg_15, ts_create  ) {
@@ -12,6 +12,7 @@ export default class detailcpuavg extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoaded: true,
       data: []
     };
   }
@@ -38,7 +39,7 @@ export default class detailcpuavg extends React.Component {
             //////////////////////////////////여기부터보자
             // console.log(json);
             this.setState({
-              isLoaded: true,
+              isLoaded: false,
               data: json
             })
           }
@@ -53,6 +54,9 @@ export default class detailcpuavg extends React.Component {
     //console.log(Data);
 
     return(
+      <>
+       {this.state.isLoaded ? 
+    <Loding /> : 
             <Chart
             type= 'area'
             height= "200"
@@ -95,6 +99,8 @@ export default class detailcpuavg extends React.Component {
                 },
             }}
             />
+       }
+       </>
     )
   }
 }
