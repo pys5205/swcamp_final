@@ -110,7 +110,7 @@ app.post('/server', (req, res) => {
 app.post('/server/error', (req, res) => {
   // console.log(sys);
   var resData = {};
-  conn.query('SELECT count(distinct system)as cnt_system, system, cpu_per FROM tbl_cpu where cpu_per >= 10', (err, data) => {
+  conn.query('SELECT count(distinct system)as cnt_system, system, cpu_per FROM tbl_cpu where cpu_per >=10', (err, data) => {
     if (err) {
       console.log("데이터 가져오기 실패");
     } else {
@@ -125,9 +125,6 @@ app.post('/server/error', (req, res) => {
       } else {
         resData.ok = "false"
       }
-      // var df = new dfd.DataFrame(data)
-      // console.log(df)
-
     }
     // console.log(resData);
     return res.json(resData);
@@ -488,7 +485,7 @@ app.post('/network/io_packets', (req, res) => {
 app.post('/network/if', (req, res) => {
   var resData = {};
   var input = req.body.system;
-  conn.query('SELECT net_if_name, net_if_address, net_if_netmask, net_if_broadcast, ts_create FROM tbl_net_if where ts_create = (select max(ts_create) from tbl_net_if) and system = ?', [input], (err, data) => {
+  conn.query('SELECT net_if_name, net_if_address, net_if_netmask, net_if_broadcast, ts_create FROM tbl_net_if where ts_create = (select max(ts_create) from tbl_net_if where system = ?) and system = ?', [input, input], (err, data) => {
     if (err) {
       console.log("데이터 가져오기 실패");
     } else {
@@ -501,7 +498,7 @@ app.post('/network/if', (req, res) => {
 app.post('/network/con', (req, res) => {
   var resData = {};
   var input = req.body.system;
-  conn.query('SELECT net_con_fd, net_con_laddr_port, net_con_laddr_ip, net_con_raddr_port, net_con_raddr_ip, net_con_status, ts_create FROM tbl_net_con where ts_create = (select max(ts_create) from tbl_net_con) and system = ?', [input], (err, data) => {
+  conn.query('SELECT net_con_fd, net_con_laddr_port, net_con_laddr_ip, net_con_raddr_port, net_con_raddr_ip, net_con_status, ts_create FROM tbl_net_con where ts_create = (select max(ts_create) from tbl_net_con where system = ?) and system = ?', [input, input], (err, data) => {
     if (err) {
       console.log("데이터 가져오기 실패");
     } else {
@@ -514,7 +511,7 @@ app.post('/network/con', (req, res) => {
 app.post('/process', (req, res) => {
   var resData = {};
   var input = req.body.system;
-  conn.query('SELECT procs_username, procs_name, procs_pid, procs_ppid, procs_status, procs_mem_full_uss, ts_create FROM tbl_procs_doc where ts_create = (select max(ts_create) from tbl_procs_doc) and system = ?', [input], (err, data) => {
+  conn.query('SELECT procs_username, procs_name, procs_pid, procs_ppid, procs_status, procs_mem_full_uss, ts_create FROM tbl_procs_doc where ts_create = (select max(ts_create) from tbl_procs_doc where system = ?) and system = ?', [input, input], (err, data) => {
     if (err) {
       console.log("데이터 가져오기 실패");
     } else {
