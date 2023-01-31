@@ -44,7 +44,8 @@ export default function Topbar() {
                         
                     </div>
                 </div>
-                 <Modal
+                <div>
+                            <Modal
                                 open={open}
                                 onClose={handleClose}
                                 aria-labelledby="modal-modal-title"
@@ -56,6 +57,7 @@ export default function Topbar() {
                                   </Typography>
                                 </Box>
                               </Modal>
+                              </div>
             </div>
             )
 }

@@ -44,14 +44,15 @@ export default class detailcpuavg extends React.Component {
     
     // console.log(this.state.data);
     const Data = this.state.data;
-    console.log(Data.total/1024/1024);
+    // console.log(Data.total/1024/1024);
+    const dd = Data.total/1024/1024
     //console.log(Data);
     return(
       <>
       {this.state.isLoaded ? 
     <Loding /> :
            <div className="circle">
-                {Data.total}
+                {dd} GB
            </div>
       }
       </>
