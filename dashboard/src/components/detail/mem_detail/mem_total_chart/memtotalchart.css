@@ -1,9 +1,10 @@
 .circle{
-    width:200px;
-    height:200px;
+    margin-left : 18px;
+    width:160px;
+    height:160px;
     border-radius:50%;
     background-color:#6667AB;
     text-align:center;
-    line-height:200px;
+    line-height:150px;
     color:white;
 }
