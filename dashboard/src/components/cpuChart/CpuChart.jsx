@@ -72,7 +72,7 @@ export default class cpuchart extends React.Component {
                 xaxis: {
                   categories: Data.ts_create,
                   labels: { show: false },
-                  range:20,
+                  range:8,
                 }
             }}
             />

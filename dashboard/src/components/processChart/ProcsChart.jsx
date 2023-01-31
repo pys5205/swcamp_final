@@ -42,7 +42,7 @@ componentDidMount(){
 }
     render() {
     const Data = this.state.data;
-    //console.log(Data);
+    // console.log(Data);
     //console.log(Data.procs_name);
     const columns = [
         {
