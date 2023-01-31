@@ -9,25 +9,31 @@ export default class stop extends React.Component {
     };
   }
    handleclick = () => {
+    const current = decodeURI(window.location.href);
+    const server = current.split('/')[4];
     fetch("/stop", { 
-        method: "get", //통신방법
+        method: "post", //통신방법
         headers: {
           "content-type": "application/json",
         },
-        body: JSON.stringify(),
-      })
-        .then((res) => res.json())
-        .then((json) => {
-         if (json === undefined) {
-                      alert("오류");
-                    } else {
-                    // console.log(json);
-                      this.setState({
-                        isLoaded: true,
-                       data : json
-                      })
+        body: JSON.stringify({
+        'system' : server
+      }
+        ),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+       if (json === undefined) {
+                    alert("오류");
+                  } else {
+                  //////////////////////////////////여기부터보자
+                  // console.log(json);
+                    this.setState({
+                      isLoaded: false,
+                     data : json
+                    })
                   }
-        });
+      });
       return;
    };
   render() {

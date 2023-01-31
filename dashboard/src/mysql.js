@@ -21,28 +21,38 @@ app.use(cors());
 app.use(bodyParser.json());
 
 
-app.get('/start', function(req, res) {
+app.post('/start', function(req, res) {
+  var resData = {};
+  var input = req.body.system;
  conn.query('SELECT * FROM tbl_sys_info group by system, company, os, service', (err, data) => {
       if (err) {
       console.log("데이터 가져오기 실패");
     } else {
-      // console.log(data);
       res.send(data);
-      // shell.exec('sh ~/project/pys/swcamp_final/agent/start.sh');
-      spawn('sh',['../../agent/start.sh'], {
-          detached: true
-      })
+      if (input == "system"){
+        spawn('sh',['../../agent/start.sh'], {
+            detached: true
+        })
+      }else {
+        console.log("다른서버");
+      }
     }
   })
 })
 
-app.get('/stop', function(req, res) {
+app.post('/stop', function(req, res) {
   const stop = "stop";
+  var resData = {};
+  var input = req.body.system;
    conn.query('SELECT * FROM tbl_sys_info group by system, company, os, service', (err, data) => {
     if (err) {
     } else {
-      // console.log(data);
-      shell.exec('sh ~/project/pys/swcamp_final/dashboard/src/components/button/stop/stop.sh');
+      if (input == "system"){
+        shell.exec('sh ~/project/pys/swcamp_final/dashboard/src/components/button/stop/stop.sh');
+      }else {
+        console.log("다른서버");
+      }
+      
       res.send(stop);
     }
   })
@@ -50,7 +60,7 @@ app.get('/stop', function(req, res) {
 
 app.post('/data', (req, res) => {
   // console.log(req);
-  conn.query('SELECT * FROM tbl_sys_info group by system, company, os, service', (err, data) => {
+  conn.query('SELECT * FROM tbl_sys_info group by system, company, os, service order by system', (err, data) => {
     if (err) {
       console.log("데이터 가져오기 실패");
     } else {
