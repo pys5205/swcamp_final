@@ -38,7 +38,7 @@ export default function Topbar() {
                         </div>
                     </div>
                     <div className="topRight">
-                        <div className="icons" onClick={handleOpen}>
+                        <div className="icons" onClick={handleOpen}> 
                             <Erroricon />
                         </div>
                         
