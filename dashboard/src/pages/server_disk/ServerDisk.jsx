@@ -6,6 +6,8 @@ import DiskPart from '../../components/detail/disk_detail/disk_part/diskPart'
 import Title from '../../components/detail/detailtitle'
 import Start from '../../components/button/start/Start'
 import Stop from '../../components/button/stop/Stop'
+import Iocnt from '../../components/diskChart/disk_io_select'
+
 export default function serverDisk() {
     return (
         <div className="disk_main">
@@ -16,7 +18,7 @@ export default function serverDisk() {
             <div className="disk_firstpart">
                 <div className="disk_io_count">
                     <div className="selectbox">
-                        IoCount 
+                        IoCount<Iocnt />
                     </div>
                     <DiskIoCount />
                 </div>

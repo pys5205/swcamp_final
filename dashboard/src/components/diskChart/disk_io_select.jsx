@@ -20,7 +20,6 @@ componentDidMount(){
       },
       body: JSON.stringify({
         'system' : server,
-        'name' : name,
       }
         ),
     })
@@ -42,11 +41,28 @@ componentDidMount(){
     // console.log(this.state.data);
     // let navigate = useNavigate();
     const handleChange = (event) => {
+      console.log(event.target.value);
+        const current = decodeURI(window.location.href);
+      const server = current.split('/')[4];
+      let selectName = event.target.value;
+              fetch("/disk/io_bytes", { 
+              method: "post", //통신방법
+              headers: {
+                "content-type": "application/json",
+              },
+              body: JSON.stringify({
+                'ioName' : selectName,
+                'system' : server
+              }
+                ),
+            })
+            .then((res) => res.json())
         // alert(event.target.value);
         // navigate(`/list/${Data.system}/${event.target.value}`)
         // this.setState({
         //   [event.target.name]: event.target.value,
         // })
+        
     }
 
     const content = this.state.iodata.map((iodata) => (
@@ -56,7 +72,6 @@ componentDidMount(){
    //  console.log(Data);
     return(
       <select onChange={handleChange} id="diskname">
-
         {content}
       </select>
     )

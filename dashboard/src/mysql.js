@@ -59,6 +59,8 @@ app.post('/stop', function(req, res) {
 
 app.post('/data', (req, res) => {
   // console.log(req);
+  var procs = req.body.process;
+  console.log(procs);
   conn.query('SELECT * FROM tbl_sys_info group by system, company, os, service order by system', (err, data) => {
     if (err) {
       console.log("데이터 가져오기 실패");
@@ -262,11 +264,14 @@ app.post('/disk', (req, res) => {
 app.post('/disk/io_count', (req, res) => {
   var resData = {};
   var input = req.body.system;
-  var sql1 = 'select avg(disk_io_read_count) as read_count, avg(disk_io_write_count) as write_count, ts_create from tbl_disk_io where system=? group by ts_create order by ts_create asc;';
-  var sql1s = mysql.format(sql1, input);
+  var ioName = req.body.ioName
+  console.log(ioName);
+  console.log(input);  
+  var sql1 = 'select disk_io_read_count as read_count, disk_io_write_count as write_count, ts_create from tbl_disk_io where system=? and disk_io_name = ? group by ts_create order by ts_create asc;';
+  var sql1s = mysql.format(sql1, input, ioName);
 
-  var sql2 = 'select distinct(disk_io_name) from tbl_disk_io where system=? order by ts_create asc;';
-  var sql2s = mysql.format(sql2, input);
+  var sql2 = 'select distinct(?) from tbl_disk_io where system=? order by ts_create asc;';
+  var sql2s = mysql.format(sql2, ioName,input);
   // console.log(sql2s);
   conn.query(
     sql1s, function (err, data) {
@@ -297,8 +302,9 @@ app.post('/disk/io_count', (req, res) => {
 app.post('/disk/io_bytes', (req, res) => {
   var resData = {};
   var input = req.body.system;
+  var ioName = req.body.ioName;
   conn.query(
-    'select avg(disk_io_read_bytes)/1024/1024 as read_bytes, avg(disk_io_write_bytes)/1024/1024 as write_bytes, ts_create from tbl_disk_io where system=? group by ts_create order by ts_create asc', [input], (err, data) => {
+    'select disk_io_read_bytes/1024/1024 as read_bytes, disk_io_write_bytes/1024/1024 as write_bytes, ts_create from tbl_disk_io where system=? and disk_io_name = ? group by ts_create order by ts_create asc', [input,ioName], (err, data) => {
       if (err) {
         console.log("데이터 가져오기 실패");
       } else {
@@ -518,6 +524,21 @@ app.post('/network/con', (req, res) => {
 app.post('/process', (req, res) => {
   var resData = {};
   var input = req.body.system;
+  // console.log(input)
+  conn.query('SELECT procs_username, procs_name, procs_pid, procs_ppid, procs_status, procs_mem_full_uss, ts_create FROM tbl_procs_doc where ts_create = (select max(ts_create) from tbl_procs_doc where system = ?) and system = ?', [input, input], (err, data) => {
+    if (err) {
+      console.log("데이터 가져오기 실패");
+    } else {
+      // console.log(data);
+      res.send(data);
+    }
+  })
+})
+
+app.post('/process2', (req, res) => {
+  var resData = {};
+  var input = req.body.process;
+  // console.log(input)
   conn.query('SELECT procs_username, procs_name, procs_pid, procs_ppid, procs_status, procs_mem_full_uss, ts_create FROM tbl_procs_doc where ts_create = (select max(ts_create) from tbl_procs_doc where system = ?) and system = ?', [input, input], (err, data) => {
     if (err) {
       console.log("데이터 가져오기 실패");

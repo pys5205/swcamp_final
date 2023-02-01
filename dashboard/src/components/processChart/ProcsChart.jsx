@@ -1,6 +1,6 @@
 import React from 'react'
 import './procsChart.css'
-import MaterialTable from "material-table";
+import MaterialTable, { MTableBodyRow } from "material-table";
 import Loding from '../main/loding'
 export default class ProcsChart extends React.Component {
   constructor(props) {
@@ -88,7 +88,35 @@ componentDidMount(){
         options={{
           selection: true
         }}
-        
+        components={{
+          Row: (props) => {
+            
+            const handleClick = (event, rowData) => {
+            //   alert(`event.target.row = '${rowData.procs_name}'`);
+            // console.log(rowData.procs_name);
+            let procs_name = rowData.procs_name;
+            console.log(procs_name);
+              fetch("/process2", { 
+              method: "post", //통신방법
+              headers: {
+                "content-type": "application/json",
+              },
+              body: JSON.stringify({
+                'process' : procs_name
+              }
+                ),
+            })
+            .then((res) => res.json())
+            .then((result) => console.log("결과: ", result));
+                      // navigate(`'/${rowData.company}'`);
+              // this.props.useNavigate(("/serverlist"));
+
+            };
+            return (
+              <MTableBodyRow {...props} persistEvents onRowClick={handleClick} />
+            )
+          }
+        }}
         pageSize={5}
         rowsPerPageOptions={[5]}
         />
