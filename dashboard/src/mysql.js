@@ -52,7 +52,6 @@ app.post('/stop', function(req, res) {
       }else {
         console.log("다른서버");
       }
-      
       res.send(stop);
     }
   })
@@ -156,7 +155,6 @@ app.post('/server/error/modal', (req, res) => {
     // console.log(resData)
 })
 })
-
 
 app.post('/detail/memory', (req, res) => {
   var sys = req.body.system;
@@ -380,7 +378,6 @@ app.post('/disk/part', (req, res) => {
     })
 })
 
-
 app.post('/disk/io/name', (req,res) => {
 
   var input = req.body.system;
@@ -527,6 +524,23 @@ app.post('/process', (req, res) => {
     } else {
       // console.log(data);
       res.send(data);
+    }
+  })
+})
+
+app.post('/process/kill', function(req, res) {
+  const stop = "stop";
+  var resData = {};
+  var input = req.body.system;
+   conn.query('SELECT * FROM tbl_sys_info group by system, company, os, service', (err, data) => {
+    if (err) {
+    } else {
+      if (input == "system"){
+        shell.exec('sh ~/project/pys/swcamp_final/dashboard/src/components/button/stop/stop.sh');
+      }else {
+        console.log("다른서버");
+      }
+      res.send(stop);
     }
   })
 })
