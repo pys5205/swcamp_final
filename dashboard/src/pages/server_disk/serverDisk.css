@@ -20,6 +20,7 @@
 }
 .selectbox{
     margin-left:50px;
+    display: flex;
 }
 .disk_io_count{
     width:500px;
