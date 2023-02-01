@@ -262,8 +262,9 @@ app.post('/disk', (req, res) => {
 
 app.post('/disk/io_count', (req, res) => {
   var resData = {};
-  var input = req.body.system;
-  var ioName = req.body.ioName
+  var input = req.body.system ;
+  let ioName = 0;
+  ioName = req.body.ioName;
   console.log(ioName);
     conn.query(
       'select disk_io_read_count as read_count, disk_io_write_count as write_count, ts_create from tbl_disk_io where system=? and disk_io_name = ? group by ts_create order by ts_create asc', [input,ioName], (err, data) => {

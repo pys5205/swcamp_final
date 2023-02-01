@@ -20,7 +20,6 @@ export default function serverDisk() {
                     <div className="selectbox">
                         IoCount<Iocnt />
                     </div>
-                    
                 </div>
                 <div className="disk_io_bytes">
                     <div className="selectbox">
