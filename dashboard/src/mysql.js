@@ -60,7 +60,6 @@ app.post('/stop', function(req, res) {
 app.post('/data', (req, res) => {
   // console.log(req);
   var procs = req.body.process;
-  console.log(procs);
   conn.query('SELECT * FROM tbl_sys_info group by system, company, os, service order by system', (err, data) => {
     if (err) {
       console.log("데이터 가져오기 실패");
@@ -266,37 +265,28 @@ app.post('/disk/io_count', (req, res) => {
   var input = req.body.system;
   var ioName = req.body.ioName
   console.log(ioName);
-  console.log(input);  
-  var sql1 = 'select disk_io_read_count as read_count, disk_io_write_count as write_count, ts_create from tbl_disk_io where system=? and disk_io_name = ? group by ts_create order by ts_create asc;';
-  var sql1s = mysql.format(sql1, input, ioName);
-
-  var sql2 = 'select distinct(?) from tbl_disk_io where system=? order by ts_create asc;';
-  var sql2s = mysql.format(sql2, ioName,input);
-  // console.log(sql2s);
-  conn.query(
-    sql1s, function (err, data) {
-      if (err) {
-        console.log("데이터 가져오기 실패");
-      } else {
-        // console.log(data);
-        resData.read_count = [];
-        resData.write_count = [];
-        resData.ts_create = [];
-        if (data[0]) {
-          resData.ok = "true";
-          data.forEach(function (val) {
-            resData.read_count.push(parseInt(val.read_count));
-            resData.write_count.push(parseInt(val.write_count));
-            resData.ts_create.push(val.ts_create);
-          });
+    conn.query(
+      'select disk_io_read_count as read_count, disk_io_write_count as write_count, ts_create from tbl_disk_io where system=? and disk_io_name = ? group by ts_create order by ts_create asc', [input,ioName], (err, data) => {
+        if (err) {
+          console.log("데이터 가져오기 실패");
         } else {
-          resData.ok = "false"
+          // console.log(data);
+          resData.read_count = [];
+          resData.write_count = [];
+          resData.ts_create = [];
+          if (data[0]) {
+            resData.ok = "true";
+            data.forEach(function (val) {
+              resData.read_count.push(parseInt(val.read_count));
+              resData.write_count.push(parseInt(val.write_count));
+              resData.ts_create.push(val.ts_create);
+            });
+          } else {
+            resData.ok = "false"
+          }
         }
-      }
-      // console.log(resData);
-      return res.json(resData);
-    })
-  // console.log(resData);
+        return res.json(resData);
+      })
 })
 
 app.post('/disk/io_bytes', (req, res) => {

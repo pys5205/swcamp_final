@@ -1,4 +1,6 @@
 import React from "react";
+import Chart from "react-apexcharts";
+import Loding from '../main/loding'
 
 export default class disk_io_select extends React.Component {
   
@@ -38,14 +40,14 @@ componentDidMount(){
       });
 }
   render() {
-    // console.log(this.state.data);
-    // let navigate = useNavigate();
+    const test = null;
     const handleChange = (event) => {
-      console.log(event.target.value);
-        const current = decodeURI(window.location.href);
+      // console.log(event.target.value);
+      const current = decodeURI(window.location.href);
       const server = current.split('/')[4];
       let selectName = event.target.value;
-              fetch("/disk/io_bytes", { 
+      console.log(selectName);
+              fetch("/disk/io_count", { 
               method: "post", //통신방법
               headers: {
                 "content-type": "application/json",
@@ -57,23 +59,32 @@ componentDidMount(){
                 ),
             })
             .then((res) => res.json())
-        // alert(event.target.value);
-        // navigate(`/list/${Data.system}/${event.target.value}`)
-        // this.setState({
-        //   [event.target.name]: event.target.value,
-        // })
-        
+            .then((json) => {
+                if (json === undefined) {
+                  alert("오류");
+                } else {
+                  this.setState({
+                    isLoaded: true,
+                    data: json
+                  })
+                }
+              });
     }
 
+    const Data = this.state.data;
+    const Name = this.state.iodata;
     const content = this.state.iodata.map((iodata) => (
       <option value={iodata.disk_io_name} name={iodata.disk_io_name}>{iodata.disk_io_name}</option>
     ));
 
    //  console.log(Data);
     return(
-      <select onChange={handleChange} id="diskname">
-        {content}
-      </select>
+      <div>
+        <select onChange={handleChange} id="diskname" defaultValue={Name[0]}>
+          <option value = "nvme0n1p1" selected>test</option>
+          {content}
+        </select>
+      </div>
     )
   }
 }
