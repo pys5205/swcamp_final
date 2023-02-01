@@ -34,7 +34,7 @@ componentDidMount(){
           //////////////////////////////////여기부터보자
           // console.log(json);
           this.setState({
-            isLoaded: true,
+            isLoaded: false,
             iodata: json
           })
         }
@@ -46,10 +46,11 @@ componentDidMount(){
       // console.log(event.target.value);
       const current = decodeURI(window.location.href);
       const server = current.split('/')[4];
+      const interval = setInterval(async () => {
       let selectName = null;
       selectName = event.target.value;
-      console.log(selectName);
-      const interval = setInterval(async () => {
+      // console.log(selectName);
+      
       fetch("/disk/io_count", { 
       method: "post", //통신방법
       headers: {
