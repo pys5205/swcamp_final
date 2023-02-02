@@ -320,8 +320,9 @@ app.post('/disk/io_bytes', (req, res) => {
 app.post('/disk/io_time', (req, res) => {
   var resData = {};
   var input = req.body.system;
+  var ioName = req.body.ioName;
   conn.query(
-    'select avg(disk_io_read_time) as disk_io_read_time, avg(disk_io_write_time) as disk_io_write_time, avg(disk_io_busy_time) as disk_io_busy_time, ts_create from tbl_disk_io where system=? group by ts_create order by ts_create asc', [input], (err, data) => {
+    'select disk_io_read_time as disk_io_read_time, disk_io_write_time as disk_io_write_time, disk_io_busy_time as disk_io_busy_time, ts_create from tbl_disk_io where system=? and disk_io_name = ? group by ts_create order by ts_create asc', [input,ioName], (err, data) => {
       if (err) {
         console.log("데이터 가져오기 실패");
       } else {
@@ -390,11 +391,23 @@ app.post('/disk/io/name', (req,res) => {
       }
     })
 })
+app.post('/network/netname', (req,res)=>{
+  var input = req.body.system;
+  conn.query(
+    'select distinct(net_name) as net_name from tbl_net_io where system=? order by ts_create asc', [input], (err, data) => {
 
+      if (err) {
+        console.log("데이터 가져오기 실패");
+      } else {
+        // console.log(data);
+        res.send(data);
+      }
+    })
+})
 app.post('/network', (req, res) => {
   var resData = {};
   var input = req.body.system;
-
+  
     conn.query(
       'select round(avg(net_bytes_sent)/1024/1024, 2) as net_bytes_sent, round(avg(net_bytes_recv)/1024/1024, 2) as net_bytes_recv, ts_create from tbl_net_io where system=? group by ts_create order by ts_create asc',[input], (err, data) => {
 
@@ -427,8 +440,10 @@ app.post('/network', (req, res) => {
 app.post('/network/io_bytes', (req, res) => {
   var resData = {};
   var input = req.body.system;
+  var ioName = req.body.ioName;
+  console.log(ioName)
   conn.query(
-    'select round(net_bytes_sent/1024/1024, 2) as net_bytes_sent, round(net_bytes_recv/1024/1024, 2) as net_bytes_recv, ts_create from tbl_net_io where system = ?', [input], (err, data) => {
+    'select round(net_bytes_sent/1024/1024, 2) as net_bytes_sent, round(net_bytes_recv/1024/1024, 2) as net_bytes_recv, ts_create from tbl_net_io where system = ? and net_name = ?', [input,ioName], (err, data) => {
       if (err) {
         console.log("데이터 가져오기 실패");
       } else {
@@ -458,8 +473,9 @@ app.post('/network/io_bytes', (req, res) => {
 app.post('/network/io_packets', (req, res) => {
   var resData = {};
   var input = req.body.system;
+  var ioName = req.body.ioName;
   conn.query(
-    'select net_packets_sent, net_packets_recv, ts_create from tbl_net_io where system = ?', [input], (err, data) => {
+    'select net_packets_sent, net_packets_recv, ts_create from tbl_net_io where system = ? and net_name = ?', [input,ioName], (err, data) => {
       if (err) {
         console.log("데이터 가져오기 실패");
       } else {

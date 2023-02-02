@@ -1,11 +1,13 @@
 import './serverNet.css'
-import NetIoBytes from '../../components/detail/net_detail/net_io_bytes/netIoBytes'
-import NetIoPackets from '../../components/detail/net_detail/net_io_packets/netIoPackets'
+// import NetIoBytes from '../../components/detail/net_detail/net_io_bytes/netIoBytes'
+// import NetIoPackets from '../../components/detail/net_detail/net_io_packets/netIoPackets'
 import NetIf from '../../components/detail/net_detail/net_if/netIf'
 import NetCon from '../../components/detail/net_detail/net_con/netCon'
 import Title from '../../components/detail/detailtitle'
 import Start from '../../components/button/start/Start'
 import Stop from '../../components/button/stop/Stop'
+import NetIoBytes from '../../components/detail/net_detail/net_io_bytes'
+import NetIoPackets from '../../components/detail/net_detail/net_io_packets'
 
 export default function ServerNet() {
     return(
@@ -16,10 +18,10 @@ export default function ServerNet() {
             </div>
             <div className="net_firstpart">
                 <div className="net_io_bytes">
-                    IoBytes<NetIoBytes />
+                    <NetIoBytes />
                 </div>
                 <div className="net_io_packets">
-                    IoPackets<NetIoPackets />
+                    <NetIoPackets />
                 </div>
             </div>
             <div className="net_secondpart">

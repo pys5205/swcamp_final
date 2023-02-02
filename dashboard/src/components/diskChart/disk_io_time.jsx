@@ -52,7 +52,7 @@ componentDidMount(){
       selectName = null;
       selectName = event.target.value;
       // console.log(selectName);
-      fetch("/disk/io_count", { 
+      fetch("/disk/io_time", { 
       method: "post", //통신방법
       headers: {
         "content-type": "application/json",
@@ -88,19 +88,21 @@ componentDidMount(){
         <>
        {this.state.isLoaded ? 
           <Loding /> : 
-          <div className="mixed-chart">
             <Chart
-             type="line"
-             height="275"
+             type="area"
+             height="250"
             series={ [
-                { name: "io읽기",
-                  data: Data.read_count,
+                { name: "읽는 시간",
+                  data: Data.read_time,
                 },
-                { name: "io쓰기",
-                  data: Data.write_count,
+                { name: "쓰는 시간",
+                  data: Data.write_time,
+                },
+                { name: "사용중인 시간",
+                  data: Data.busy_time,
                 },
                 ]} 
-            options={{    
+            options={{
                 legend: {
                   position:"top",
                   horizontalAlign:"left'"
@@ -111,7 +113,7 @@ componentDidMount(){
                 },
                 tooltip: {
                   x: {
-                    format: "dd/MM/yy HH:mm",
+                    categories: Data.ts_create,
                   },
                 },
                 grid: { //격자 없앰
@@ -124,7 +126,6 @@ componentDidMount(){
                 }
             }}
             />
-          </div>
        }
        </>  
     }
@@ -139,7 +140,7 @@ componentDidMount(){
       <>
       
       <div>
-      IoCount
+      IoTime
         <select onChange={handleChange} id="diskname" defaultValue="nvme0n1p1">
           {content}
         </select>
