@@ -7,7 +7,8 @@ import Title from '../../components/detail/detailtitle'
 import Start from '../../components/button/start/Start'
 import Stop from '../../components/button/stop/Stop'
 import Iocnt from '../../components/diskChart/disk_io_select'
-
+import IoBytes from '../../components/diskChart/disk_io_bytes'
+import IoTime from '../../components/diskChart/disk_io_time'
 export default function serverDisk() {
     return (
         <div className="disk_main">
@@ -18,22 +19,21 @@ export default function serverDisk() {
             <div className="disk_firstpart">
                 <div className="disk_io_count">
                     <div className="selectbox">
-                        IoCount<Iocnt />
+                        <Iocnt />
                     </div>
                 </div>
                 <div className="disk_io_bytes">
                     <div className="selectbox">
-                        IoBytes 
+                        <IoBytes /> 
                     </div>
-                    <DiskIoBytes />
                 </div>
             </div>
             <div className="disk_secondpart">
                 <div className="disk_io_time">
                     <div className="selectbox">
-                        IoTime 
+                        <IoTime/>
                     </div>
-                    <DiskIoTime />
+                    
                 </div>
                 <div className="disk_part">
                     Partition <DiskPart />

@@ -1,8 +1,8 @@
 import React from "react";
 import Chart from "react-apexcharts";
-import Loding from '../main/loding'
+import Loding from '../../main/loding'
 
-export default class disk_io_select extends React.Component {
+export default class net_io_packets extends React.Component {
   
   constructor(props) {
     super(props);
@@ -16,8 +16,7 @@ export default class disk_io_select extends React.Component {
 componentDidMount(){
   const current = decodeURI(window.location.href);
   const server = current.split('/')[4];
-  const name = "testtest";
-      fetch("/disk/io/name", { 
+      fetch("/network/netname", { 
       method: "post", //통신방법
       headers: {
         "content-type": "application/json",
@@ -52,7 +51,7 @@ componentDidMount(){
       selectName = null;
       selectName = event.target.value;
       // console.log(selectName);
-      fetch("/disk/io_count", { 
+      fetch("/network/io_packets", { 
       method: "post", //통신방법
       headers: {
         "content-type": "application/json",
@@ -88,18 +87,17 @@ componentDidMount(){
         <>
        {this.state.isLoaded ? 
           <Loding /> : 
-          <div className="mixed-chart">
-            <Chart
+          <Chart
              type="line"
-             height="275"
+             height="250"
             series={ [
-                { name: "io읽기",
-                  data: Data.read_count,
+                { name: "받기",
+                  data: Data.packets_sent,
                 },
-                { name: "io쓰기",
-                  data: Data.write_count,
+                { name: "보내기",
+                  data: Data.packets_recv,
                 },
-                ]} 
+                ]}
             options={{    
                 legend: {
                   position:"top",
@@ -121,10 +119,21 @@ componentDidMount(){
                   categories: Data.ts_create,
                   labels: { show: false },
                   range:8,
-                }
+                },
+                yaxis: [
+                  {
+                    title:{
+                      text:"받기"
+                    },
+                  },{
+                    opposite: true,
+                    title: {
+                      text: "보내기"
+                    }
+                  }
+                ]
             }}
             />
-          </div>
        }
        </>  
     }
@@ -132,15 +141,15 @@ componentDidMount(){
     // console.log(this.state.iodata[0].disk_io_name);
     // console.log(Name[0]);
     const content = this.state.iodata.map((iodata) => (
-      <option value={iodata.disk_io_name} name={iodata.disk_io_name}>{iodata.disk_io_name}</option>
+      <option value={iodata.net_name} name={iodata.net_name}>{iodata.net_name}</option>
     ));
-   //  console.log(Data);
+    //  console.log(Data);
     return(
       <>
       
       <div>
-      IoCount
-        <select onChange={handleChange} id="diskname" defaultValue="nvme0n1p1">
+      IoPackets
+        <select onChange={handleChange} id="netname">
           {content}
         </select>
         </div>
