@@ -21,35 +21,35 @@ app.use(cors());
 app.use(bodyParser.json());
 
 
-app.post('/start', function(req, res) {
+app.post('/start', function (req, res) {
   var resData = {};
   var input = req.body.system;
- conn.query('SELECT * FROM tbl_sys_info group by system, company, os, service', (err, data) => {
-      if (err) {
+  conn.query('SELECT * FROM tbl_sys_info group by system, company, os, service', (err, data) => {
+    if (err) {
       console.log("데이터 가져오기 실패");
     } else {
       res.send(data);
-      if (input == "system"){
-        spawn('sh',['../../agent/start.sh'], {
-            detached: true
+      if (input == "system") {
+        spawn('sh', ['../../agent/start.sh'], {
+          detached: true
         })
-      }else {
+      } else {
         console.log("다른서버");
       }
     }
   })
 })
 
-app.post('/stop', function(req, res) {
+app.post('/stop', function (req, res) {
   const stop = "stop";
   var resData = {};
   var input = req.body.system;
-   conn.query('SELECT * FROM tbl_sys_info group by system, company, os, service', (err, data) => {
+  conn.query('SELECT * FROM tbl_sys_info group by system, company, os, service', (err, data) => {
     if (err) {
     } else {
-      if (input == "system"){
+      if (input == "system") {
         shell.exec('sh ~/project/pys/swcamp_final/dashboard/src/components/button/stop/stop.sh');
-      }else {
+      } else {
         console.log("다른서버");
       }
       res.send(stop);
@@ -148,13 +148,13 @@ app.post('/server/error/modal', (req, res) => {
     if (err) {
       console.log("데이터 가져오기 실패");
     } else {
-        resData.ok = "false"
-        res.send(data);
-      }
-      // var df = new dfd.DataFrame(data)
-      // console.log(df)
+      resData.ok = "false"
+      res.send(data);
+    }
+    // var df = new dfd.DataFrame(data)
+    // console.log(df)
     // console.log(resData)
-})
+  })
 })
 
 app.post('/detail/memory', (req, res) => {
@@ -262,32 +262,32 @@ app.post('/disk', (req, res) => {
 
 app.post('/disk/io_count', (req, res) => {
   var resData = {};
-  var input = req.body.system ;
+  var input = req.body.system;
   let ioName = 0;
   ioName = req.body.ioName;
   console.log(ioName);
-    conn.query(
-      'select disk_io_read_count as read_count, disk_io_write_count as write_count, ts_create from tbl_disk_io where system=? and disk_io_name = ? group by ts_create order by ts_create asc', [input,ioName], (err, data) => {
-        if (err) {
-          console.log("데이터 가져오기 실패");
+  conn.query(
+    'select disk_io_read_count as read_count, disk_io_write_count as write_count, ts_create from tbl_disk_io where system=? and disk_io_name = ? group by ts_create order by ts_create asc', [input, ioName], (err, data) => {
+      if (err) {
+        console.log("데이터 가져오기 실패");
+      } else {
+        // console.log(data);
+        resData.read_count = [];
+        resData.write_count = [];
+        resData.ts_create = [];
+        if (data[0]) {
+          resData.ok = "true";
+          data.forEach(function (val) {
+            resData.read_count.push(parseInt(val.read_count));
+            resData.write_count.push(parseInt(val.write_count));
+            resData.ts_create.push(val.ts_create);
+          });
         } else {
-          // console.log(data);
-          resData.read_count = [];
-          resData.write_count = [];
-          resData.ts_create = [];
-          if (data[0]) {
-            resData.ok = "true";
-            data.forEach(function (val) {
-              resData.read_count.push(parseInt(val.read_count));
-              resData.write_count.push(parseInt(val.write_count));
-              resData.ts_create.push(val.ts_create);
-            });
-          } else {
-            resData.ok = "false"
-          }
+          resData.ok = "false"
         }
-        return res.json(resData);
-      })
+      }
+      return res.json(resData);
+    })
 })
 
 app.post('/disk/io_bytes', (req, res) => {
@@ -295,7 +295,7 @@ app.post('/disk/io_bytes', (req, res) => {
   var input = req.body.system;
   var ioName = req.body.ioName;
   conn.query(
-    'select disk_io_read_bytes/1024/1024 as read_bytes, disk_io_write_bytes/1024/1024 as write_bytes, ts_create from tbl_disk_io where system=? and disk_io_name = ? group by ts_create order by ts_create asc', [input,ioName], (err, data) => {
+    'select disk_io_read_bytes/1024/1024 as read_bytes, disk_io_write_bytes/1024/1024 as write_bytes, ts_create from tbl_disk_io where system=? and disk_io_name = ? group by ts_create order by ts_create asc', [input, ioName], (err, data) => {
       if (err) {
         console.log("데이터 가져오기 실패");
       } else {
@@ -322,7 +322,7 @@ app.post('/disk/io_time', (req, res) => {
   var input = req.body.system;
   var ioName = req.body.ioName;
   conn.query(
-    'select disk_io_read_time as disk_io_read_time, disk_io_write_time as disk_io_write_time, disk_io_busy_time as disk_io_busy_time, ts_create from tbl_disk_io where system=? and disk_io_name = ? group by ts_create order by ts_create asc', [input,ioName], (err, data) => {
+    'select disk_io_read_time as disk_io_read_time, disk_io_write_time as disk_io_write_time, disk_io_busy_time as disk_io_busy_time, ts_create from tbl_disk_io where system=? and disk_io_name = ? group by ts_create order by ts_create asc', [input, ioName], (err, data) => {
       if (err) {
         console.log("데이터 가져오기 실패");
       } else {
@@ -376,7 +376,7 @@ app.post('/disk/part', (req, res) => {
     })
 })
 
-app.post('/disk/io/name', (req,res) => {
+app.post('/disk/io/name', (req, res) => {
 
   var input = req.body.system;
   var name = req.body.name;
@@ -391,7 +391,7 @@ app.post('/disk/io/name', (req,res) => {
       }
     })
 })
-app.post('/network/netname', (req,res)=>{
+app.post('/network/netname', (req, res) => {
   var input = req.body.system;
   conn.query(
     'select distinct(net_name) as net_name from tbl_net_io where system=? order by ts_create asc', [input], (err, data) => {
@@ -407,9 +407,9 @@ app.post('/network/netname', (req,res)=>{
 app.post('/network', (req, res) => {
   var resData = {};
   var input = req.body.system;
-  
-    conn.query(
-      'select round(avg(net_bytes_sent)/1024/1024, 2) as net_bytes_sent, round(avg(net_bytes_recv)/1024/1024, 2) as net_bytes_recv, ts_create from tbl_net_io where system=? group by ts_create order by ts_create asc',[input], (err, data) => {
+
+  conn.query(
+    'select round(avg(net_bytes_sent)/1024/1024, 2) as net_bytes_sent, round(avg(net_bytes_recv)/1024/1024, 2) as net_bytes_recv, ts_create from tbl_net_io where system=? group by ts_create order by ts_create asc', [input], (err, data) => {
 
       if (err) {
         console.log("데이터 가져오기 실패");
@@ -443,7 +443,7 @@ app.post('/network/io_bytes', (req, res) => {
   var ioName = req.body.ioName;
   console.log(ioName)
   conn.query(
-    'select round(net_bytes_sent/1024/1024, 2) as net_bytes_sent, round(net_bytes_recv/1024/1024, 2) as net_bytes_recv, ts_create from tbl_net_io where system = ? and net_name = ?', [input,ioName], (err, data) => {
+    'select round(net_bytes_sent/1024/1024, 2) as net_bytes_sent, round(net_bytes_recv/1024/1024, 2) as net_bytes_recv, ts_create from tbl_net_io where system = ? and net_name = ?', [input, ioName], (err, data) => {
       if (err) {
         console.log("데이터 가져오기 실패");
       } else {
@@ -475,7 +475,7 @@ app.post('/network/io_packets', (req, res) => {
   var input = req.body.system;
   var ioName = req.body.ioName;
   conn.query(
-    'select net_packets_sent, net_packets_recv, ts_create from tbl_net_io where system = ? and net_name = ?', [input,ioName], (err, data) => {
+    'select net_packets_sent, net_packets_recv, ts_create from tbl_net_io where system = ? and net_name = ?', [input, ioName], (err, data) => {
       if (err) {
         console.log("데이터 가져오기 실패");
       } else {
@@ -542,10 +542,11 @@ app.post('/process', (req, res) => {
   })
 })
 
-app.post('/process2', (req, res) => {
+app.post('/process/delete', (req, res) => {
   var resData = {};
   var input = req.body.process;
-  // console.log(input)
+
+  console.log(input)
   conn.query('SELECT procs_username, procs_name, procs_pid, procs_ppid, procs_status, procs_mem_full_uss, ts_create FROM tbl_procs_doc where ts_create = (select max(ts_create) from tbl_procs_doc where system = ?) and system = ?', [input, input], (err, data) => {
     if (err) {
       console.log("데이터 가져오기 실패");
@@ -556,16 +557,16 @@ app.post('/process2', (req, res) => {
   })
 })
 
-app.post('/process/kill', function(req, res) {
+app.post('/process/kill', function (req, res) {
   const stop = "stop";
   var resData = {};
   var input = req.body.system;
-   conn.query('SELECT * FROM tbl_sys_info group by system, company, os, service', (err, data) => {
+  conn.query('SELECT * FROM tbl_sys_info group by system, company, os, service', (err, data) => {
     if (err) {
     } else {
-      if (input == "system"){
+      if (input == "system") {
         shell.exec('sh ~/project/pys/swcamp_final/dashboard/src/components/button/stop/stop.sh');
-      }else {
+      } else {
         console.log("다른서버");
       }
       res.send(stop);
