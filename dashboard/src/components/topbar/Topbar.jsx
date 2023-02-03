@@ -22,7 +22,8 @@ const style = {
 };
 
 export default function Topbar() {
-    const location = useLocation();
+     const current = decodeURI(window.location.href);
+    const server = current.split('/')[4];
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -38,6 +39,7 @@ export default function Topbar() {
                         </div>
                     </div>
                     <div className="topRight">
+                    서버 : {server}
                         <div className="icons" onClick={handleOpen}> 
                             <Erroricon />
                         </div>
@@ -53,7 +55,7 @@ export default function Topbar() {
                               >
                                 <Box sx={style}>
                                   <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                                   <Modals />
+                                   <Modals setOpen={setOpen}/>
                                   </Typography>
                                 </Box>
                               </Modal>

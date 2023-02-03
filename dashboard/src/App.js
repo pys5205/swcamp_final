@@ -58,13 +58,12 @@ export default class App extends React.Component {
       <Route path={`/list/${data.system}/net`} element={<ServerNET />} />
     ));
     return (
-      // <div className="App">
+      <div className="App">
       <Router>
         <Topbar />
           <Sidebar />
           <Routes>
             <Route exact path="/" element={<Home />} />
-            <Route path="/serverlist" element={<ServerList />} />
             {listItems}
             {listCPU}
             {listMEM}
@@ -72,6 +71,7 @@ export default class App extends React.Component {
             {listNET}
           </Routes>
       </Router>
+      </div>
     )
   }
 }
