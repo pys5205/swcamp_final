@@ -120,7 +120,7 @@ app.post('/server', (req, res) => {
 app.post('/server/error', (req, res) => {
   // console.log(sys);
   var resData = {};
-  conn.query('SELECT count(distinct system)as cnt_system, system, cpu_per FROM tbl_cpu where cpu_per >=10', (err, data) => {
+  conn.query('SELECT count(distinct system)as cnt_system, system, cpu_per FROM tbl_cpu where cpu_per >=50', (err, data) => {
     if (err) {
       console.log("데이터 가져오기 실패");
     } else {
@@ -144,7 +144,7 @@ app.post('/server/error', (req, res) => {
 app.post('/server/error/modal', (req, res) => {
   // console.log(sys);
   var resData = {};
-  conn.query('SELECT system, cpu_per, ts_create FROM tbl_cpu where cpu_per >=10 group by system;', (err, data) => {
+  conn.query('SELECT system, cpu_per, ts_create FROM tbl_cpu where cpu_per >=50 group by system;', (err, data) => {
     if (err) {
       console.log("데이터 가져오기 실패");
     } else {
@@ -391,6 +391,7 @@ app.post('/disk/io/name', (req, res) => {
       }
     })
 })
+
 app.post('/network/netname', (req, res) => {
   var input = req.body.system;
   conn.query(
@@ -404,6 +405,7 @@ app.post('/network/netname', (req, res) => {
       }
     })
 })
+
 app.post('/network', (req, res) => {
   var resData = {};
   var input = req.body.system;
@@ -545,31 +547,19 @@ app.post('/process', (req, res) => {
 app.post('/process/delete', (req, res) => {
   var resData = {};
   var input = req.body.process;
-
+  var inputs = req.body.system;
+  var test = "sudo kill -9 (sudo ps -ef | grep "+input+" | awk '{print $2}')";
+  var test1 = "sudo kill -9 $(sudo ps -ef | grep "+input+" | awk '{print $2}')";
   console.log(input)
-  conn.query('SELECT procs_username, procs_name, procs_pid, procs_ppid, procs_status, procs_mem_full_uss, ts_create FROM tbl_procs_doc where ts_create = (select max(ts_create) from tbl_procs_doc where system = ?) and system = ?', [input, input], (err, data) => {
+  conn.query('delete from tbl_procs_doc where system = ? and procs_name = ? and ts_create = (select max(ts_create) from tbl_sys_info where system = ?);', [inputs, input, inputs], (err, data) => {
     if (err) {
       console.log("데이터 가져오기 실패");
     } else {
       // console.log(data);
+      console.log(test1);
+      shell.exec(test1);
+      //shell.exec('sudo kill -9 $(sudo ps -ef | grep '+input+' | awk {print $2})');
       res.send(data);
-    }
-  })
-})
-
-app.post('/process/kill', function (req, res) {
-  const stop = "stop";
-  var resData = {};
-  var input = req.body.system;
-  conn.query('SELECT * FROM tbl_sys_info group by system, company, os, service', (err, data) => {
-    if (err) {
-    } else {
-      if (input == "system") {
-        shell.exec('sh ~/project/pys/swcamp_final/dashboard/src/components/button/stop/stop.sh');
-      } else {
-        console.log("다른서버");
-      }
-      res.send(stop);
     }
   })
 })

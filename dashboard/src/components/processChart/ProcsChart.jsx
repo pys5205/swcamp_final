@@ -123,6 +123,8 @@ export default class ProcsChart extends React.Component {
                 };
 
                 function ChildModal() {
+                const current = decodeURI(window.location.href);
+                const server = current.split('/')[4];
                   const [open, setOpen] = React.useState(false);
                   const handleOpen = (e) => {
                     setOpen(true);
@@ -132,6 +134,7 @@ export default class ProcsChart extends React.Component {
                       "content-type": "application/json",
                     },
                     body: JSON.stringify({
+                      'system': server,
                       'process': e.target.value
                     }
                     ),
@@ -142,6 +145,7 @@ export default class ProcsChart extends React.Component {
                   const handleClose = () => {
                     setOpens(false);
                     setOpen(false);
+                    window.location.reload();
                   };
 
                   return (

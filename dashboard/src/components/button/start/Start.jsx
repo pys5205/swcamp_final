@@ -11,6 +11,7 @@ export default class start extends React.Component {
    handleclick = () => {
     const current = decodeURI(window.location.href);
     const server = current.split('/')[4];
+    window.location.reload();
     fetch("/start", { 
         method: "post", //통신방법
         headers: {
@@ -35,6 +36,7 @@ export default class start extends React.Component {
                   }
       });
       return;
+      
    };
   render() {
     return(
