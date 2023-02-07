@@ -48,9 +48,12 @@ componentDidMount(){
       const current = decodeURI(window.location.href);
       const server = current.split('/')[4];
       let selectName = null;
+      // console.log(event.target.value);
       const interval = setInterval(async () => {
       selectName = null;
       selectName = event.target.value;
+            // console.log(event.target);
+
       // console.log(selectName);
       fetch("/disk/io_bytes", { 
       method: "post", //통신방법

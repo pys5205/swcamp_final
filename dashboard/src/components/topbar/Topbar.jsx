@@ -24,9 +24,19 @@ const style = {
 export default function Topbar() {
      const current = decodeURI(window.location.href);
     const server = current.split('/')[4];
+    console.log(server);
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    var servers;
+    if (server != null ){
+        servers = 
+            <>
+            {
+        <div>서버 : {server}</div>
+        }
+    </>
+    }
         return (
             <div className="topbar">
                 <div className="topbarWrapper">
@@ -39,7 +49,8 @@ export default function Topbar() {
                         </div>
                     </div>
                     <div className="topRight">
-                    서버 : {server}
+                
+                    {servers}
                         <div className="icons" onClick={handleOpen}> 
                             <Erroricon />
                         </div>

@@ -13,6 +13,7 @@ export default class servererror extends React.Component {
     };
   }
   componentDidMount() {
+    const interval = setInterval(async () => {
     fetch("/server/error", {
       method: "post", //통신방법
       headers: {
@@ -33,6 +34,8 @@ export default class servererror extends React.Component {
           })
         }
       });
+  }, 10000);
+    return () => clearInterval(interval);
   }
   render() {
     const Data = this.state.data;

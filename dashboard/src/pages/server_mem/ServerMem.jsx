@@ -18,27 +18,32 @@ export default function serverMem() {
             </div>
             <div className="mem_firstpart">
                 <div className="mem_total">
-                total
+                <p>total</p>
                     <MemTotal />
                 </div>
                 <div className="mem_used">
-                    used<MemUsed />
+                <p>used</p>
+                    <MemUsed />
                 </div>
             </div>
             <div className="mem_secondpart">
                 <div className="mem_free">
-                    free<MemFree />
+                <p>free</p>
+                    <MemFree />
                 </div>
                 <div className="mem_buffer">
-                    buffer<MemAvail />
+                <p>avail</p>
+                    <MemAvail />
                 </div>
             </div>
             <div className="mem_thirdpart">
                 <div className="mem_cache">
-                    cashe<MemCached />
+                <p>cashe</p>
+                    <MemCached />
                 </div>
                 <div className="mem_shard">
-                    shard<MemBuffer />
+                <p>buffer</p>
+                    <MemBuffer />
                 </div>
             </div>   
         </div>

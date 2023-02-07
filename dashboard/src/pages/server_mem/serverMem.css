@@ -15,7 +15,7 @@
 .mem_firstpart{
     display:flex;
     margin-bottom:30px;
-    height:200px;
+    height:220px;
    
 }
 .mem_total{
@@ -23,6 +23,9 @@
     margin-right:10px;
      -webkit-box-shadow: 0px 0px 12px -2px #000000; 
     box-shadow: 0px 0px 12px -2px #000000;
+}
+.mem_total p{
+    padding : 10px;
 }
 .mem_used{
     width:790px;
@@ -32,7 +35,7 @@
 
 .mem_secondpart{
     display:flex;
-    height:200px;
+    height:220px;
     margin-bottom:30px;
 }
 .mem_free{
@@ -50,7 +53,7 @@
 
 .mem_thirdpart{
     display:flex;
-    height:200px;
+    height:220px;
 }
 .mem_cache{
     width:700px;
