@@ -1,6 +1,7 @@
 import React from "react";
 import Chart from "react-apexcharts";
 import Loding from '../main/loding'
+import './disk_io_chart.css'
 
 export default class disk_io_select extends React.Component {
   

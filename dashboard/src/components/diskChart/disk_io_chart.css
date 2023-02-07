@@ -1,0 +1,13 @@
+
+.mixed-chart{
+    margin-left:10px;
+}
+select {
+    width:150px;
+    height:41px;
+    font-size:15px;
+    color: #008ffb;
+    border:2px solid #ddd;
+    margin-left:10px;
+    padding-left:10px;
+}
