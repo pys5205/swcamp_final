@@ -1,6 +1,12 @@
 import React from "react";
 import Chart from "react-apexcharts";
 import Loding from '../main/loding'
+import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
 
 export default class disk_io_select extends React.Component {
   
@@ -43,6 +49,17 @@ componentDidMount(){
 }
   render() {
     // const test = null;
+    const HtmlTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: '#f5f5f9',
+    color: 'rgba(0, 0, 0, 0.87)',
+    maxWidth: 220,
+    fontSize: theme.typography.pxToRem(12),
+    border: '1px solid #dadde9',
+  },
+}));
     const handleChange = (event) => {
       // console.log(event.target.value);
       const current = decodeURI(window.location.href);
@@ -162,6 +179,20 @@ componentDidMount(){
         <select onChange={handleChange} id="diskname" defaultValue="nvme0n1p1">
           {content}
         </select>
+      <HtmlTooltip
+        title={
+          <React.Fragment>
+            <Typography color="inherit">Disk Io Count</Typography>
+            {"Disk Io Count"}
+          </React.Fragment>
+        }
+      >
+        <Button>
+          <IconButton>
+            <DeleteIcon />
+          </IconButton>
+        </Button>
+      </HtmlTooltip>
         </div>
         {this.state.isLoaded ? 
       <Loding /> : 
