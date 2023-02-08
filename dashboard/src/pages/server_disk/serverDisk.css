@@ -3,7 +3,8 @@
     width: 1000px;
     left: 50%;
     right:50%;
-    top:60%;
+    top:25%;
+    bottom:50%;
     -ms-transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
   -moz-transform: translate(-50%, -50%);
