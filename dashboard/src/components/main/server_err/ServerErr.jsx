@@ -3,13 +3,13 @@ import NewReleasesOutlinedIcon from '@mui/icons-material/NewReleasesOutlined';
 import { red } from '@mui/material/colors';
 import Modalcomp from './modalcomp';
 import './serverErr.css'
-
+import Loding from '../loding';
 export default class servererror extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
-      isModalOpen: false,
+      isLoaded: true
     };
   }
   componentDidMount() {
@@ -29,7 +29,7 @@ export default class servererror extends React.Component {
             //////////////////////////////////여기부터보자
             // console.log(json);
             this.setState({
-              isLoaded: true,
+              isLoaded: false,
               data: json
             })
           }
@@ -42,14 +42,18 @@ export default class servererror extends React.Component {
     // console.log(Data.cnt_system);
 
     return (
+      <>
       <div>
         <div className="servererr">
+        {this.state.isLoaded ?
+        <Loding /> :
           <div className="count">
             {Data.cnt_system} EA
             <div className="server">
               <p>Error</p>
             </div>
           </div>
+        }
           <div className="icon">
             <NewReleasesOutlinedIcon sx={{ color: red[500], fontSize: 70 }} />
           </div>
@@ -58,6 +62,7 @@ export default class servererror extends React.Component {
           <Modalcomp />
         </div>
       </div>
+      </>
     )
   }
 }

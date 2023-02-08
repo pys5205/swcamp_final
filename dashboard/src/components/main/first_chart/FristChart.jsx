@@ -1,8 +1,7 @@
 import React from 'react'
 import './firstChart.css'
 import Chart from "react-apexcharts";
-import CircularProgress from "@mui/material/CircularProgress";
-import Box from "@mui/material/Box";
+import Loding from '../loding';
 export default class firstchart extends React.Component {
   constructor(props) {
     super(props);
@@ -40,9 +39,7 @@ export default class firstchart extends React.Component {
     return (
       <>
         {this.state.isLoaded ?
-          <Box sx={{ display: "flex" }}>
-            <CircularProgress />
-          </Box> :
+          <Loding />:
           <Chart
             type="radialBar"
             height="300"
