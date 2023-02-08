@@ -10,7 +10,7 @@ export default class servercnt extends React.Component {
       data: []
     };
   }
-  
+
   componentDidMount() {
     const interval = setInterval(async () => {
       fetch("/list/cnt", {
@@ -38,19 +38,19 @@ export default class servercnt extends React.Component {
   }
   render() {
     const Data = this.state.data;
-    return(
-        <div className="servercnt">
-                <div className="count">
-                    {Data.cnt_os} EA 
-                    <div className="server">
-                        <p>Server</p>
-                    </div>
-                </div>
-                <div className="icon">
-                    <DesktopWindowsOutlinedIcon sx={{ color:green[500], fontSize: 70 }}  />
-                </div>
-           
+    return (
+      <div className="servercnt">
+        <div className="count">
+          {Data.cnt_os} EA
+          <div className="server">
+            <p>Server</p>
+          </div>
         </div>
+        <div className="icon">
+          <DesktopWindowsOutlinedIcon sx={{ color: green[500], fontSize: 70 }} />
+        </div>
+
+      </div>
     )
 
   }

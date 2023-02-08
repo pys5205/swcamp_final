@@ -3,8 +3,7 @@
     width: 1000px;
     left: 50%;
     right:50%;
-    top:25%;
-    bottom:50%;
+    top:60%;
     -ms-transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
   -moz-transform: translate(-50%, -50%);
@@ -16,20 +15,19 @@
 .disk_firstpart{
     display:flex;
     margin-bottom:50px;
-    height:300px;
+    height:320px;
    
 }
-
 .disk_io_count{
     width:500px;
-    height:300px;
+    height:320px;
     margin-right:10px;
      -webkit-box-shadow: 0px 0px 12px -2px #000000; 
     box-shadow: 0px 0px 12px -2px #000000;
 }
 .disk_io_bytes{
     width:500px;
-    height:300px;
+    height:320px;
     margin-right:10px;
      -webkit-box-shadow: 0px 0px 12px -2px #000000; 
     box-shadow: 0px 0px 12px -2px #000000;

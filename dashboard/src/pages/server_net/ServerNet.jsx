@@ -10,10 +10,10 @@ import NetIoBytes from '../../components/detail/net_detail/net_io_bytes'
 import NetIoPackets from '../../components/detail/net_detail/net_io_packets'
 
 export default function ServerNet() {
-    return(
+    return (
         <div className="net_main">
-        <Title title="Network" />
-        <div className="start_stop">
+            <Title title="Network" />
+            <div className="start_stop">
                 <Start /><Stop />
             </div>
             <div className="net_firstpart">
@@ -35,5 +35,5 @@ export default function ServerNet() {
                 </div>
             </div>
         </div>
-    )       
+    )
 }

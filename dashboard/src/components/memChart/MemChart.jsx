@@ -55,17 +55,17 @@ export default class memchart extends React.Component {
     // console.log(test);
     return (
       <>
-      {this.state.isLoaded ? 
-    <Loding /> :
-      <Chart
-        type="pie"
-        height="250"
-        series={test}
-        options={{
-          labels: ['사용중', '빈공간', '버퍼', '캐시']
-        }}
-      />
-      }
+        {this.state.isLoaded ?
+          <Loding /> :
+          <Chart
+            type="pie"
+            height="250"
+            series={test}
+            options={{
+              labels: ['사용중', '빈공간', '버퍼', '캐시']
+            }}
+          />
+        }
       </>
     )
   }

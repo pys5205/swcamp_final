@@ -102,7 +102,7 @@ export default class ProcsChart extends React.Component {
             data={Data}
             columns={columns}
             options={{
-            
+
             }}
             components={{
 
@@ -122,24 +122,24 @@ export default class ProcsChart extends React.Component {
                 };
 
                 function ChildModal() {
-                const current = decodeURI(window.location.href);
-                const server = current.split('/')[4];
+                  const current = decodeURI(window.location.href);
+                  const server = current.split('/')[4];
                   const [open, setOpen] = React.useState(false);
                   const handleOpen = (e) => {
                     setOpen(true);
-                     fetch("/process/delete", {
-                    method: "post", //통신방법
-                    headers: {
-                      "content-type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      'system': server,
-                      'process': e.target.value
-                    }
-                    ),
-                  })
-                    .then((res) => res.json())
-                    .then((result) => console.log("결과: ", result));
+                    fetch("/process/delete", {
+                      method: "post", //통신방법
+                      headers: {
+                        "content-type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        'system': server,
+                        'process': e.target.value
+                      }
+                      ),
+                    })
+                      .then((res) => res.json())
+                      .then((result) => console.log("결과: ", result));
                   };
                   const handleClose = () => {
                     setOpens(false);
@@ -168,7 +168,7 @@ export default class ProcsChart extends React.Component {
                     </React.Fragment>
                   );
                 }
-          
+
 
                 return (
 
@@ -185,7 +185,7 @@ export default class ProcsChart extends React.Component {
                           {name} 삭제하시겠습니까?
                           <ChildModal />
                           <Button onClick={handleClose}>취소</Button>
-                          
+
                         </Typography>
                       </Box>
 

@@ -111,7 +111,7 @@ componentDidMount(){
           <div className="mixed-chart">
             <Chart
               type="line"
-              height="250"
+              height="275"
               series={[
                 {
                   name: "io읽기",
@@ -173,12 +173,13 @@ componentDidMount(){
     return(
       <>
       
-      <div>
+      <div className="selectTitle">
       IoBytes
         <select onChange={handleChange} id="diskname">
           <option value="test" name="test" disabled selected>선택하세요</option>
           {content}
         </select>
+        <div className="tool">
       <HtmlTooltip
         title={
           <React.Fragment>
@@ -193,6 +194,7 @@ componentDidMount(){
           </IconButton>
         </Button>
       </HtmlTooltip>
+      </div>
         </div>
         {this.state.isLoaded ? 
       <Loding /> : 
