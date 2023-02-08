@@ -2,12 +2,14 @@ import React from 'react'
 import DesktopWindowsOutlinedIcon from '@mui/icons-material/DesktopWindowsOutlined';
 import { green } from '@mui/material/colors';
 import './serverCnt.css'
+import Loding from '../loding';
 export default class servercnt extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      data: []
+      data: [],
+       isLoaded: true,
     };
   }
 
@@ -28,7 +30,7 @@ export default class servercnt extends React.Component {
             //////////////////////////////////여기부터보자
             // console.log(json);
             this.setState({
-              isLoaded: true,
+              isLoaded: false,
               data: json
             })
           }
@@ -39,18 +41,26 @@ export default class servercnt extends React.Component {
   render() {
     const Data = this.state.data;
     return (
+      <>
+        
       <div className="servercnt">
+        {this.state.isLoaded ?
+          <Loding />
+          :
         <div className="count">
           {Data.cnt_os} EA
+          
           <div className="server">
             <p>Server</p>
           </div>
         </div>
+      }
         <div className="icon">
           <DesktopWindowsOutlinedIcon sx={{ color: green[500], fontSize: 70 }} />
         </div>
 
       </div>
+      </>
     )
 
   }
