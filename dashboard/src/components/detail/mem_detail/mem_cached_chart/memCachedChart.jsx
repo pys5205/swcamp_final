@@ -58,6 +58,7 @@ export default class memcachedchart extends React.Component {
               },
             ]}
             options={{
+            colors:['#6567aa'],
               legend: {
                 position: 'top',
                 horizontalAlign: 'left'
