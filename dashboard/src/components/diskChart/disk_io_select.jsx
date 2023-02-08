@@ -2,6 +2,12 @@ import React from "react";
 import Chart from "react-apexcharts";
 import Loding from '../main/loding'
 import './disk_io_chart.css'
+import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import DeleteIcon from '@mui/icons-material/Chat';
+import IconButton from '@mui/material/IconButton';
 
 export default class disk_io_select extends React.Component {
   
@@ -43,6 +49,17 @@ componentDidMount(){
       });
 }
   render() {
+      const HtmlTooltip = styled(({ className, ...props }) => (
+        <Tooltip {...props} classes={{ popper: className }} />
+      ))(({ theme }) => ({
+        [`& .${tooltipClasses.tooltip}`]: {
+          backgroundColor: '#f5f5f9',
+          color: 'rgba(0, 0, 0, 0.87)',
+          maxWidth: 220,
+          fontSize: theme.typography.pxToRem(12),
+          border: '1px solid #dadde9',
+        },
+      }));
     // const test = null;
     const handleChange = (event) => {
       // console.log(event.target.value);
@@ -141,9 +158,24 @@ componentDidMount(){
       
       <div>
       IoCount
-        <select onChange={handleChange} id="diskname" defaultValue="nvme0n1p1">
+        <select onChange={handleChange} id="diskname">
+        <option value="test" name="test" disabled selected>선택하세요</option>
           {content}
         </select>
+      <HtmlTooltip
+        title={
+          <React.Fragment>
+            <Typography color="inherit">Disk Io Count</Typography>
+            {"디스크에 대한 입력/출력 작업량"}
+          </React.Fragment>
+        }
+      >
+        <Button>
+          <IconButton>
+            <DeleteIcon />
+          </IconButton>
+        </Button>
+      </HtmlTooltip>
         </div>
         {this.state.isLoaded ? 
       <Loding /> : 

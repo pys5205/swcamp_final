@@ -36,7 +36,7 @@ export default function serverDisk() {
                     
                 </div>
                 <div className="disk_part">
-                    Partition <DiskPart />
+                        <DiskPart />
                 </div>
             </div>
         </div>

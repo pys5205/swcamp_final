@@ -347,24 +347,25 @@ app.post('/disk/io_time', (req, res) => {
     })
 })
 
+
+
 app.post('/disk/part', (req, res) => {
   var resData = {};
   var input = req.body.system;
+  var ioName = req.body.ioName;
   conn.query(
-    'select disk_io_read_time, disk_io_write_time, disk_io_busy_time, ts_create from tbl_disk_io where system=? and disk_io_name="nvme0n1" order by ts_create asc', [input], (err, data) => {
+    'select disk_part_used, disk_part_free,max(ts_create) as ts_create from tbl_disk_part where system=? and disk_part_mnt=? order by ts_create asc', [input,ioName], (err, data) => {
       if (err) {
         console.log("데이터 가져오기 실패");
       } else {
-        resData.read_time = [];
-        resData.write_time = [];
-        resData.busy_time = [];
+        resData.disk_part = [];
+        resData.disk_part_free = [];
         resData.ts_create = [];
         if (data[0]) {
           resData.ok = "true";
           data.forEach(function (val) {
-            resData.read_time.push(parseInt(val.disk_io_read_time));
-            resData.write_time.push(parseInt(val.disk_io_write_time));
-            resData.busy_time.push(parseInt(val.disk_io_busy_time));
+            resData.disk_part.push(parseInt(val.disk_part_used));
+            resData.disk_part.push(parseInt(val.disk_part_free));
             resData.ts_create.push(val.ts_create);
           });
         } else {
@@ -382,6 +383,22 @@ app.post('/disk/io/name', (req, res) => {
   var name = req.body.name;
   conn.query(
     'select distinct(disk_io_name) from tbl_disk_io where system=? order by ts_create asc', [input], (err, data) => {
+
+      if (err) {
+        console.log("데이터 가져오기 실패");
+      } else {
+        // console.log(data);
+        res.send(data);
+      }
+    })
+})
+
+app.post('/disk/part/name', (req, res) => {
+
+  var input = req.body.system;
+  var name = req.body.name;
+  conn.query(
+    'select distinct(disk_part_mnt) from tbl_disk_part where system=? order by ts_create asc', [input], (err, data) => {
 
       if (err) {
         console.log("데이터 가져오기 실패");
