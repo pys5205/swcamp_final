@@ -18,6 +18,7 @@ const style = {
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
+  
 };
 
 export default class ProcsChart extends React.Component {
@@ -157,12 +158,11 @@ export default class ProcsChart extends React.Component {
                         aria-labelledby="child-modal-title"
                         aria-describedby="child-modal-description"
                       >
-                        <Box sx={{ ...style, width: 200 }}>
+                        <Box sx={{ ...style, width: 160 }}>
                           <h2 id="child-modal-title">삭제완료</h2>
-                          <p id="child-modal-description">
-                            삭제되었습니다.
-                          </p>
-                          <Button onClick={handleClose}>확인</Button>
+                          <div className="form">
+                          <Button onClick={handleClose} >확인</Button>
+                          </div>
                         </Box>
                       </Modal>
                     </React.Fragment>
@@ -180,13 +180,16 @@ export default class ProcsChart extends React.Component {
                       aria-labelledby="modal-modal-title"
                       aria-describedby="modal-modal-description"
                     >
-                      <Box sx={style}>
-                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                      <Box sx={style} className="modeldelete">
+                      <div >
+                        <Typography id="modal-modal-description" sx={{ m : 1}}>
                           {name} 삭제하시겠습니까?
+                          <div className="btn_cancle">
                           <ChildModal />
                           <Button onClick={handleClose}>취소</Button>
-
+                          </div>
                         </Typography>
+                        </div>
                       </Box>
 
                     </Modal>
