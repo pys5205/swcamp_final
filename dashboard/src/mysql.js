@@ -347,8 +347,6 @@ app.post('/disk/io_time', (req, res) => {
     })
 })
 
-
-
 app.post('/disk/part', (req, res) => {
   var resData = {};
   var input = req.body.system;
