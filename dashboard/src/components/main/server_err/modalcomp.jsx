@@ -23,7 +23,7 @@ export default function BasicModal() {
 
   return (
     <div>
-    <Button variant="outlined" color="error" onClick={handleOpen}>Error server</Button>
+      <Button variant="outlined" color="error" onClick={handleOpen}>Error server</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -32,7 +32,7 @@ export default function BasicModal() {
       >
         <Box sx={style}>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-           <Modals />
+            <Modals />
           </Typography>
         </Box>
       </Modal>

@@ -44,46 +44,47 @@ export default class cpuchart extends React.Component {
   render() {
     // console.log(this.state.data);
     const Data = this.state.data;
-    
-    return(
+
+    return (
       <>
-      {this.state.isLoaded ? 
-    <Loding /> : 
-      <div className="app">
-        <div className="row">
-          <div className="mixed-chart">
-            <Chart
-             type="line"
-             height="250"
-            series={ [
-                { name: "cpu퍼센트",
-                  data: Data.cpu_per,
-                },
-                ]} 
-            options={{    
-                 stroke: { //선의 커브를 부드럽게 하고, 두께를 3으로 지정
-                    curve: "smooth",
-                    width: 1,
-                },
-                tooltip: {
-                  x: {
-                    format: "yy/MM/dd HH:mm:ss",
-                  },
-                },
-                grid: { //격자 없앰
-                    show:false,
-                },
-                xaxis: {
-                  categories: Data.ts_create,
-                  labels: { show: false },
-                  range:8,
-                }
-            }}
-            />
+        {this.state.isLoaded ?
+          <Loding /> :
+          <div className="app">
+            <div className="row">
+              <div className="mixed-chart">
+                <Chart
+                  type="line"
+                  height="250"
+                  series={[
+                    {
+                      name: "cpu퍼센트",
+                      data: Data.cpu_per,
+                    },
+                  ]}
+                  options={{
+                    stroke: { //선의 커브를 부드럽게 하고, 두께를 3으로 지정
+                      curve: "smooth",
+                      width: 1,
+                    },
+                    tooltip: {
+                      x: {
+                        format: "yy/MM/dd HH:mm:ss",
+                      },
+                    },
+                    grid: { //격자 없앰
+                      show: false,
+                    },
+                    xaxis: {
+                      categories: Data.ts_create,
+                      labels: { show: false },
+                      range: 8,
+                    }
+                  }}
+                />
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      }
+        }
       </>
     )
   }

@@ -354,7 +354,7 @@ app.post('/disk/part', (req, res) => {
   var input = req.body.system;
   var ioName = req.body.ioName;
   conn.query(
-    'select disk_part_used, disk_part_free,max(ts_create) as ts_create from tbl_disk_part where system=? and disk_part_mnt=? order by ts_create asc', [input,ioName], (err, data) => {
+    'select disk_part_used, disk_part_free,max(ts_create) as ts_create from tbl_disk_part where system=? and disk_part_mnt=? order by ts_create asc', [input, ioName], (err, data) => {
       if (err) {
         console.log("데이터 가져오기 실패");
       } else {
@@ -565,8 +565,8 @@ app.post('/process/delete', (req, res) => {
   var resData = {};
   var input = req.body.process;
   var inputs = req.body.system;
-  var test = "sudo kill -9 (sudo ps -ef | grep "+input+" | awk '{print $2}')";
-  var test1 = "sudo kill -9 $(sudo ps -ef | grep "+input+" | awk '{print $2}')";
+  var test = "sudo kill -9 (sudo ps -ef | grep " + input + " | awk '{print $2}')";
+  var test1 = "sudo kill -9 $(sudo ps -ef | grep " + input + " | awk '{print $2}')";
   console.log(input)
   conn.query('delete from tbl_procs_doc where system = ? and procs_name = ? and ts_create = (select max(ts_create) from tbl_sys_info where system = ?);', [inputs, input, inputs], (err, data) => {
     if (err) {

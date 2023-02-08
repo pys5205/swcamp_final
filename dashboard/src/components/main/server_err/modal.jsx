@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import './modal.css'
 import MaterialTable, { MTableBodyRow } from "material-table";
-import { useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 export default class Modal extends Component {
   constructor(props) {
     super(props);
@@ -36,47 +36,47 @@ export default class Modal extends Component {
     console.log(this.props);
     const Data = this.state.data;
     const columns =
-                        [
-                          { title: "system", field: "system" },
-                          { title: "cpu percent", field: "cpu_per" },
-                          { title: "time", field: "ts_create" },
-                        ]
+      [
+        { title: "system", field: "system" },
+        { title: "cpu percent", field: "cpu_per" },
+        { title: "time", field: "ts_create" },
+      ]
     return (
-          <div>
-                  
-                    <MaterialTable
-                    title="Error"
-                      columns={columns}
-                      data={Data}
-                      components={{
-                          Row: (props) => {
-                            const navigate = useNavigate();
-                            const handleClick = (event, rowData) => {
-                              // alert(`event.target.row = '${rowData.company}'`);
-                              // console.log(rowData);
-                              // console.log(event);
-                              // console.log(rowData);
-                              // console.log(navigate);
-                             
-                              navigate(`/list/${rowData.system}/cpu`);
-                              
-                              // navigate(`'/${rowData.company}'`);
-                              // this.props.useNavigate(("/serverlist"));
-                              // console.log(this.props.setOpen);
-                              this.props.setOpen(false);
-                              window.location.reload();
-                            };
-                          return (
-                            <MTableBodyRow {...props} persistEvents onRowClick={handleClick} />
-                          );
-                        }
-                      }}
-                      pageSize={5}
-                      rowsPerPageOptions={[5]}
-                    />
-           </div> 
-           )
+      <div>
 
-}
+        <MaterialTable
+          title="Error"
+          columns={columns}
+          data={Data}
+          components={{
+            Row: (props) => {
+              const navigate = useNavigate();
+              const handleClick = (event, rowData) => {
+                // alert(`event.target.row = '${rowData.company}'`);
+                // console.log(rowData);
+                // console.log(event);
+                // console.log(rowData);
+                // console.log(navigate);
+
+                navigate(`/list/${rowData.system}/cpu`);
+
+                // navigate(`'/${rowData.company}'`);
+                // this.props.useNavigate(("/serverlist"));
+                // console.log(this.props.setOpen);
+                this.props.setOpen(false);
+                window.location.reload();
+              };
+              return (
+                <MTableBodyRow {...props} persistEvents onRowClick={handleClick} />
+              );
+            }
+          }}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+        />
+      </div>
+    )
+
+  }
 
 }

@@ -18,8 +18,8 @@ export default class mainchart extends React.Component {
       data: []
     };
   }
-  
- componentDidMount() {
+
+  componentDidMount() {
     const interval = setInterval(async () => {
       fetch("/list/os", {
         method: "post", //통신방법
@@ -47,30 +47,31 @@ export default class mainchart extends React.Component {
   render() {
     const Data = this.state.data;
     // console.log(Data.cnt_os);
-    return(
-            <Chart
-             type='bar'
-              series={ [
-                { name: "cnt_os",
-                  data: Data.cnt_os,
-                },
-                ]} 
-            options={{
-                xaxis: {
-                  categories: Data.os,
-                },
-                plotOptions: {
-                bar: {
-                    borderRadius: 4,
-                    horizontal: true,
-                  }
-                },
-                dataLabels: {
-                  enabled: false
-                },
-            }}
-            />
-        
+    return (
+      <Chart
+        type='bar'
+        series={[
+          {
+            name: "cnt_os",
+            data: Data.cnt_os,
+          },
+        ]}
+        options={{
+          xaxis: {
+            categories: Data.os,
+          },
+          plotOptions: {
+            bar: {
+              borderRadius: 4,
+              horizontal: true,
+            }
+          },
+          dataLabels: {
+            enabled: false
+          },
+        }}
+      />
+
     )
 
   }

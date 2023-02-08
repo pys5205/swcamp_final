@@ -38,11 +38,11 @@ export default class erroricon extends React.Component {
   }
   render() {
     const Data = this.state.data;
-    return(
-        <div className="topbarIconContainer">
-            <NotificationsNoneIcon />
-            <span className="topIconBadge">{Data.cnt_system}</span>
-        </div>    
+    return (
+      <div className="topbarIconContainer">
+        <NotificationsNoneIcon />
+        <span className="topIconBadge">{Data.cnt_system}</span>
+      </div>
     )
   }
 }

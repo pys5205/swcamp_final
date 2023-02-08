@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import NewReleasesOutlinedIcon from '@mui/icons-material/NewReleasesOutlined';
 import { red } from '@mui/material/colors';
 import Modalcomp from './modalcomp';
@@ -14,33 +14,33 @@ export default class servererror extends React.Component {
   }
   componentDidMount() {
     const interval = setInterval(async () => {
-    fetch("/server/error", {
-      method: "post", //통신방법
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(),
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        if (json === undefined) {
-          alert("오류");
-        } else {
-          //////////////////////////////////여기부터보자
-          // console.log(json);
-          this.setState({
-            isLoaded: true,
-            data: json
-          })
-        }
-      });
-  }, 10000);
+      fetch("/server/error", {
+        method: "post", //통신방법
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(),
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          if (json === undefined) {
+            alert("오류");
+          } else {
+            //////////////////////////////////여기부터보자
+            // console.log(json);
+            this.setState({
+              isLoaded: true,
+              data: json
+            })
+          }
+        });
+    }, 10000);
     return () => clearInterval(interval);
   }
   render() {
     const Data = this.state.data;
     // console.log(Data.cnt_system);
-    
+
     return (
       <div>
         <div className="servererr">

@@ -12,8 +12,8 @@ import IoTime from '../../components/diskChart/disk_io_time'
 export default function serverDisk() {
     return (
         <div className="disk_main">
-         <Title title="Disk" />
-         <div className="start_stop">
+            <Title title="Disk" />
+            <div className="start_stop">
                 <Start /><Stop />
             </div>
             <div className="disk_firstpart">
@@ -24,19 +24,19 @@ export default function serverDisk() {
                 </div>
                 <div className="disk_io_bytes">
                     <div className="selectbox">
-                        <IoBytes /> 
+                        <IoBytes />
                     </div>
                 </div>
             </div>
             <div className="disk_secondpart">
                 <div className="disk_io_time">
                     <div className="selectbox">
-                        <IoTime/>
+                        <IoTime />
                     </div>
-                    
+
                 </div>
                 <div className="disk_part">
-                        <DiskPart />
+                    <DiskPart />
                 </div>
             </div>
         </div>

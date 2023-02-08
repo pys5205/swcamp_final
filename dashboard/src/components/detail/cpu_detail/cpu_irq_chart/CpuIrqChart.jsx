@@ -46,51 +46,53 @@ export default class detailcpuirq extends React.Component {
     const Data = this.state.data;
     //console.log(Data);
 
-    return(
-       <>
-      {this.state.isLoaded ? 
-    <Loding /> : 
-            <Chart
-            type= 'line'
-            height= "200"
-            series={ [
-                { name: "cpu_irq",
-                  data: Data.cpu_irq,
+    return (
+      <>
+        {this.state.isLoaded ?
+          <Loding /> :
+          <Chart
+            type='line'
+            height="200"
+            series={[
+              {
+                name: "cpu_irq",
+                data: Data.cpu_irq,
+              },
+              {
+                name: "cpu_softirq",
+                data: Data.cpu_softirq,
+              },
+            ]}
+            options={{
+              chart: {
+                stacked: true,
+              },
+              stroke: { //선의 커브를 부드럽게 하고, 두께를 3으로 지정
+                curve: "smooth",
+              },
+              legend: {
+                position: 'top',
+                horizontalAlign: 'left'
+              },
+
+              tooltip: {
+                x: {
+                  format: "dd/MM/yy HH:mm",
                 },
-                {name: "cpu_softirq",
-                  data: Data.cpu_softirq,
-                },
-                ]} 
-            options={{    
-                chart : {
-                    stacked: true,
-                },
-                 stroke: { //선의 커브를 부드럽게 하고, 두께를 3으로 지정
-                    curve: "smooth",
-                },
-                legend: {
-                  position: 'top',
-                  horizontalAlign: 'left'
-                },
-                
-                tooltip: {
-                  x: {
-                    format: "dd/MM/yy HH:mm",
-                  },
-                },
-                grid: { //격자 없앰
-                    show:false,
-                },
-                colors: ['#008FFB', '#00E396'],
-                xaxis: {
-                  categories: Data.ts_create,
-                  labels: { show: false },
-                  range:20,
-                },
+              },
+              grid: { //격자 없앰
+                show: false,
+              },
+              colors: ['#008FFB', '#00E396'],
+              xaxis: {
+                categories: Data.ts_create,
+                labels: { show: false },
+                range: 20,
+              },
             }}
-            />
-      }
-            </>
+          />
+        }
+      </>
 
     )
   }

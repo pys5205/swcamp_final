@@ -156,12 +156,13 @@ componentDidMount(){
     return(
       <>
       
-      <div>
+      <div className="selectTitle">
       IoCount
         <select onChange={handleChange} id="diskname">
         <option value="test" name="test" disabled selected>선택하세요</option>
           {content}
         </select>
+      <div className="tool">
       <HtmlTooltip
         title={
           <React.Fragment>
@@ -176,6 +177,7 @@ componentDidMount(){
           </IconButton>
         </Button>
       </HtmlTooltip>
+      </div>
         </div>
         {this.state.isLoaded ? 
       <Loding /> : 

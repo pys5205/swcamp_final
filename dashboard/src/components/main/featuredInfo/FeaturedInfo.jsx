@@ -15,8 +15,8 @@ export default class featured extends React.Component {
   }
 
 
-componentDidMount() {
-  
+  componentDidMount() {
+
     const interval = setInterval(async () => {
       fetch("/data", {
         method: "post", //통신방법
@@ -79,39 +79,39 @@ componentDidMount() {
 
     return (
       <>
-      {this.state.isLoaded ? 
-      <div className="loding">
-    <Box sx={{ display: "flex"}}>
-      <CircularProgress color="inherit"  />
-    </Box>
-    </div>: 
-      <MaterialTable
-        title="Company Details"
-        data={Data}
-        columns={columns}
-        options={{
-          selection: true
-        }}
-        components={{
-          Row: (props) => {
-            let navigate = useNavigate();
-            const handleClick = (event, rowData) => {
-              // alert(`event.target.row = '${rowData.company}'`);
-              navigate(`/list/${rowData.system}`);
-              // navigate(`'/${rowData.company}'`);
-              // this.props.useNavigate(("/serverlist"));
+        {this.state.isLoaded ?
+          <div className="loding">
+            <Box sx={{ display: "flex" }}>
+              <CircularProgress color="inherit" />
+            </Box>
+          </div> :
+          <MaterialTable
+            title="Company Details"
+            data={Data}
+            columns={columns}
+            options={{
+              selection: true
+            }}
+            components={{
+              Row: (props) => {
+                let navigate = useNavigate();
+                const handleClick = (event, rowData) => {
+                  // alert(`event.target.row = '${rowData.company}'`);
+                  navigate(`/list/${rowData.system}`);
+                  // navigate(`'/${rowData.company}'`);
+                  // this.props.useNavigate(("/serverlist"));
 
-            };
-            return (
-              <MTableBodyRow {...props} persistEvents onRowClick={handleClick} />
-            )
-          }
-        }}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-      />
+                };
+                return (
+                  <MTableBodyRow {...props} persistEvents onRowClick={handleClick} />
+                )
+              }
+            }}
+            pageSize={5}
+            rowsPerPageOptions={[5]}
+          />
 
-      }
+        }
       </>
     )
   }
