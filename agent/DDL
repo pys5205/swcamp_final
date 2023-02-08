@@ -248,7 +248,7 @@ begin
 		my_sys::$os,
         my_sys::$cpu_cnt,
         my_sys::$mem_total,
-		max(my_sys::$ts_create)
+		my_sys::$ts_create
 	from metrics_pipe
 	group by 1, 2, 3, 4;
     
@@ -558,3 +558,4 @@ truncate table tbl_disk_part;
 truncate table tbl_net_io;
 truncate table tbl_net_if;
 truncate table tbl_net_con;
+
