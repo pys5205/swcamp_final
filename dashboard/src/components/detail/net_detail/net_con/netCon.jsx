@@ -70,8 +70,13 @@ componentDidMount(){
         //console.log(columns);
     return(
       <>
-      {this.state.isLoaded ? 
-    <Loding /> :
+      
+      {this.state.isLoaded ?
+      <>
+      <div>네트워크 연결</div>
+    <Loding /> 
+    </>
+    :
         <MaterialTable 
         title="네트워크 연결"
         data={Data}

@@ -97,7 +97,11 @@ export default class ProcsChart extends React.Component {
     return (
       <>
         {this.state.isLoaded ?
-          <Loding /> :
+          <>
+      <div>프로세스</div>
+    <Loding /> 
+    </>  
+          :
           <MaterialTable
             title="프로세스"
             data={Data}
