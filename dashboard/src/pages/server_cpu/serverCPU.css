@@ -3,7 +3,8 @@
     width: 1000px;
     left: 50%;
     right:50%;
-    top:70%;
+    top:25%;
+    bottom:50%;
     -ms-transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
   -moz-transform: translate(-50%, -50%);
@@ -13,7 +14,7 @@
     margin-bottom:15px;
 }
 .firstpart{
-   height:300px;
+   height:340px;
     -webkit-box-shadow: 0px 0px 12px -2px #000000; 
     box-shadow: 0px 0px 12px -2px #000000;
      margin-bottom:30px;
@@ -21,7 +22,7 @@
 
 .secondpart{
     display:flex;
-    height:200px;
+    height:240px;
     margin-bottom:30px;
 }
 .cpu_wait{
@@ -37,7 +38,14 @@
     box-shadow: 0px 0px 12px -2px #000000;
 }
 .thirdpart{
-    height:200px;
+    height:240px;
     -webkit-box-shadow: 0px 0px 12px -2px #000000; 
     box-shadow: 0px 0px 12px -2px #000000;
+}
+.toolbox{
+    display:flex;
+    justify-content: space-between;
+}
+.toolmessage{
+    padding:10px;
 }

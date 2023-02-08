@@ -3,7 +3,8 @@
     width: 1000px;
     left: 50%;
     right:50%;
-    top:60%;
+    top:25%;
+    bottom:50%;
     -ms-transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
   -moz-transform: translate(-50%, -50%);
@@ -15,7 +16,7 @@
 .mem_firstpart{
     display:flex;
     margin-bottom:30px;
-    height:220px;
+    height:240px;
    
 }
 .mem_total{
@@ -35,7 +36,7 @@
 
 .mem_secondpart{
     display:flex;
-    height:220px;
+    height:240px;
     margin-bottom:30px;
 }
 .mem_free{
@@ -53,7 +54,7 @@
 
 .mem_thirdpart{
     display:flex;
-    height:220px;
+    height:240px;
 }
 .mem_cache{
     width:700px;
