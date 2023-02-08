@@ -71,7 +71,11 @@ componentDidMount(){
     return(
       <>
       {this.state.isLoaded ? 
-    <Loding /> :
+    <>
+      <div>네트워크 인터페이스</div>
+    <Loding /> 
+    </> 
+    :
         <MaterialTable 
         title="네트워크 인터페이스"
         data={Data}

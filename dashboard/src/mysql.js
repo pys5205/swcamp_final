@@ -265,7 +265,7 @@ app.post('/disk/io_count', (req, res) => {
   var input = req.body.system;
   let ioName = 0;
   ioName = req.body.ioName;
-  console.log(ioName);
+  // console.log(ioName);
   conn.query(
     'select disk_io_read_count as read_count, disk_io_write_count as write_count, ts_create from tbl_disk_io where system=? and disk_io_name = ? group by ts_create order by ts_create asc', [input, ioName], (err, data) => {
       if (err) {
@@ -458,7 +458,7 @@ app.post('/network/io_bytes', (req, res) => {
   var resData = {};
   var input = req.body.system;
   var ioName = req.body.ioName;
-  console.log(ioName)
+  // console.log(ioName)
   conn.query(
     'select round(net_bytes_sent/1024/1024, 2) as net_bytes_sent, round(net_bytes_recv/1024/1024, 2) as net_bytes_recv, ts_create from tbl_net_io where system = ? and net_name = ?', [input, ioName], (err, data) => {
       if (err) {
