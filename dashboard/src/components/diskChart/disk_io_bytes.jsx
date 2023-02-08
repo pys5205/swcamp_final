@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from '@mui/icons-material/Chat';
 import IconButton from '@mui/material/IconButton';
 
 export default class disk_io_select extends React.Component {
@@ -168,7 +168,6 @@ componentDidMount(){
     // console.log(Name[0]);
     const content = this.state.iodata.map((iodata) => (
       <option value={iodata.disk_io_name} name={iodata.disk_io_name}>{iodata.disk_io_name}</option>
-
     ));
    //  console.log(Data);
     return(
@@ -176,14 +175,15 @@ componentDidMount(){
       
       <div>
       IoBytes
-        <select onChange={handleChange} id="diskname" defaultValue="nvme0n1p1">
+        <select onChange={handleChange} id="diskname">
+          <option value="test" name="test" disabled selected>선택하세요</option>
           {content}
         </select>
       <HtmlTooltip
         title={
           <React.Fragment>
-            <Typography color="inherit">Disk Io Count</Typography>
-            {"Disk Io Count"}
+            <Typography color="inherit">Disk Io bytes</Typography>
+            {"Disk에 대한 입력/출력 바이트"}
           </React.Fragment>
         }
       >
