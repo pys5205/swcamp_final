@@ -120,7 +120,7 @@ app.post('/server', (req, res) => {
 app.post('/server/error', (req, res) => {
   // console.log(sys);
   var resData = {};
-  conn.query('SELECT count(distinct system)as cnt_system, system, cpu_per FROM tbl_cpu where cpu_per >=50', (err, data) => {
+  conn.query('SELECT count(distinct system)as cnt_system, system, cpu_per FROM tbl_cpu where cpu_per >=45', (err, data) => {
     if (err) {
       console.log("데이터 가져오기 실패");
     } else {
@@ -144,7 +144,7 @@ app.post('/server/error', (req, res) => {
 app.post('/server/error/modal', (req, res) => {
   // console.log(sys);
   var resData = {};
-  conn.query('SELECT system, cpu_per, ts_create FROM tbl_cpu where cpu_per >=50 group by system;', (err, data) => {
+  conn.query('SELECT system, cpu_per, ts_create FROM tbl_cpu where cpu_per >=45 group by system;', (err, data) => {
     if (err) {
       console.log("데이터 가져오기 실패");
     } else {

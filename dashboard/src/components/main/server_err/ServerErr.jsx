@@ -34,7 +34,7 @@ export default class servererror extends React.Component {
             })
           }
         });
-    }, 10000);
+    }, 2000);
     return () => clearInterval(interval);
   }
   render() {
