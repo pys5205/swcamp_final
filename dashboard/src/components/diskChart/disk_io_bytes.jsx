@@ -172,7 +172,6 @@ componentDidMount(){
    //  console.log(Data);
     return(
       <>
-      
       <div className="selectTitle">
       IoBytes
         <select onChange={handleChange} id="diskname">
@@ -180,20 +179,20 @@ componentDidMount(){
           {content}
         </select>
         <div className="tool">
-      <HtmlTooltip
-        title={
-          <React.Fragment>
-            <Typography color="inherit">Disk Io bytes</Typography>
-            {"Disk에 대한 입력/출력 바이트"}
-          </React.Fragment>
-        }
-      >
-        <Button>
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Button>
-      </HtmlTooltip>
+        <HtmlTooltip
+          title={
+            <React.Fragment>
+              <Typography color="inherit">Disk Io bytes</Typography>
+              {"Disk에 대한 입력/출력 바이트"}
+            </React.Fragment>
+          }
+        >
+          <Button>
+            <IconButton>
+              <DeleteIcon />
+            </IconButton>
+          </Button>
+        </HtmlTooltip>
       </div>
         </div>
         {this.state.isLoaded ? 

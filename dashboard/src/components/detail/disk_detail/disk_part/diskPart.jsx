@@ -127,7 +127,7 @@ export default class diskpart extends React.Component {
               title={
                 <React.Fragment>
                   <Typography color="inherit">Disk Partition</Typography>
-                  {"Disk에 대한 입력/출력 바이트"}
+                  {"Disk 파티션의 용량"}
                 </React.Fragment>
               }
             >
