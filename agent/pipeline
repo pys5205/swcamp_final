@@ -1,3 +1,8 @@
+-- -----------------------------------------------
+-- 파이프라인 생성
+-- -----------------------------------------------
+
+-- aws의 파이프라인에서 metrics라는 이름의 토픽에서 sp_load_metrics프로시저의 my_sys, type, infos에 JSON타입으로 전송
 create pipeline mainpipe
 as load data kafka 'ec2-15-165-51-112.ap-northeast-2.compute.amazonaws.com/metrics'
 batch_interval 100

@@ -1,3 +1,4 @@
+# 공통 데이터 입력
 main_list:
   - system: system
     service: service
@@ -7,29 +8,33 @@ main_list:
     mem_total : 0
     #ts_insert: timein
     ts_create: timecr 
-    
 
+# disk 마운트 포인트 입력
 disk_mnt_list:
   -
 
+# disk 파티션 이름 입력
 disk_info_list:
   - nvme0n1
   - nvme0n1p1
   - nvme0n1p128
 
+# network 이름 입력
 network_name_list:
   -
  
+# network conn 상태 입력
 network_conn_list:
   - ESTABLISHED
   #- CLOSING
   #- SYN_SENT
 
-
+# process 이름 입력
 procs_list:
   # -
   -
   # - 
-
+  
+# proces memory 이름 입력
 procs_mem_list:
   - 

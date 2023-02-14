@@ -173,37 +173,37 @@ delimiter //
 -- 파이프라인에서 my_sys, type, infos를 가져옴
 create or replace procedure sp_load_metrics (metrics_pipe query(my_sys json, type text, infos json)) as
 declare
-    -- 타입이 process인 procs_doc JSON의 데이터를 select
+    -- 타입이 process인 procs_doc JSON의 데이터를 select하여 qry_procs_doc로 선언
     qry_procs_doc query(system text, procs_doc_cnt int, procs_doc json, ts_create datetime) = 
         select my_sys::$system, json_length(infos::procs_doc), infos::procs_doc, my_sys::$ts_create
         from metrics_pipe
         where type = "process";
         
-    -- 타입이 disk인 disk_part JSON의 데이터를 select
+    -- 타입이 disk인 disk_part JSON의 데이터를 select하여 qry_disk_part로 선언
 	qry_disk_part query(system text, disk_part_cnt int, disk_part json, ts_create datetime) =
 		select my_sys::$system, json_length(infos::disk_part), infos::disk_part, my_sys::$ts_create
 		from metrics_pipe
 		where type = "disk";
     
-    -- 타입이 disk인 disk_io JSON의 데이터를 select
+    -- 타입이 disk인 disk_io JSON의 데이터를 select하여 qry_disk_io로 선언
 	qry_disk_io query(system text, disk_io_cnt int, disk_io json, ts_create datetime) =
 		select my_sys::$system, json_length(infos::disk_io), infos::disk_io, my_sys::$ts_create
 		from metrics_pipe
 		where type = "disk";
 		
-	-- 타입이 network인 net_io JSON의 데이터를 select
+	-- 타입이 network인 net_io JSON의 데이터를 select하여 qry_net_io로 선언
     qry_net_io query(system text, net_io_cnt int, net_io json, ts_create datetime)=
         select my_sys::$system, json_length(infos::net_io), infos::net_io, my_sys::$ts_create
         from metrics_pipe
         where type="network";
 
-    -- 타입이 network인 net_if JSON의 데이터를 select
+    -- 타입이 network인 net_if JSON의 데이터를 select하여 qry_net_if로 선언
     qry_net_if query(system text, net_if_cnt int, net_if json, ts_create datetime)=
         select my_sys::$system, json_length(infos::net_if), infos::net_if, my_sys::$ts_create
         from metrics_pipe
         where type="network";
 
-    -- 타입이 network인 net_con JSON의 데이터를 select
+    -- 타입이 network인 net_con JSON의 데이터를 select하여 qry_net_con로 선언
     qry_net_con query(system text, net_con_cnt int, net_con json, ts_create datetime)=
         select my_sys::$system, json_length(infos::net_con), infos::net_con, my_sys::$ts_create
         from metrics_pipe
@@ -296,8 +296,10 @@ begin
     from metrics_pipe
     where type = "memory";
 
-    -- type이 process인 데이터를 tbl_procs_docs에 insert
-    --수집된 qry_procs_doc의 데이터 수만큼 무한루프
+    
+    
+    -- type이 process인 데이터를 tbl_procs_doc에 insert
+	--수집된 qry_disk_part의 데이터 수만큼 무한루프
     for rec in collect(qry_procs_doc) loop
         for idx IN 0 .. rec.procs_doc_cnt-1 loop
             j = json_extract_json(rec.procs_doc, idx);
@@ -514,7 +516,7 @@ delimiter ;
 -- 파이프라인 생성
 -- -----------------------------------------------
 
--- aws의 파이프라인에서 metrics이름의 토픽에서 sp_load_metrics프로시저의 my_sys, type, infos에 JSON타입으로 전송
+-- aws의 파이프라인에서 metrics라는 이름의 토픽에서 sp_load_metrics프로시저의 my_sys, type, infos에 JSON타입으로 전송
 create pipeline mainpipe
 as load data kafka 'ec2-15-165-51-112.ap-northeast-2.compute.amazonaws.com/metrics'
 batch_interval 100
