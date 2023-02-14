@@ -1,6 +1,6 @@
 
 
-drop table tbl_sys_info;
+-- 공통 데이터 테이블 생성
 create table tbl_sys_info (
   ts_insert	datetime default current_timestamp,
   system	varchar(40),
@@ -14,8 +14,7 @@ create table tbl_sys_info (
   sort key(ts_insert)
 );
 
--- cpu
-drop table tbl_cpu;
+-- cpu정보 테이블 생성
 create table tbl_cpu (
     ts_insert datetime default current_timestamp,
     system varchar(40),
@@ -33,8 +32,7 @@ create table tbl_cpu (
     shard key(system)
 );
 
--- memory
-drop table tbl_memory;
+-- memory정보 테이블 생성
 create table tbl_memory (
     ts_insert datetime default current_timestamp,
     system varchar(40),
@@ -56,8 +54,7 @@ create table tbl_memory (
     shard key(system)
 );
 
--- procs
-drop table tbl_procs_doc;
+-- 프로세스 정보 테이블
 create table tbl_procs_doc(
     ts_insert datetime default current_timestamp,
     system varchar(40),
@@ -83,26 +80,8 @@ create table tbl_procs_doc(
     sort key(ts_create),
     shard key(system)
 );
-/*
- create table tbl_procs_mem(
-    ts_insert datetime default current_timestamp,
-    system varchar(40),
-    procs_mem_path text,
-    procs_mem_rss bigint,
-    procs_mem_size bigint,
-    procs_mem_pss bigint,
-    procs_mem_shared_clean bigint,
-    procs_mem_private_dirty bigint,
-    procs_mem_referenced bigint,
-    procs_mem_anonymous bigint,
-    ts_create datetime,
-    primary key(system, ts_create),
-    sort key(ts_insert),
-    shard key(system)
-);
-*/
 
-drop table tbl_disk_part;
+-- 디스크 파티션 테이블
 create table tbl_disk_part (
   ts_insert			datetime default current_timestamp,
   system			varchar(40),
@@ -118,8 +97,7 @@ create table tbl_disk_part (
   shard key(system)
 );
 
-
-drop table tbl_disk_io;
+-- 디스크 IO 테이블
 create table tbl_disk_io (
   ts_insert			datetime default current_timestamp,
   system			varchar(40),
@@ -137,8 +115,7 @@ create table tbl_disk_io (
   shard key (system)  
 );
 
--- network io
-drop table tbl_net_io;
+-- network io 테이블
 create table tbl_net_io (
 ts_insert datetime default current_timestamp,
     system varchar(40),
@@ -156,8 +133,7 @@ ts_insert datetime default current_timestamp,
     shard key(system)
 );
 
--- network if
-drop table tbl_net_if;
+-- network if 테이블
 create table tbl_net_if (
     ts_insert datetime default current_timestamp,
     system varchar(40),
@@ -172,8 +148,7 @@ create table tbl_net_if (
     shard key(system)
 );
 
--- network con
-drop table tbl_net_con;
+-- network con 테이블
 create table tbl_net_con (
     ts_insert datetime default current_timestamp,
     system varchar(40),
@@ -195,34 +170,40 @@ create table tbl_net_con (
 -- 프로시저 생성
 -- -----------------------------------------------
 delimiter //
-
+-- 파이프라인에서 my_sys, type, infos를 가져옴
 create or replace procedure sp_load_metrics (metrics_pipe query(my_sys json, type text, infos json)) as
 declare
+    -- 타입이 process인 procs_doc JSON의 데이터를 select
     qry_procs_doc query(system text, procs_doc_cnt int, procs_doc json, ts_create datetime) = 
         select my_sys::$system, json_length(infos::procs_doc), infos::procs_doc, my_sys::$ts_create
         from metrics_pipe
         where type = "process";
-
+        
+    -- 타입이 disk인 disk_part JSON의 데이터를 select
 	qry_disk_part query(system text, disk_part_cnt int, disk_part json, ts_create datetime) =
 		select my_sys::$system, json_length(infos::disk_part), infos::disk_part, my_sys::$ts_create
 		from metrics_pipe
 		where type = "disk";
-
+    
+    -- 타입이 disk인 disk_io JSON의 데이터를 select
 	qry_disk_io query(system text, disk_io_cnt int, disk_io json, ts_create datetime) =
 		select my_sys::$system, json_length(infos::disk_io), infos::disk_io, my_sys::$ts_create
 		from metrics_pipe
 		where type = "disk";
 		
+	-- 타입이 network인 net_io JSON의 데이터를 select
     qry_net_io query(system text, net_io_cnt int, net_io json, ts_create datetime)=
         select my_sys::$system, json_length(infos::net_io), infos::net_io, my_sys::$ts_create
         from metrics_pipe
         where type="network";
 
+    -- 타입이 network인 net_if JSON의 데이터를 select
     qry_net_if query(system text, net_if_cnt int, net_if json, ts_create datetime)=
         select my_sys::$system, json_length(infos::net_if), infos::net_if, my_sys::$ts_create
         from metrics_pipe
         where type="network";
 
+    -- 타입이 network인 net_con JSON의 데이터를 select
     qry_net_con query(system text, net_con_cnt int, net_con json, ts_create datetime)=
         select my_sys::$system, json_length(infos::net_con), infos::net_con, my_sys::$ts_create
         from metrics_pipe
@@ -231,8 +212,7 @@ declare
 	j json;
 begin
    --  BEGIN
-    -- truncate table tbl_sys_info;
-    -- delete from tbl_sys_info where ts_create = (select min(ts_create) from tbl_sys_info group by system);
+   -- 공통 데이터를 tbl_sys_info에 insert 한다
 	insert into tbl_sys_info (
 		system,
 		company,
@@ -252,7 +232,7 @@ begin
 	from metrics_pipe
 	group by 1, 2, 3, 4;
     
-    -- cpu
+    -- type이 cpu인 데이터를 tbl_cpu테이블에 insert
     insert into tbl_cpu (
         system,
         cpu_per,
@@ -280,7 +260,7 @@ begin
     from metrics_pipe
     where type = "cpu";
 
-    -- memory
+    -- type이 memory인 데이터를 tbl_memory테이블에 insert
     insert into tbl_memory (
         system,
         mem_total,
@@ -316,7 +296,8 @@ begin
     from metrics_pipe
     where type = "memory";
 
-    -- procs docs info
+    -- type이 process인 데이터를 tbl_procs_docs에 insert
+    --수집된 qry_procs_doc의 데이터 수만큼 무한루프
     for rec in collect(qry_procs_doc) loop
         for idx IN 0 .. rec.procs_doc_cnt-1 loop
             j = json_extract_json(rec.procs_doc, idx);
@@ -367,7 +348,8 @@ begin
     end loop;
     
 
-	-- disk partitions info
+	-- type이 disk이고 disk_part인 데이터를 tbl_disk_part에 insert
+	--수집된 qry_disk_part의 데이터 수만큼 무한루프
 	for rec in collect(qry_disk_part) loop
 		for idx IN 0 .. rec.disk_part_cnt-1 loop
 			j = json_extract_json(rec.disk_part, idx);
@@ -395,7 +377,8 @@ begin
 		end loop;
 	end loop;
 
-	-- disk io info
+	-- type이 disk이고 disk_io인 데이터를 tbl_disk_io에 insert
+	--수집된 qry_disk_io의 데이터 수만큼 무한루프
 	for rec in collect(qry_disk_io) loop
 		for idx IN 0 .. rec.disk_io_cnt-1 loop
 			j = json_extract_json(rec.disk_io, idx);
@@ -427,7 +410,8 @@ begin
 		end loop;
 	end loop;
 
-    -- net io
+    -- type이 network이고 network_io인 데이터를 tbl_network_io에 insert
+    --수집된 qry_net_io의 데이터 수만큼 무한루프
     for rec in collect(qry_net_io) loop
         for idx in 0 .. rec.net_io_cnt-1 loop
             j = json_extract_json(rec.net_io, idx);
@@ -459,7 +443,8 @@ begin
         end loop;
     end loop;
 
-    -- net if
+    -- type이 network이고 network_if인 데이터를 tbl_network_if에 insert
+    --수집된 qry_net_if의 데이터 수만큼 무한루프
     for rec in collect(qry_net_if) loop
         for idx in 0 .. rec.net_if_cnt-1 loop
             j = json_extract_json(rec.net_if, idx);
@@ -485,7 +470,8 @@ begin
         end loop;
     end loop;
 
-    -- net con
+    -- type이 network이고 network_con인 데이터를 tbl_network_con에 insert
+    --수집된 qry_net_con의 데이터 수만큼 무한루프
     for rec in collect(qry_net_con) loop
         for idx in 0 .. rec.net_con_cnt-1 loop
             j = json_extract_json(rec.net_con, idx);
@@ -524,6 +510,11 @@ begin
 end //
 delimiter ;
 
+-- -----------------------------------------------
+-- 파이프라인 생성
+-- -----------------------------------------------
+
+-- aws의 파이프라인에서 metrics이름의 토픽에서 sp_load_metrics프로시저의 my_sys, type, infos에 JSON타입으로 전송
 create pipeline mainpipe
 as load data kafka 'ec2-15-165-51-112.ap-northeast-2.compute.amazonaws.com/metrics'
 batch_interval 100
@@ -533,29 +524,5 @@ type <- type,
 infos <- infos)
 format JSON;
 
+-- 파이프라인 시작
 start pipeline mainpipe;
-select * from tbl_sys_info order by ts_create desc;
-select * from tbl_cpu order by ts_create desc;
-select * from tbl_memory;
-select * from tbl_procs_doc;
-select * from tbl_disk_part;
-select * from tbl_disk_io;
-select * from tbl_net_io;
-select * from tbl_net_if;
-select * from tbl_net_con;
-select * from information_schema.pipelines_errors
-where pipeline_name='mainpipe';
-
-drop procedure `sp_load_metrics`;
-stop pipeline mainpipe;
-drop pipeline mainpipe;
-truncate table tbl_sys_info;
-truncate table tbl_cpu;
-truncate table tbl_memory;
-truncate table tbl_procs_doc;
-truncate table tbl_disk_io;
-truncate table tbl_disk_part;
-truncate table tbl_net_io;
-truncate table tbl_net_if;
-truncate table tbl_net_con;
-
